@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 
 class SearchTextField extends StatelessWidget {
   void Function(String) onChange;
 
   SearchTextField({super.key, required this.onChange});
-
   late ThemeData theme;
   late Size size;
 
@@ -15,6 +15,7 @@ class SearchTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
       child: TextField(
+        controller: QuranLayoutState.searchFieldController,
         textDirection: TextDirection.rtl,
         style: theme.textTheme.bodyMedium,
         decoration: InputDecoration(

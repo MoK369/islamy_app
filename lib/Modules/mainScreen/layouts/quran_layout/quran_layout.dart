@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/list_of_suras.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/search_text_field.dart';
+import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/surah_screen.dart';
 
 class QuranLayout extends StatefulWidget {
   QuranLayout({super.key});
 
   @override
-  State<QuranLayout> createState() => _QuranLayoutState();
+  State<QuranLayout> createState() => QuranLayoutState();
 }
 
-class _QuranLayoutState extends State<QuranLayout> {
+class QuranLayoutState extends State<QuranLayout> {
   late ThemeData theme;
   List<String> foundUser = [];
+  static TextEditingController searchFieldController = TextEditingController();
 
   @override
   void initState() {
@@ -67,7 +69,19 @@ class _QuranLayoutState extends State<QuranLayout> {
                     ],
                   ),
                   const Divider(),
-                  ListOfSuras(foundUser: foundUser),
+                  ListOfSuras(
+                    foundUser: foundUser,
+                    onClick: (index) {
+                      Navigator.pushNamed(context, SurahScreen.routeName,
+                          arguments: Send(
+                              surahIndex: Suras.arabicAuranSuras
+                                  .indexOf(foundUser[index]),
+                              surahName: foundUser[index]));
+                      searchFieldController.clear();
+                      FocusScope.of(context).unfocus();
+                      runFilter('');
+                    },
+                  ),
                 ],
               ),
             ],

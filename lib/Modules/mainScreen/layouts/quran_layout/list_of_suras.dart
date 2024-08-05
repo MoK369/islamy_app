@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_suras.dart';
-import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/surah_screen.dart';
 
 class ListOfSuras extends StatelessWidget {
   List<String> foundUser;
+  void Function(int) onClick;
 
-  ListOfSuras({super.key, required this.foundUser});
+  ListOfSuras({super.key, required this.foundUser, required this.onClick});
 
   late ThemeData theme;
 
@@ -19,11 +18,7 @@ class ListOfSuras extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              Navigator.pushNamed(context, SurahScreen.routeName,
-                  arguments: Send(
-                      surahIndex:
-                          Suras.arabicAuranSuras.indexOf(foundUser[index]),
-                      surahName: foundUser[index]));
+              onClick(index);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
