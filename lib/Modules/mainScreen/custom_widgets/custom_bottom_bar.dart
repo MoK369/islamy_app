@@ -23,55 +23,47 @@ class CustomBottomBar extends StatelessWidget {
         items: [
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/sebha_icon.png'),
-                  size: 45,
-                  color: MainScreenState.currentIndex == 0
-                      ? theme.bottomNavigationBarTheme.selectedItemColor
-                      : theme.bottomNavigationBarTheme.unselectedItemColor),
+                  size: 45, color: colorOfItem(0)),
               label: "السبحة",
-              labelStyle: MainScreenState.currentIndex == 0
-                  ? theme.bottomNavigationBarTheme.selectedLabelStyle
-                  : theme.bottomNavigationBarTheme.unselectedLabelStyle),
+              labelStyle: styleOfLabel(0)),
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/radio_icon.png'),
-                  size: 45,
-                  color: MainScreenState.currentIndex == 1
-                      ? theme.bottomNavigationBarTheme.selectedItemColor
-                      : theme.bottomNavigationBarTheme.unselectedItemColor),
+                  size: 45, color: colorOfItem(1)),
               label: "الراديو",
-              labelStyle: MainScreenState.currentIndex == 1
-                  ? theme.bottomNavigationBarTheme.selectedLabelStyle
-                  : theme.bottomNavigationBarTheme.unselectedLabelStyle),
+              labelStyle: styleOfLabel(1)),
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/quran_icon.png'),
-                  size: 45,
-                  color: MainScreenState.currentIndex == 2
-                      ? theme.bottomNavigationBarTheme.selectedItemColor
-                      : theme.bottomNavigationBarTheme.unselectedItemColor),
+                  size: 45, color: colorOfItem(2)),
               label: "القران",
-              labelStyle: MainScreenState.currentIndex == 2
-                  ? theme.bottomNavigationBarTheme.selectedLabelStyle
-                  : theme.bottomNavigationBarTheme.unselectedLabelStyle),
+              labelStyle: styleOfLabel(2)),
           CurvedNavigationBarItem(
               child: ImageIcon(
                   const AssetImage('assets/icons/hadeeth_icon.png'),
                   size: 45,
-                  color: MainScreenState.currentIndex == 3
-                      ? theme.bottomNavigationBarTheme.selectedItemColor
-                      : theme.bottomNavigationBarTheme.unselectedItemColor),
+                  color: colorOfItem(3)),
               label: "الحديث",
-              labelStyle: MainScreenState.currentIndex == 3
-                  ? theme.bottomNavigationBarTheme.selectedLabelStyle
-                  : theme.bottomNavigationBarTheme.unselectedLabelStyle),
+              labelStyle: styleOfLabel(3)),
           CurvedNavigationBarItem(
               child: Icon(Icons.settings,
-                  size: 45,
-                  color: MainScreenState.currentIndex == 4
-                      ? theme.bottomNavigationBarTheme.selectedItemColor
-                      : theme.bottomNavigationBarTheme.unselectedItemColor),
+                  size: 45, color: colorOfItem(4)),
               label: "الإعدادات",
-              labelStyle: MainScreenState.currentIndex == 4
-                  ? theme.bottomNavigationBarTheme.selectedLabelStyle
-                  : theme.bottomNavigationBarTheme.unselectedLabelStyle)
+              labelStyle: styleOfLabel(4))
         ]);
+  }
+
+  Color? colorOfItem(int index) {
+    if (MainScreenState.currentIndex == index) {
+      return theme.bottomNavigationBarTheme.selectedItemColor;
+    } else {
+      return theme.bottomNavigationBarTheme.unselectedItemColor;
+    }
+  }
+
+  TextStyle? styleOfLabel(int index) {
+    if (MainScreenState.currentIndex == index) {
+      return theme.bottomNavigationBarTheme.selectedLabelStyle;
+    } else {
+      return theme.bottomNavigationBarTheme.unselectedLabelStyle;
+    }
   }
 }
