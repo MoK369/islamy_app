@@ -45,7 +45,10 @@ class HadeethScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30)),
             child: Column(
               children: [
-                Text(args.hadeethTitle),
+                Text(
+                  args.hadeethTitle,
+                  style: theme.textTheme.bodyLarge,
+                ),
                 const Divider(
                   indent: 20,
                   endIndent: 20,
@@ -57,7 +60,7 @@ class HadeethScreen extends StatelessWidget {
                           .replaceFirst(args.hadeethTitle, '')
                           .trim(),
                       textDirection: TextDirection.rtl,
-                      style: theme.textTheme.bodyMedium,
+                      style: theme.textTheme.bodyLarge,
                     ),
                   ),
                 ),

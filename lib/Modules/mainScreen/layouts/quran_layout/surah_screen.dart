@@ -58,25 +58,33 @@ class _SurahScreenState extends State<SurahScreen> {
                       indent: 15,
                       endIndent: 15,
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: surahVerses.length,
-                        itemBuilder: (context, index) {
-                          return RichText(
-                            textDirection: TextDirection.rtl,
-                            text: TextSpan(children: [
-                              TextSpan(
-                                  text: surahVerses[index],
-                                  style: theme.textTheme.bodyLarge),
-                              TextSpan(
-                                  text: '${index + 1}',
-                                  style: theme.textTheme.bodyLarge!.copyWith(
-                                      fontSize: 60, fontFamily: 'AyatQuran11'))
-                            ]),
-                          );
-                        },
-                      ),
-                    ),
+                    surahVerses.isEmpty
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: theme.primaryColor,
+                            ),
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                              itemCount: surahVerses.length,
+                              itemBuilder: (context, index) {
+                                return RichText(
+                                  textDirection: TextDirection.rtl,
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: surahVerses[index],
+                                        style: theme.textTheme.bodyLarge),
+                                    TextSpan(
+                                        text: '${index + 1}',
+                                        style: theme.textTheme.bodyLarge!
+                                            .copyWith(
+                                                fontSize: 60,
+                                                fontFamily: 'AyatQuran11')),
+                                  ]),
+                                );
+                              },
+                            ),
+                          ),
                   ],
                 ),
               ),
