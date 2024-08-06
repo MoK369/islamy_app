@@ -58,14 +58,14 @@ class _SurahScreenState extends State<SurahScreen> {
                       indent: 15,
                       endIndent: 15,
                     ),
-                    surahVerses.isEmpty
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: theme.primaryColor,
-                            ),
-                          )
-                        : Expanded(
-                            child: ListView.builder(
+                    Expanded(
+                      child: surahVerses.isEmpty
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: theme.primaryColor,
+                              ),
+                            )
+                          : ListView.builder(
                               itemCount: surahVerses.length,
                               itemBuilder: (context, index) {
                                 return RichText(
@@ -84,7 +84,7 @@ class _SurahScreenState extends State<SurahScreen> {
                                 );
                               },
                             ),
-                          ),
+                    ),
                   ],
                 ),
               ),
