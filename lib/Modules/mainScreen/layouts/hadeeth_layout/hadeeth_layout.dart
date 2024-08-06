@@ -11,16 +11,10 @@ class HadeethLayout extends StatefulWidget {
 
 class _HadeethLayoutState extends State<HadeethLayout> {
   late ThemeData theme;
-
-  late String hadeeths;
-
-  late List<String> hadeethsList;
-
-  List<String> hadeethsTitle = [];
-
+  List<HadethData> ahadeeth = [];
   @override
   Widget build(BuildContext context) {
-    if (hadeethsTitle.isEmpty) {
+    if (ahadeeth.isEmpty) {
       readHadeeth();
     }
     theme = Theme.of(context);
@@ -37,41 +31,51 @@ class _HadeethLayoutState extends State<HadeethLayout> {
         ),
         const Divider(),
         Expanded(
-          child: ListView.builder(
-            itemCount: hadeethsTitle.length,
-            itemBuilder: (context, index) {
-              return TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, HadeethScreen.routeName,
-                        arguments: SendInfo(
-                            hadeethTitle: hadeethsTitle[index],
-                            hadeethBody: hadeethsList[index]));
-                  },
-                  child: Text(
-                    hadeethsTitle[index],
-                    style: theme.textTheme.bodyLarge,
-                  ));
-            },
-          ),
-        )
+            child: ahadeeth.isEmpty
+                ? CircularProgressIndicator(
+                    color: theme.primaryColor,
+                  )
+                : ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: ahadeeth.length,
+                    itemBuilder: (context, index) {
+                      return TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, HadeethScreen.routeName,
+                                arguments: ahadeeth[index]);
+                          },
+                          child: Text(
+                            ahadeeth[index].hadeethTitle,
+                            style: theme.textTheme.bodyLarge,
+                          ));
+                    },
+                  ))
       ],
     );
   }
 
   void readHadeeth() async {
-    hadeeths = await rootBundle.loadString('assets/hadeeths/ahadeth.txt');
-    hadeethsList = hadeeths.trim().split('#');
+    String hadeeths =
+        await rootBundle.loadString('assets/hadeeths/ahadeth.txt');
+    List<String> eachHadeethList = hadeeths.trim().split('#');
     setState(() {
-      for (int i = 0; i < hadeethsList.length; i++) {
-        hadeethsTitle.add(hadeethsList[i].trim().split('\n')[0]);
+      for (int i = 0; i < eachHadeethList.length; i++) {
+        List<String> singleHadeeth = eachHadeethList[i].trim().split('\n');
+        String hadethTitle = singleHadeeth[0];
+        singleHadeeth.removeAt(0);
+        String hadeethBody = singleHadeeth.join(' ');
+        HadethData h =
+            HadethData(hadeethTitle: hadethTitle, hadeethBody: hadeethBody);
+        ahadeeth.add(h);
       }
     });
   }
 }
 
-class SendInfo {
+class HadethData {
   String hadeethTitle;
   String hadeethBody;
 
-  SendInfo({required this.hadeethTitle, required this.hadeethBody});
+  HadethData({required this.hadeethTitle, required this.hadeethBody});
 }

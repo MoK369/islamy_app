@@ -9,11 +9,11 @@ class HadeethScreen extends StatelessWidget {
   HadeethScreen({super.key});
 
   late ThemeData theme;
-  late SendInfo args;
+  late HadethData args;
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments as SendInfo;
+    args = ModalRoute.of(context)!.settings.arguments as HadethData;
     theme = Theme.of(context);
     return SafeArea(
         child: BgContainer(
@@ -56,9 +56,7 @@ class HadeethScreen extends StatelessWidget {
                 Expanded(
                   child: SingleChildScrollView(
                     child: Text(
-                      args.hadeethBody
-                          .replaceFirst(args.hadeethTitle, '')
-                          .trim(),
+                      args.hadeethBody,
                       textDirection: TextDirection.rtl,
                       style: theme.textTheme.bodyLarge,
                     ),

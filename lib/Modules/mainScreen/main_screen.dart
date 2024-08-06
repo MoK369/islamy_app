@@ -33,7 +33,6 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     theme = Theme.of(context);
     screenSize = MediaQuery.of(context).size;
-    print(currentIndex);
 
     return SafeArea(
         child: BgContainer(
