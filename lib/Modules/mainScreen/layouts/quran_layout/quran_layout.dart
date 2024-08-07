@@ -3,6 +3,7 @@ import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/list_of_sura
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/surah_screen.dart';
+import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
 
 class QuranLayout extends StatefulWidget {
   QuranLayout({super.key});
@@ -44,9 +45,10 @@ class QuranLayoutState extends State<QuranLayout> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        FractionallySizedBox(
-            widthFactor: 0.3,
-            child: Image.asset('assets/icons/quran_header_icn.png')),
+        Image.asset(
+          'assets/icons/quran_header_icn.png',
+          height: MainScreenState.screenSize.height * 0.2,
+        ),
         Expanded(
           child: Stack(
             alignment: Alignment.center,

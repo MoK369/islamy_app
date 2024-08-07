@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 
@@ -16,6 +17,7 @@ class _SurahScreenState extends State<SurahScreen> {
   List<String> surahVerses = [];
   late Send args;
   late ThemeData theme;
+  List<TextSpan> spans = [];
 
   @override
   Widget build(BuildContext context) {
@@ -66,21 +68,30 @@ class _SurahScreenState extends State<SurahScreen> {
                               ),
                             )
                           : ListView.builder(
-                              itemCount: surahVerses.length,
+                              itemCount: 1,
                               itemBuilder: (context, index) {
                                 return RichText(
                                   textDirection: TextDirection.rtl,
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                        text: surahVerses[index],
-                                        style: theme.textTheme.bodyLarge),
-                                    TextSpan(
-                                        text: '${index + 1}',
-                                        style: theme.textTheme.bodyLarge!
-                                            .copyWith(
-                                                fontSize: 60,
-                                                fontFamily: 'AyatQuran11')),
-                                  ]),
+                                  text: TextSpan(
+                                    children: surahVerses.map<TextSpan>((e) {
+                                      return TextSpan(
+                                          text: e,
+                                          style: TextStyle(
+                                              fontSize: 40,
+                                              color: Colors.black,
+                                              fontFamily:
+                                                  GoogleFonts.amiriQuran()
+                                                      .fontFamily),
+                                          children: [
+                                            TextSpan(
+                                                text:
+                                                    " ${surahVerses.indexOf(e) + 1} ",
+                                                style: const TextStyle(
+                                                    fontSize: 60,
+                                                    fontFamily: 'AyatQuran11'))
+                                          ]);
+                                    }).toList(),
+                                  ),
                                 );
                               },
                             ),

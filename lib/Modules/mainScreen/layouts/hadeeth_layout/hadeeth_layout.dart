@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
+import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
 
 class HadeethLayout extends StatefulWidget {
   HadeethLayout({super.key});
@@ -21,9 +22,10 @@ class _HadeethLayoutState extends State<HadeethLayout> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        FractionallySizedBox(
-            widthFactor: 0.55,
-            child: Image.asset('assets/images/hadith_header.png')),
+        Image.asset(
+          'assets/images/hadith_header.png',
+          height: MainScreenState.screenSize.height * 0.2,
+        ),
         const Divider(),
         Text(
           "الأحاديث",

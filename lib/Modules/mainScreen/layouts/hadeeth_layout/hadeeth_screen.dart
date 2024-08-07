@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 
 import 'hadeeth_layout.dart';
@@ -58,7 +59,8 @@ class HadeethScreen extends StatelessWidget {
                     child: Text(
                       args.hadeethBody,
                       textDirection: TextDirection.rtl,
-                      style: theme.textTheme.bodyLarge,
+                      style: theme.textTheme.bodyLarge!.copyWith(
+                          fontFamily: GoogleFonts.amiriQuran().fontFamily),
                     ),
                   ),
                 ),
