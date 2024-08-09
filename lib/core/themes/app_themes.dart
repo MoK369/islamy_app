@@ -9,7 +9,6 @@ class Themes {
 
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.transparent,
-    fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily,
     indicatorColor: lightPrimaryColor,
     cardTheme: CardTheme(
         clipBehavior: Clip.hardEdge,
@@ -37,14 +36,17 @@ class Themes {
       bodySmall: TextStyle(
           fontSize: 25,
           color: Colors.black,
+          fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
       bodyMedium: TextStyle(
           color: Colors.black,
           fontSize: 30,
+          fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
       bodyLarge: TextStyle(
           color: Colors.black,
           fontSize: 35,
+          fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
     ),
     appBarTheme: const AppBarTheme(
@@ -108,7 +110,6 @@ class Themes {
   static const Color darkSecondaryColor = Color(0xFF141A2E);
   static ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.transparent,
-    fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily,
     indicatorColor: darkPrimaryColor,
     cardTheme: CardTheme(
         clipBehavior: Clip.hardEdge,
@@ -136,14 +137,17 @@ class Themes {
       bodySmall: TextStyle(
           color: Colors.white,
           fontSize: 25,
+          fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
       bodyMedium: TextStyle(
           color: Colors.white,
           fontSize: 30,
+          fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
       bodyLarge: TextStyle(
           color: Colors.white,
           fontSize: 35,
+          fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
     ),
     appBarTheme: const AppBarTheme(

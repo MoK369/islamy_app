@@ -20,7 +20,7 @@ class SearchTextField extends StatelessWidget {
         textDirection: TextDirection.rtl,
         style: theme.textTheme.bodyMedium,
         decoration:  InputDecoration(
-          hintText: Locals.getLocals(context).search,,
+          hintText: Locals.getLocals(context).search,
           hintTextDirection: TextDirection.rtl,
           suffixIcon: const Icon(
             Icons.search,
