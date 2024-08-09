@@ -5,6 +5,7 @@ import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout
 import 'package:islamic_app/Modules/mainScreen/layouts/radio_layout/radio_layout.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/sebha_layout/sebha_layout.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/settings_layout/settings_layout.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 
 class MainScreen extends StatefulWidget {
@@ -39,8 +40,8 @@ class MainScreenState extends State<MainScreen> {
             child: Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          "إسلامي",
+        title: Text(
+          Locals.getLocals(context).islami,
         ),
         centerTitle: true,
       ),

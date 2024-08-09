@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 import 'package:islamic_app/core/themes/app_themes.dart';
 
 class SebhaLayout extends StatefulWidget {
@@ -48,7 +49,7 @@ class _SebhaLayoutState extends State<SebhaLayout> {
           ),
         ),
         Center(
-            child: Text("عدد التسبيحات",
+            child: Text(Locals.getLocals(context).numberOfPraises,
                 textDirection: TextDirection.rtl,
                 style: theme.textTheme.titleMedium)),
         SizedBox(

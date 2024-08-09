@@ -1,0 +1,20 @@
+{
+  "islami": "إسلامي",
+  "quranLayout": "القران",
+  "search": "البحث",
+  "nameOfSura": "اسم السورة",
+  "numberOfVerses": "عدد الآيات",
+  "hadeethLayout": "الحديث",
+  "ahadeeth": "الأحاديث",
+  "settingsLayout": "الإعدادات",
+  "language": "اللغة",
+  "languages": "اللغات",
+  "themeMode": "وضع المظهر",
+  "modes": "الأوضاع",
+  "lightTheme": "المظهر الفاتح",
+  "darkTheme": "المظهر الداكن",
+  "radioLayout": "الرديو",
+  "holyQuranRadio": "إذاعة القرآن الكريم",
+  "sebhaLayout": "السبحة",
+  "numberOfPraises": "عدد التسبيحات"
+}

@@ -2,6 +2,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 
 class CustomBottomBar extends StatelessWidget {
   void Function(int) onClick;
@@ -24,29 +25,29 @@ class CustomBottomBar extends StatelessWidget {
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/sebha_icon.png'),
                   size: 45, color: colorOfItem(0)),
-              label: "السبحة",
+              label: Locals.getLocals(context).settingsLayout,
               labelStyle: styleOfLabel(0)),
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/radio_icon.png'),
                   size: 45, color: colorOfItem(1)),
-              label: "الراديو",
+              label: Locals.getLocals(context).radioLayout,
               labelStyle: styleOfLabel(1)),
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/quran_icon.png'),
                   size: 45, color: colorOfItem(2)),
-              label: "القران",
+              label: Locals.getLocals(context).quranLayout,
               labelStyle: styleOfLabel(2)),
           CurvedNavigationBarItem(
               child: ImageIcon(
                   const AssetImage('assets/icons/hadeeth_icon.png'),
                   size: 45,
                   color: colorOfItem(3)),
-              label: "الحديث",
+              label: Locals.getLocals(context).hadeethLayout,
               labelStyle: styleOfLabel(3)),
           CurvedNavigationBarItem(
               child: Icon(Icons.settings,
                   size: 45, color: colorOfItem(4)),
-              label: "الإعدادات",
+              label: Locals.getLocals(context).settingsLayout,
               labelStyle: styleOfLabel(4))
         ]);
   }

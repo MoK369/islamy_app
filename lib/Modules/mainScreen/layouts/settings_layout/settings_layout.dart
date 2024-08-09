@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 
 import 'settings_functions.dart';
 
@@ -25,15 +26,15 @@ class SettingsLayout extends StatelessWidget {
                 onPressed: () {
                   SettingsFunctions().onClick(
                     context,
-                    dialogTitle: 'Languages',
+                    dialogTitle: Locals.getLocals(context).languages,
                     dialogText1: 'English',
                     dialogFunc1: () {},
-                    dialogText2: 'Arabic',
+                    dialogText2: 'العربية',
                     dialogFunc2: () {},
                   );
                 },
                 child: Text(
-                  "Language",
+                  Locals.getLocals(context).language,
                   style: theme.textTheme.bodyMedium,
                 ),
               ),
@@ -41,15 +42,15 @@ class SettingsLayout extends StatelessWidget {
                 onPressed: () {
                   SettingsFunctions().onClick(
                     context,
-                    dialogTitle: 'Modes',
-                    dialogText1: 'Light Mode',
+                    dialogTitle: Locals.getLocals(context).modes,
+                    dialogText1: Locals.getLocals(context).lightTheme,
                     dialogFunc1: () {},
-                    dialogText2: 'Dark Mode',
+                    dialogText2: Locals.getLocals(context).darkTheme,
                     dialogFunc2: () {},
                   );
                 },
                 child: Text(
-                  "Theme Mode",
+                  Locals.getLocals(context).themeMode,
                   style: theme.textTheme.bodyMedium,
                 ),
               ),
