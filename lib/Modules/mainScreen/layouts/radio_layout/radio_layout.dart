@@ -21,7 +21,7 @@ class RadioLayout extends StatelessWidget {
         Center(
             child: Text(
           Locals.getLocals(context).holyQuranRadio,
-          style: theme.textTheme.bodyLarge,
+          style: theme.textTheme.titleMedium,
         )),
         SizedBox(
           height: size.height * 0.05,

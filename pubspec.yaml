@@ -89,17 +89,20 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: El_Messiri
+      fonts:
+        - asset: assets/fonts/El_Messiri/ElMessiri-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/El_Messiri/ElMessiri-SemiBold.ttf
+          weight: 500
+
     - family: ArabQuran
       fonts:
-        - asset: fonts/ArabQuranIslamic140-vnmnZ.ttf
-    - family: AyatQuran10
-      fonts:
-        - asset: fonts/AyatQuran10-gwxvq.ttf
+        - asset: assets/fonts/ArabQuranIslamic140-vnmnZ.ttf
     - family: AyatQuran11
       fonts:
-        - asset: fonts/AyatQuran11-m2Lj9.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+        - asset: assets/fonts/AyatQuran11-m2Lj9.ttf
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

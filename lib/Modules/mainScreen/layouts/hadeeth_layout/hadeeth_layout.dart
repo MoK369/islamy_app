@@ -30,14 +30,15 @@ class _HadeethLayoutState extends State<HadeethLayout> {
         const Divider(),
         Text(
           Locals.getLocals(context).ahadeeth,
-          style: theme.textTheme.bodyLarge,
+          style: theme.textTheme.titleMedium,
         ),
         const Divider(),
         Expanded(
             child: ahadeeth.isEmpty
-                ? CircularProgressIndicator(
-                    color: theme.primaryColor,
-                  )
+                ? Center(
+                    child: CircularProgressIndicator(
+                    color: theme.indicatorColor,
+                  ))
                 : ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     itemCount: ahadeeth.length,

@@ -33,22 +33,18 @@ class HadeethScreen extends StatelessWidget {
             Icons.arrow_back,
             size: 40,
           ),
-          color: theme.primaryColor,
         ),
       ),
       body: Center(
         child: FractionallySizedBox(
-          widthFactor: 0.9,
+          widthFactor: 0.95,
           heightFactor: 0.9,
-          child: Container(
-            decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(30)),
+          child: Card(
             child: Column(
               children: [
                 Text(
                   args.hadeethTitle,
-                  style: theme.textTheme.bodyLarge,
+                  style: theme.textTheme.titleMedium,
                 ),
                 const Divider(
                   indent: 20,

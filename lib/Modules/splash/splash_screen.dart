@@ -44,17 +44,18 @@ class _SplashScreenState extends State<SplashScreen> {
               ImageIcon(
                 const AssetImage('assets/images/logo.png'),
                 size: size.width * 0.8,
-                color: theme.primaryColor,
               ),
               const Spacer(),
               ImageIcon(
                 const AssetImage('assets/images/routegold.png'),
                 size: size.height * 0.2,
-                color: theme.primaryColor,
               ),
               Text(
                 "Supervised by Mohamed Nabil",
-                style: TextStyle(fontSize: 20, color: theme.primaryColor),
+                style: theme.textTheme.labelSmall,
+              ),
+              const SizedBox(
+                height: 15,
               )
             ],
           ),

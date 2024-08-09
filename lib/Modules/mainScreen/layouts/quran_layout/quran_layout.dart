@@ -54,7 +54,7 @@ class QuranLayoutState extends State<QuranLayout> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              const VerticalDivider(indent: 65),
+              const VerticalDivider(indent: 70),
               Column(
                 children: [
                   SearchTextField(
@@ -70,11 +70,11 @@ class QuranLayoutState extends State<QuranLayout> {
                       Expanded(
                           child: Center(
                               child: Text(
-                                  Locals.getLocals(context).numberOfVerses))),
+                                  Locals.getLocals(context).numberOfVerses,style: theme.textTheme.titleSmall))),
                       Expanded(
                           child: Center(
                               child:
-                                  Text(Locals.getLocals(context).nameOfSura))),
+                                  Text(Locals.getLocals(context).nameOfSura,style: theme.textTheme.titleSmall,))),
                     ],
                   ),
                   const Divider(),

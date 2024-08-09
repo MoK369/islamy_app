@@ -20,7 +20,7 @@ class CustomBottomBar extends StatelessWidget {
         height: MainScreenState.screenSize.height * 0.14,
         animationDuration: const Duration(milliseconds: 300),
         color: theme.bottomNavigationBarTheme.backgroundColor!,
-        backgroundColor: theme.shadowColor,
+        backgroundColor: const Color(0xFFd4d2d2),
         items: [
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/sebha_icon.png'),
