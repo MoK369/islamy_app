@@ -1,0 +1,20 @@
+{
+  "islami": "Islamic",
+  "quranLayout": "Quran",
+  "search": "Search",
+  "nameOfSura": "Name of Sura",
+  "numberOfVerses": "Number of Verses",
+  "hadeethLayout": "Hadeeth",
+  "ahadeeth": "Ahadeeth",
+  "settingsLayout": "Settings",
+  "language": "Language",
+  "languages": "Languages",
+  "themeMode": "Theme Mode",
+  "modes": "Modes",
+  "lightTheme": "Light Theme",
+  "darkTheme": "Dark Theme",
+  "radioLayout": "Radio",
+  "holyQuranRadio": "Holy Quran Radio",
+  "sebhaLayout": "Sebha",
+  "numberOfPraises": "Number of Praises"
+}

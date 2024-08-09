@@ -4,6 +4,7 @@ import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_suras.
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/surah_screen.dart';
 import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 
 class QuranLayout extends StatefulWidget {
   QuranLayout({super.key});
@@ -62,12 +63,18 @@ class QuranLayoutState extends State<QuranLayout> {
                     },
                   ),
                   const Divider(),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("عدد الآيات"),
-                      Text("اسم السورة"),
+                      Expanded(
+                          child: Center(
+                              child: Text(
+                                  Locals.getLocals(context).numberOfVerses))),
+                      Expanded(
+                          child: Center(
+                              child:
+                                  Text(Locals.getLocals(context).nameOfSura))),
                     ],
                   ),
                   const Divider(),
