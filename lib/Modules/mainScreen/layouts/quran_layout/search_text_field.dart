@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 
 class SearchTextField extends StatelessWidget {
   void Function(String) onChange;
@@ -20,7 +21,7 @@ class SearchTextField extends StatelessWidget {
         style: theme.textTheme.bodyMedium,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(6),
-          hintText: "Search",
+          hintText: Locals.getLocals(context).search,
           hintStyle: theme.textTheme.bodyMedium,
           suffixIcon: const Icon(
             Icons.search,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 
 class RadioLayout extends StatelessWidget {
   RadioLayout({super.key});
@@ -19,7 +20,7 @@ class RadioLayout extends StatelessWidget {
             child: Image.asset('assets/images/radio_image.png')),
         Center(
             child: Text(
-          "إذاعة القرآن الكريم",
+          Locals.getLocals(context).holyQuranRadio,
           style: theme.textTheme.bodyLarge,
         )),
         SizedBox(

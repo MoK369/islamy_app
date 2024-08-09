@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
+import 'package:islamic_app/core/app_locals/locals.dart';
 
 class HadeethLayout extends StatefulWidget {
   HadeethLayout({super.key});
@@ -28,7 +29,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
         ),
         const Divider(),
         Text(
-          "الأحاديث",
+          Locals.getLocals(context).ahadeeth,
           style: theme.textTheme.bodyLarge,
         ),
         const Divider(),
