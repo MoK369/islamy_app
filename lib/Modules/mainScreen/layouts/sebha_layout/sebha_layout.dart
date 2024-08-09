@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islamic_app/core/themes/app_themes.dart';
 
 class SebhaLayout extends StatefulWidget {
   SebhaLayout({super.key});
@@ -49,23 +50,28 @@ class _SebhaLayoutState extends State<SebhaLayout> {
         Center(
             child: Text("عدد التسبيحات",
                 textDirection: TextDirection.rtl,
-                style: theme.textTheme.bodyLarge)),
+                style: theme.textTheme.titleMedium)),
         SizedBox(
           height: size.height * 0.005,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: 69,
-              height: 81,
-              decoration: BoxDecoration(
-                  color: theme.primaryColor,
-                  borderRadius: BorderRadius.circular(25)),
-              child: Center(
-                child: Text(
-                  '$numberOfHymns',
-                  style: theme.textTheme.bodyLarge,
+            FractionallySizedBox(
+              widthFactor: 0.2,
+              //heightFactor: 0.4,
+              child: Card(
+                color: theme.cardTheme.color == Colors.white
+                    ? Themes.lightPrimaryColor
+                    : theme.cardTheme.color,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(17.0),
+                    child: Text(
+                      '$numberOfHymns',
+                      style: theme.textTheme.bodyLarge,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -78,7 +84,6 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                 onPressed: () {
                   onClick();
                 },
-                style: theme.elevatedButtonTheme.style,
                 child: Text(kindOfHymn),
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
+import 'package:islamic_app/core/defined_fonts/defined_font_families.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 
 class SurahScreen extends StatefulWidget {
@@ -34,27 +35,23 @@ class _SurahScreenState extends State<SurahScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(
+                icon: const Icon(
                   size: 40,
                   Icons.arrow_back,
-                  color: theme.primaryColor,
                 )),
             title: const Text("إسلامي"),
           ),
           body: Center(
             child: FractionallySizedBox(
-              widthFactor: 0.9,
+              widthFactor: 0.95,
               heightFactor: 0.9,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: theme.cardColor,
-                    borderRadius: BorderRadius.circular(30)),
+              child: Card(
                 child: Column(
                   children: [
                     Text(
                       'سورة ${args.surahName}',
                       textDirection: TextDirection.rtl,
-                      style: theme.textTheme.bodyLarge,
+                      style: theme.textTheme.titleMedium,
                     ),
                     const Divider(
                       indent: 15,
@@ -64,7 +61,7 @@ class _SurahScreenState extends State<SurahScreen> {
                       child: surahVerses.isEmpty
                           ? Center(
                               child: CircularProgressIndicator(
-                                color: theme.primaryColor,
+                                color: theme.indicatorColor,
                               ),
                             )
                           : ListView.builder(
@@ -76,19 +73,21 @@ class _SurahScreenState extends State<SurahScreen> {
                                     children: surahVerses.map<TextSpan>((e) {
                                       return TextSpan(
                                           text: e,
-                                          style: TextStyle(
-                                              fontSize: 40,
-                                              color: Colors.black,
-                                              fontFamily:
-                                                  GoogleFonts.amiriQuran()
-                                                      .fontFamily),
+                                          style: GoogleFonts.amiriQuran(
+                                              textStyle: theme
+                                                  .textTheme.bodyLarge!
+                                                  .copyWith(fontSize: 40)),
                                           children: [
                                             TextSpan(
                                                 text:
                                                     " ${surahVerses.indexOf(e) + 1} ",
-                                                style: const TextStyle(
-                                                    fontSize: 60,
-                                                    fontFamily: 'AyatQuran11'))
+                                                style: theme
+                                                    .textTheme.bodyLarge!
+                                                    .copyWith(
+                                                        fontSize: 60,
+                                                        fontFamily:
+                                                            DefinedFontFamilies
+                                                                .ayatQuran11))
                                           ]);
                                     }).toList(),
                                   ),

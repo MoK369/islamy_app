@@ -53,7 +53,7 @@ class QuranLayoutState extends State<QuranLayout> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              const VerticalDivider(indent: 65),
+              const VerticalDivider(indent: 70),
               Column(
                 children: [
                   SearchTextField(
@@ -62,12 +62,18 @@ class QuranLayoutState extends State<QuranLayout> {
                     },
                   ),
                   const Divider(),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("عدد الآيات"),
-                      Text("اسم السورة"),
+                      Text(
+                        "عدد الآيات",
+                        style: theme.textTheme.titleSmall,
+                      ),
+                      Text(
+                        "اسم السورة",
+                        style: theme.textTheme.titleSmall,
+                      ),
                     ],
                   ),
                   const Divider(),

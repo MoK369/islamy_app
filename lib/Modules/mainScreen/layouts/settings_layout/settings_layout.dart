@@ -13,48 +13,48 @@ class SettingsLayout extends StatelessWidget {
     size = MediaQuery.of(context).size;
     theme = Theme.of(context);
     return Center(
-      child: Container(
-        width: size.width * 0.9,
-        height: size.height * 0.5,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30), color: theme.cardColor),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            MaterialButton(
-              onPressed: () {
-                SettingsFunctions().onClick(
-                  context,
-                  dialogTitle: 'Languages',
-                  dialogText1: 'English',
-                  dialogFunc1: () {},
-                  dialogText2: 'Arabic',
-                  dialogFunc2: () {},
-                );
-              },
-              child: Text(
-                "Language",
-                style: theme.textTheme.bodyMedium,
+      child: FractionallySizedBox(
+        widthFactor: 0.9,
+        heightFactor: 0.6,
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MaterialButton(
+                onPressed: () {
+                  SettingsFunctions().onClick(
+                    context,
+                    dialogTitle: 'Languages',
+                    dialogText1: 'English',
+                    dialogFunc1: () {},
+                    dialogText2: 'Arabic',
+                    dialogFunc2: () {},
+                  );
+                },
+                child: Text(
+                  "Language",
+                  style: theme.textTheme.bodyMedium,
+                ),
               ),
-            ),
-            MaterialButton(
-              onPressed: () {
-                SettingsFunctions().onClick(
-                  context,
-                  dialogTitle: 'Modes',
-                  dialogText1: 'Light Mode',
-                  dialogFunc1: () {},
-                  dialogText2: 'Dark Mode',
-                  dialogFunc2: () {},
-                );
-              },
-              child: Text(
-                "Theme Mode",
-                style: theme.textTheme.bodyMedium,
+              MaterialButton(
+                onPressed: () {
+                  SettingsFunctions().onClick(
+                    context,
+                    dialogTitle: 'Modes',
+                    dialogText1: 'Light Mode',
+                    dialogFunc1: () {},
+                    dialogText2: 'Dark Mode',
+                    dialogFunc2: () {},
+                  );
+                },
+                child: Text(
+                  "Theme Mode",
+                  style: theme.textTheme.bodyMedium,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -18,18 +18,13 @@ class SearchTextField extends StatelessWidget {
         controller: QuranLayoutState.searchFieldController,
         textDirection: TextDirection.rtl,
         style: theme.textTheme.bodyMedium,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(6),
-          hintText: "Search",
-          hintStyle: theme.textTheme.bodyMedium,
-          suffixIcon: const Icon(
+        decoration: const InputDecoration(
+          hintText: "البحث",
+          hintTextDirection: TextDirection.rtl,
+          suffixIcon: Icon(
             Icons.search,
             size: 35,
           ),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 2, color: theme.primaryColor)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 2, color: theme.primaryColor)),
         ),
         onChanged: (value) {
           onChange(value);

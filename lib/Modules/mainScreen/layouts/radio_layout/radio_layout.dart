@@ -20,7 +20,7 @@ class RadioLayout extends StatelessWidget {
         Center(
             child: Text(
           "إذاعة القرآن الكريم",
-          style: theme.textTheme.bodyLarge,
+          style: theme.textTheme.titleMedium,
         )),
         SizedBox(
           height: size.height * 0.05,
