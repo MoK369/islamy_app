@@ -98,10 +98,13 @@ flutter:
 
     - family: ArabQuran
       fonts:
-        - asset: assets/fonts/ArabQuranIslamic140-vnmnZ.ttf
+        - asset: assets/fonts/ArabQuranIslamic140.ttf
     - family: AyatQuran11
       fonts:
-        - asset: assets/fonts/AyatQuran11-m2Lj9.ttf
+        - asset: assets/fonts/AyatQuran11.ttf
+    - family: AlQuranAli
+      fonts:
+        - asset: assets/fonts/AlQuranAli.ttf
 
   #   - family: Trajan Pro
   #     fonts:

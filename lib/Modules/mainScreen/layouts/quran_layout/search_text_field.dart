@@ -17,11 +17,9 @@ class SearchTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
       child: TextField(
         controller: QuranLayoutState.searchFieldController,
-        textDirection: TextDirection.rtl,
         style: theme.textTheme.bodyMedium,
         decoration:  InputDecoration(
           hintText: Locals.getLocals(context).search,
-          hintTextDirection: TextDirection.rtl,
           suffixIcon: const Icon(
             Icons.search,
             size: 35,

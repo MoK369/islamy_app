@@ -13,9 +13,9 @@ class _SebhaLayoutState extends State<SebhaLayout> {
   late ThemeData theme;
   late Size size;
 
-  int numberOfHymns = 0, counter = 0;
+  int numberOfTasbeehat = 0, counterOfTasbeeh = 0;
   double rotation = 0;
-  String kindOfHymn = "سبحان الله";
+  String kindOfTesbeeh = "سبحان الله";
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,14 @@ class _SebhaLayoutState extends State<SebhaLayout> {
               Transform.rotate(
                 angle: rotation,
                 child: ImageIcon(
-                  const AssetImage('assets/icons/body of sebha.png'),
+                  const AssetImage('assets/icons/body_of_sebha.png'),
                   size: (size.height * 0.4),
                 ),
               ),
               Positioned(
                 top: -(size.height * 0.4) * 0.05,
                 child: ImageIcon(
-                  const AssetImage('assets/icons/head of sebha.png'),
+                  const AssetImage('assets/icons/head_of_sebha.png'),
                   size: size.height * 0.1,
                 ),
               ),
@@ -69,7 +69,7 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                   child: Padding(
                     padding: const EdgeInsets.all(17.0),
                     child: Text(
-                      '$numberOfHymns',
+                      '$numberOfTasbeehat',
                       style: theme.textTheme.bodyLarge,
                     ),
                   ),
@@ -85,7 +85,7 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                 onPressed: () {
                   onClick();
                 },
-                child: Text(kindOfHymn),
+                child: Text(kindOfTesbeeh),
               ),
             ),
           ],
@@ -96,31 +96,31 @@ class _SebhaLayoutState extends State<SebhaLayout> {
 
   void onClick() {
     setState(() {
-      numberOfHymns++;
+      numberOfTasbeehat++;
       rotation += 0.5;
       rotation == 360 ? rotation = 0 : rotation = rotation;
-      if (numberOfHymns == 33) {
-        counter += 1;
-        if (counter == 4) {
-          counter = 0;
+      if (numberOfTasbeehat == 33) {
+        counterOfTasbeeh += 1;
+        if (counterOfTasbeeh == 4) {
+          counterOfTasbeeh = 0;
         }
-        numberOfHymns = 0;
+        numberOfTasbeehat = 0;
       }
-      switch (counter) {
+      switch (counterOfTasbeeh) {
         case 0:
-          kindOfHymn = 'سبحان الله';
+          kindOfTesbeeh = 'سبحان الله';
           break;
         case 1:
-          kindOfHymn = 'الحمد لله';
+          kindOfTesbeeh = 'الحمد لله';
           break;
         case 2:
-          kindOfHymn = 'الله أكبر';
+          kindOfTesbeeh = 'الله أكبر';
           break;
         case 3:
-          kindOfHymn = 'لا إله إلا الله';
+          kindOfTesbeeh = 'لا إله إلا الله';
           break;
         default:
-          kindOfHymn = '';
+          kindOfTesbeeh = '';
           break;
       }
     });
