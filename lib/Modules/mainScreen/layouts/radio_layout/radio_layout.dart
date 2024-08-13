@@ -20,7 +20,7 @@ class RadioLayout extends StatelessWidget {
             child: Image.asset('assets/images/radio_image.png')),
         Center(
             child: Text(
-          Locals.getLocals(context).holyQuranRadio,
+          Locals.getTranslations(context).holyQuranRadio,
           style: theme.textTheme.titleMedium,
         )),
         SizedBox(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/list_of_suras.dart';
-import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/surah_screen.dart';
-import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
+import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
 import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/core/providers/locale_provider.dart';
 
 class QuranLayout extends StatefulWidget {
   QuranLayout({super.key});
@@ -14,22 +14,19 @@ class QuranLayout extends StatefulWidget {
 }
 
 class QuranLayoutState extends State<QuranLayout> {
+  late MainScreenProvider mainScreenProvider;
   late ThemeData theme;
-  List<String> foundUser = [];
+  List<String>? foundUser;
+  late LocaleProvider localeProvider;
   static TextEditingController searchFieldController = TextEditingController();
-
-  @override
-  void initState() {
-    foundUser = Suras.arabicAuranSuras;
-    super.initState();
-  }
 
   void runFilter(String enteredKeyWord) {
     List<String> results = [];
     if (enteredKeyWord.isEmpty) {
-      results = Suras.arabicAuranSuras;
+      results = mainScreenProvider.getSurasListEnglishOrArabic();
     } else {
-      results = Suras.arabicAuranSuras
+      results = mainScreenProvider
+          .getSurasListEnglishOrArabic()
           .where((element) =>
               element.toLowerCase().contains(enteredKeyWord.toLowerCase()))
           .toList();
@@ -41,14 +38,17 @@ class QuranLayoutState extends State<QuranLayout> {
 
   @override
   Widget build(BuildContext context) {
+    mainScreenProvider = MainScreenProvider.get(context);
+    localeProvider = LocaleProvider.get(context);
     theme = Theme.of(context);
+    foundUser ??= mainScreenProvider.getSurasListEnglishOrArabic();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Image.asset(
           'assets/icons/quran_header_icn.png',
-          height: MainScreenState.screenSize.height * 0.2,
+          height: mainScreenProvider.mainScreenSize.height * 0.2,
         ),
         Expanded(
           child: Stack(
@@ -70,22 +70,27 @@ class QuranLayoutState extends State<QuranLayout> {
                       Expanded(
                           child: Center(
                               child: Text(
-                                  Locals.getLocals(context).numberOfVerses,style: theme.textTheme.titleSmall))),
+                                  Locals.getTranslations(context)
+                                      .numberOfVerses,
+                                  style: theme.textTheme.titleSmall))),
                       Expanded(
                           child: Center(
-                              child:
-                                  Text(Locals.getLocals(context).nameOfSura,style: theme.textTheme.titleSmall,))),
+                              child: Text(
+                        Locals.getTranslations(context).nameOfSura,
+                        style: theme.textTheme.titleSmall,
+                      ))),
                     ],
                   ),
                   const Divider(),
                   ListOfSuras(
-                    foundUser: foundUser,
+                    foundUser: foundUser!,
                     onClick: (index) {
                       Navigator.pushNamed(context, SurahScreen.routeName,
                           arguments: Send(
-                              surahIndex: Suras.arabicAuranSuras
-                                  .indexOf(foundUser[index]),
-                              surahName: foundUser[index]));
+                              surahIndex: mainScreenProvider
+                                  .getSurasListEnglishOrArabic()
+                                  .indexOf(foundUser![index]),
+                              surahName: foundUser![index]));
                       searchFieldController.clear();
                       FocusScope.of(context).unfocus();
                       runFilter('');

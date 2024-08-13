@@ -10,6 +10,12 @@ class Themes {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.transparent,
     indicatorColor: lightPrimaryColor,
+    primaryIconTheme: const IconThemeData(color: lightPrimaryColor),
+    iconTheme: const IconThemeData(color: lightPrimaryColor),
+    bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: Colors.white,
+        showDragHandle: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
     cardTheme: CardTheme(
         clipBehavior: Clip.hardEdge,
         color: Colors.white,
@@ -86,7 +92,6 @@ class Themes {
       shape: ContinuousRectangleBorder(
           side: BorderSide(color: lightPrimaryColor, width: 3)),
     ),
-    iconTheme: const IconThemeData(color: lightPrimaryColor),
     dividerTheme:
         const DividerThemeData(color: lightPrimaryColor, thickness: 3),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -111,6 +116,12 @@ class Themes {
   static ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.transparent,
     indicatorColor: darkPrimaryColor,
+    primaryIconTheme: const IconThemeData(color: darkPrimaryColor),
+    iconTheme: const IconThemeData(color: darkPrimaryColor, size: 45),
+    bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: darkSecondaryColor,
+        showDragHandle: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
     cardTheme: CardTheme(
         clipBehavior: Clip.hardEdge,
         color: darkSecondaryColor,
@@ -187,7 +198,6 @@ class Themes {
       shape: ContinuousRectangleBorder(
           side: BorderSide(color: darkPrimaryColor, width: 3)),
     ),
-    iconTheme: const IconThemeData(color: darkPrimaryColor),
     dividerTheme: const DividerThemeData(color: darkPrimaryColor, thickness: 3),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: darkPrimaryColor,

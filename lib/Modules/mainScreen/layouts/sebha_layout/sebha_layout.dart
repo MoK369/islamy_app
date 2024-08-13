@@ -49,7 +49,7 @@ class _SebhaLayoutState extends State<SebhaLayout> {
           ),
         ),
         Center(
-            child: Text(Locals.getLocals(context).numberOfPraises,
+            child: Text(Locals.getTranslations(context).numberOfPraises,
                 textDirection: TextDirection.rtl,
                 style: theme.textTheme.titleMedium)),
         SizedBox(

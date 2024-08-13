@@ -19,7 +19,7 @@ class SearchTextField extends StatelessWidget {
         controller: QuranLayoutState.searchFieldController,
         style: theme.textTheme.bodyMedium,
         decoration:  InputDecoration(
-          hintText: Locals.getLocals(context).search,
+          hintText: Locals.getTranslations(context).search,
           suffixIcon: const Icon(
             Icons.search,
             size: 35,

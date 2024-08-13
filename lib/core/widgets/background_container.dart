@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:islamic_app/core/providers/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class BgContainer extends StatelessWidget {
   Widget child;
@@ -7,10 +9,15 @@ class BgContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDark = themeProvider.isDarkEnabled();
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/bg.png'), fit: BoxFit.fill)),
+              image: AssetImage(isDark
+                  ? 'assets/images/bg_dark.png'
+                  : 'assets/images/bg.png'),
+              fit: BoxFit.fill)),
       child: child,
     );
   }
