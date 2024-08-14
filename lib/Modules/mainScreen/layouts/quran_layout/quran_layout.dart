@@ -69,15 +69,21 @@ class QuranLayoutState extends State<QuranLayout> {
                     children: [
                       Expanded(
                           child: Center(
-                              child: Text(
-                                  Locales.getTranslations(context)
-                                      .numberOfVerses,
-                                  style: theme.textTheme.titleSmall))),
+                              child: Padding(
+                        padding: const EdgeInsets.only(left: 3, right: 3),
+                        child: FittedBox(
+                          child: Text(
+                              Locales.getTranslations(context).numberOfVerses,
+                              style: theme.textTheme.titleSmall),
+                        ),
+                      ))),
                       Expanded(
                           child: Center(
-                              child: Text(
-                        Locales.getTranslations(context).nameOfSura,
+                              child: FittedBox(
+                        child: Text(
+                          Locales.getTranslations(context).nameOfSura,
                         style: theme.textTheme.titleSmall,
+                        ),
                       ))),
                     ],
                   ),

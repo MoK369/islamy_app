@@ -16,30 +16,30 @@ class CustomBottomBar extends StatelessWidget {
     return CurvedNavigationBar(
         onTap: onClick,
         index: mainScreenProvider.bottomBarCurrentIndex,
-        height: mainScreenProvider.mainScreenSize.height * 0.12,
+        height: mainScreenProvider.mainScreenSize.height * 0.13,
         animationDuration: const Duration(milliseconds: 300),
         color: theme.bottomNavigationBarTheme.backgroundColor!,
         backgroundColor: const Color(0xFFd4d2d2),
         items: [
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/sebha_icon.png'),
-                  size: 45, color: colorOfItem(theme, mainScreenProvider, 0)),
+                  size: 40, color: colorOfItem(theme, mainScreenProvider, 0)),
               label: Locales.getTranslations(context).settingsLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 0)),
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/radio_icon.png'),
-                  size: 45, color: colorOfItem(theme, mainScreenProvider, 1)),
+                  size: 40, color: colorOfItem(theme, mainScreenProvider, 1)),
               label: Locales.getTranslations(context).radioLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 1)),
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/quran_icon.png'),
-                  size: 45, color: colorOfItem(theme, mainScreenProvider, 2)),
+                  size: 40, color: colorOfItem(theme, mainScreenProvider, 2)),
               label: Locales.getTranslations(context).quranLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 2)),
           CurvedNavigationBarItem(
               child: ImageIcon(
                   const AssetImage('assets/icons/hadeeth_icon.png'),
-                  size: 45,
+                  size: 40,
                   color: colorOfItem(theme, mainScreenProvider, 3)),
               label: Locales.getTranslations(context).hadeethLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 3)),
@@ -47,7 +47,7 @@ class CustomBottomBar extends StatelessWidget {
               child: Icon(
                 Icons.settings,
                 color: colorOfItem(theme, mainScreenProvider, 4),
-                size: 45,
+                size: 40,
               ),
               label: Locales.getTranslations(context).settingsLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 4))

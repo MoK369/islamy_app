@@ -50,9 +50,11 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                 context, HadeethScreen.routeName,
                                 arguments: ahadeeth[index]);
                           },
-                          child: Text(
-                            ahadeeth[index].hadeethTitle,
-                            style: theme.textTheme.bodyLarge,
+                          child: FittedBox(
+                            child: Text(
+                              ahadeeth[index].hadeethTitle,
+                              style: theme.textTheme.bodyLarge,
+                            ),
                           ));
                     },
                   ))

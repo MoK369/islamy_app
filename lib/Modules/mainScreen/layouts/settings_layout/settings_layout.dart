@@ -18,84 +18,98 @@ class SettingsLayout extends StatelessWidget {
     MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
     Size size = MediaQuery.of(context).size;
     ThemeData theme = Theme.of(context);
+    //print('${size.aspectRatio}');
     return Center(
       child: FractionallySizedBox(
-        widthFactor: 0.9,
-        heightFactor: 0.6,
+        widthFactor: 0.95,
+        heightFactor: 0.7,
         child: Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              MaterialButton(
-                onPressed: () {
-                  onSettingsButtonClick(
-                    context,
-                    size,
-                    theme,
-                    isLangButtonPressed: true,
-                    option1Text: 'العربية',
-                    option1Func: () {
-                      localeProvider.changeLocale('ar');
-                      localeProvider.saveLocal('ar');
-                    },
-                    option2Text: 'English',
-                    option2Func: () {
-                      localeProvider.changeLocale('en');
-                      localeProvider.saveLocal('en');
-                    },
-                  );
-                },
-                child: Text(
-                  Locales.getTranslations(context).language,
-                  style: theme.textTheme.titleMedium,
-                ),
-              ),
-              MaterialButton(
-                onPressed: () {
-                  onSettingsButtonClick(
-                    context,
-                    size,
-                    theme,
-                    isLangButtonPressed: false,
-                    option1Text: Locales.getTranslations(context).lightTheme,
-                    option1Func: () {
-                      themeProvider.changeTheme(ThemeMode.light);
-                      themeProvider.saveTheme(ThemeMode.light);
-                    },
-                    option2Text: Locales.getTranslations(context).darkTheme,
-                    option2Func: () {
-                      themeProvider.changeTheme(ThemeMode.dark);
-                      themeProvider.saveTheme(ThemeMode.dark);
-                    },
-                  );
-                },
-                child: Text(
-                  Locales.getTranslations(context).themeMode,
-                  style: theme.textTheme.titleMedium,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    Locales.getTranslations(context).enableNavigationBar,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                MaterialButton(
+                  onPressed: () {
+                    onSettingsButtonClick(
+                      context,
+                      size,
+                      theme,
+                      isLangButtonPressed: true,
+                      option1Text: 'العربية',
+                      option1Func: () {
+                        localeProvider.changeLocale('ar');
+                        localeProvider.saveLocal('ar');
+                      },
+                      option2Text: 'English',
+                      option2Func: () {
+                        localeProvider.changeLocale('en');
+                        localeProvider.saveLocal('en');
+                      },
+                    );
+                  },
+                  child: Text(
+                    Locales.getTranslations(context).language,
                     style: theme.textTheme.titleMedium,
                   ),
-                  Transform.scale(
-                    scale: 1.5,
-                    child: Switch(
-                      activeColor: theme.indicatorColor,
-                      value: mainScreenProvider.isBottomBarEnabled,
-                      onChanged: (value) {
-                        mainScreenProvider.changeBarEnablement(value);
-                        mainScreenProvider.saveBarEnablement(value);
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    onSettingsButtonClick(
+                      context,
+                      size,
+                      theme,
+                      isLangButtonPressed: false,
+                      option1Text: Locales.getTranslations(context).lightTheme,
+                      option1Func: () {
+                        themeProvider.changeTheme(ThemeMode.light);
+                        themeProvider.saveTheme(ThemeMode.light);
                       },
+                      option2Text: Locales.getTranslations(context).darkTheme,
+                      option2Func: () {
+                        themeProvider.changeTheme(ThemeMode.dark);
+                        themeProvider.saveTheme(ThemeMode.dark);
+                      },
+                    );
+                  },
+                  child: Text(
+                    Locales.getTranslations(context).themeMode,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: FittedBox(
+                        child: Text(
+                          Locales.getTranslations(context).enableNavigationBar,
+                          style: theme.textTheme.titleMedium,
+                        ),
+                      ),
                     ),
-                  )
-                ],
-              )
-            ],
+                    Expanded(
+                      child: Transform.scale(
+                        scale: 1.5,
+                        alignment: localeProvider.isArabicChosen()
+                            ? const Alignment(1, 0)
+                            : const Alignment(-1, 0),
+                        child: Switch(
+                          activeColor: theme.indicatorColor,
+                          value: mainScreenProvider.isBottomBarEnabled,
+                          onChanged: (value) {
+                            mainScreenProvider.changeBarEnablement(value);
+                            mainScreenProvider.saveBarEnablement(value);
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

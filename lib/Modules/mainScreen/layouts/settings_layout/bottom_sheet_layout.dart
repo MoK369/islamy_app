@@ -28,33 +28,36 @@ class BottomSheetLayout extends StatelessWidget {
     return SizedBox(
       height: screenSize.height * 0.4,
       child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            // first Option:
-            MaterialButton(
-              onPressed: function1,
-              child: !isLangButtonPressed
-                  ? !themeProvider.isDarkEnabled()
-                      ? getSelectedItem(text1)
-                      : getUnSelectedItem(text1)
-                  : localeProvider.isArabicChosen()
-                      ? getSelectedItem(text1)
-                      : getUnSelectedItem(text1),
-            ),
-            // Second Option:
-            MaterialButton(
-              onPressed: function2,
-              child: !isLangButtonPressed
-                  ? themeProvider.isDarkEnabled()
-                      ? getSelectedItem(text2)
-                      : getUnSelectedItem(text2)
-                  : !localeProvider.isArabicChosen()
-                      ? getSelectedItem(text2)
-                      : getUnSelectedItem(text2),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // first Option:
+              MaterialButton(
+                onPressed: function1,
+                child: !isLangButtonPressed
+                    ? !themeProvider.isDarkEnabled()
+                        ? getSelectedItem(text1)
+                        : getUnSelectedItem(text1)
+                    : localeProvider.isArabicChosen()
+                        ? getSelectedItem(text1)
+                        : getUnSelectedItem(text1),
+              ),
+              // Second Option:
+              MaterialButton(
+                onPressed: function2,
+                child: !isLangButtonPressed
+                    ? themeProvider.isDarkEnabled()
+                        ? getSelectedItem(text2)
+                        : getUnSelectedItem(text2)
+                    : !localeProvider.isArabicChosen()
+                        ? getSelectedItem(text2)
+                        : getUnSelectedItem(text2),
+              ),
+            ],
+          ),
         ),
       ),
     );
