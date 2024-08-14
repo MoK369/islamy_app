@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/providers/locale_provider.dart';
 import 'package:islamic_app/core/providers/theme_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bottom_sheet_layout.dart';
 
 typedef BtnFunc = void Function();
 
 class SettingsLayout extends StatelessWidget {
-  SettingsLayout({super.key});
-
-  late Size size;
-
-  late ThemeData theme;
+  const SettingsLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = ThemeProvider.get(context);
     LocaleProvider localeProvider = LocaleProvider.get(context);
-    size = MediaQuery.of(context).size;
-    theme = Theme.of(context);
+    MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
+    Size size = MediaQuery.of(context).size;
+    ThemeData theme = Theme.of(context);
     return Center(
       child: FractionallySizedBox(
         widthFactor: 0.9,
@@ -34,46 +31,70 @@ class SettingsLayout extends StatelessWidget {
                 onPressed: () {
                   onSettingsButtonClick(
                     context,
+                    size,
+                    theme,
                     isLangButtonPressed: true,
                     option1Text: 'العربية',
                     option1Func: () {
                       localeProvider.changeLocale('ar');
-                      saveLocal('ar');
+                      localeProvider.saveLocal('ar');
                     },
                     option2Text: 'English',
                     option2Func: () {
                       localeProvider.changeLocale('en');
-                      saveLocal('en');
+                      localeProvider.saveLocal('en');
                     },
                   );
                 },
                 child: Text(
-                  Locals.getTranslations(context).language,
-                  style: theme.textTheme.bodyMedium,
+                  Locales.getTranslations(context).language,
+                  style: theme.textTheme.titleMedium,
                 ),
               ),
               MaterialButton(
                 onPressed: () {
                   onSettingsButtonClick(
                     context,
+                    size,
+                    theme,
                     isLangButtonPressed: false,
-                    option1Text: Locals.getTranslations(context).lightTheme,
+                    option1Text: Locales.getTranslations(context).lightTheme,
                     option1Func: () {
                       themeProvider.changeTheme(ThemeMode.light);
-                      saveTheme(ThemeMode.light);
+                      themeProvider.saveTheme(ThemeMode.light);
                     },
-                    option2Text: Locals.getTranslations(context).darkTheme,
+                    option2Text: Locales.getTranslations(context).darkTheme,
                     option2Func: () {
                       themeProvider.changeTheme(ThemeMode.dark);
-                      saveTheme(ThemeMode.dark);
+                      themeProvider.saveTheme(ThemeMode.dark);
                     },
                   );
                 },
                 child: Text(
-                  Locals.getTranslations(context).themeMode,
-                  style: theme.textTheme.bodyMedium,
+                  Locales.getTranslations(context).themeMode,
+                  style: theme.textTheme.titleMedium,
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    Locales.getTranslations(context).enableNavigationBar,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  Transform.scale(
+                    scale: 1.5,
+                    child: Switch(
+                      activeColor: theme.indicatorColor,
+                      value: mainScreenProvider.isBottomBarEnabled,
+                      onChanged: (value) {
+                        mainScreenProvider.changeBarEnablement(value);
+                        mainScreenProvider.saveBarEnablement(value);
+                      },
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
@@ -81,17 +102,7 @@ class SettingsLayout extends StatelessWidget {
     );
   }
 
-  void saveLocal(String locale) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString('savedLocale', locale);
-  }
-
-  Future<void> saveTheme(ThemeMode theme) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("savedTheme", '$theme');
-  }
-
-  void onSettingsButtonClick(BuildContext context,
+  void onSettingsButtonClick(BuildContext context, Size size, ThemeData theme,
       {required String option1Text,
       required String option2Text,
       required BtnFunc option1Func,

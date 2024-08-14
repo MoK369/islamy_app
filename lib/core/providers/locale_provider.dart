@@ -4,20 +4,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleProvider extends ChangeNotifier {
   String currentLocale = 'ar';
+  late SharedPreferences sharedPreferences;
 
   LocaleProvider() {
     getLocaleData();
   }
 
+  static LocaleProvider get(BuildContext context) {
+    return Provider.of<LocaleProvider>(context);
+  }
+
   getLocaleData() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences = await SharedPreferences.getInstance();
     String savedLocale = sharedPreferences.getString('savedLocale') ?? 'ar';
     currentLocale = savedLocale;
     notifyListeners();
   }
 
-  static LocaleProvider get(BuildContext context) {
-    return Provider.of<LocaleProvider>(context);
+  void saveLocal(String locale) async {
+    sharedPreferences.setString('savedLocale', locale);
   }
 
   void changeLocale(String newLocale) {

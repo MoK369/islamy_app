@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 
+import '../../../../core/app_locals/locales.dart';
 import 'hadeeth_layout.dart';
 
 class HadeethScreen extends StatelessWidget {
   static const String routeName = 'HadeethScreen';
 
-  HadeethScreen({super.key});
-
-  late ThemeData theme;
-  late HadethData args;
+  const HadeethScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments as HadethData;
-    theme = Theme.of(context);
+    HadethData args = ModalRoute.of(context)!.settings.arguments as HadethData;
+    ThemeData theme = Theme.of(context);
     return SafeArea(
         child: BgContainer(
             child: Scaffold(
       appBar: AppBar(
         title: Text(
-          "إسلامي",
-          style: theme.textTheme.bodyLarge,
+          Locales.getTranslations(context).islami,
         ),
         centerTitle: true,
         leading: IconButton(
@@ -55,8 +51,7 @@ class HadeethScreen extends StatelessWidget {
                     child: Text(
                       args.hadeethBody,
                       textDirection: TextDirection.rtl,
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                          fontFamily: GoogleFonts.amiriQuran().fontFamily),
+                      style: theme.textTheme.displayLarge,
                     ),
                   ),
                 ),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/defined_fonts/defined_font_families.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 
 class SurahScreen extends StatefulWidget {
   static const String routeName = "SurahScreen";
 
-  SurahScreen({super.key});
+  const SurahScreen({super.key});
 
   @override
   State<SurahScreen> createState() => _SurahScreenState();
@@ -39,7 +39,7 @@ class _SurahScreenState extends State<SurahScreen> {
                   size: 40,
                   Icons.arrow_back,
                 )),
-            title: const Text("إسلامي"),
+            title: Text(Locales.getTranslations(context).islami),
           ),
           body: Center(
             child: FractionallySizedBox(
@@ -79,10 +79,8 @@ class _SurahScreenState extends State<SurahScreen> {
                                             surahVerses.map<TextSpan>((e) {
                                           return TextSpan(
                                               text: e,
-                                              style: GoogleFonts.amiriQuran(
-                                                  textStyle: theme
-                                                      .textTheme.bodyLarge!
-                                                      .copyWith(fontSize: 40)),
+                                              style:
+                                                  theme.textTheme.displayLarge,
                                               children: [
                                                 TextSpan(
                                                     text:

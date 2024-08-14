@@ -3,11 +3,11 @@ import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/list_of_sura
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/surah_screen.dart';
 import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/providers/locale_provider.dart';
 
 class QuranLayout extends StatefulWidget {
-  QuranLayout({super.key});
+  const QuranLayout({super.key});
 
   @override
   State<QuranLayout> createState() => QuranLayoutState();
@@ -70,13 +70,13 @@ class QuranLayoutState extends State<QuranLayout> {
                       Expanded(
                           child: Center(
                               child: Text(
-                                  Locals.getTranslations(context)
+                                  Locales.getTranslations(context)
                                       .numberOfVerses,
                                   style: theme.textTheme.titleSmall))),
                       Expanded(
                           child: Center(
                               child: Text(
-                        Locals.getTranslations(context).nameOfSura,
+                        Locales.getTranslations(context).nameOfSura,
                         style: theme.textTheme.titleSmall,
                       ))),
                     ],
@@ -91,9 +91,7 @@ class QuranLayoutState extends State<QuranLayout> {
                                   .getSurasListEnglishOrArabic()
                                   .indexOf(foundUser![index]),
                               surahName: foundUser![index]));
-                      searchFieldController.clear();
-                      FocusScope.of(context).unfocus();
-                      runFilter('');
+                      clearSearchResults();
                     },
                   ),
                 ],
@@ -103,6 +101,12 @@ class QuranLayoutState extends State<QuranLayout> {
         ),
       ],
     );
+  }
+
+  void clearSearchResults() async {
+    searchFieldController.clear();
+    FocusScope.of(context).unfocus();
+    runFilter('');
   }
 }
 

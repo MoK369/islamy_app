@@ -25,8 +25,9 @@ class Themes {
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
     textTheme: TextTheme(
-      labelSmall: TextStyle(
-          fontSize: 20,
+        // for the label on the bottom of the splash screen
+        labelSmall: TextStyle(
+            fontSize: 20,
           color: lightPrimaryColor,
           fontFamily: GoogleFonts.poppins().fontFamily),
       titleSmall: const TextStyle(
@@ -54,7 +55,12 @@ class Themes {
           fontSize: 35,
           fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-    ),
+        // for displaying suras and ahadeeth:
+        displayLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 40,
+            fontWeight: FontWeight.normal,
+            fontFamily: GoogleFonts.amiriQuran().fontFamily)),
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: lightPrimaryColor),
       color: Colors.transparent,
@@ -131,9 +137,10 @@ class Themes {
         backgroundColor: darkSecondaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
     textTheme: TextTheme(
-      labelSmall: TextStyle(
-          fontSize: 20,
-          color: darkPrimaryColor,
+        // for the label on the bottom of the splash screen
+        labelSmall: TextStyle(
+            fontSize: 20,
+            color: darkPrimaryColor,
           fontFamily: GoogleFonts.poppins().fontFamily),
       titleSmall: const TextStyle(
           fontSize: 25,
@@ -160,7 +167,12 @@ class Themes {
           fontSize: 35,
           fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-    ),
+        // for displaying suras and ahadeeth:
+        displayLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 40,
+            fontWeight: FontWeight.normal,
+            fontFamily: GoogleFonts.amiriQuran().fontFamily)),
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: darkPrimaryColor),
       color: Colors.transparent,

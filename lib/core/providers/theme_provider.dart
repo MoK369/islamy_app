@@ -5,13 +5,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode currentTheme = ThemeMode.light;
-
+  late SharedPreferences sharedPreferences;
   ThemeProvider() {
     getThemeData();
   }
 
+  static ThemeProvider get(BuildContext context) {
+    return Provider.of<ThemeProvider>(context);
+  }
+
   getThemeData() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences = await SharedPreferences.getInstance();
     String savedTheme =
         sharedPreferences.getString('savedTheme') ?? 'ThemeMode.light';
     currentTheme =
@@ -19,8 +23,8 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  static ThemeProvider get(BuildContext context) {
-    return Provider.of<ThemeProvider>(context);
+  void saveTheme(ThemeMode theme) async {
+    sharedPreferences.setString("savedTheme", '$theme');
   }
 
   void changeTheme(ThemeMode newTheme) {

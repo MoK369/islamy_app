@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 
 class HadeethLayout extends StatefulWidget {
-  HadeethLayout({super.key});
+  const HadeethLayout({super.key});
 
   @override
   State<HadeethLayout> createState() => _HadeethLayoutState();
@@ -30,7 +30,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
         ),
         const Divider(),
         Text(
-          Locals.getTranslations(context).ahadeeth,
+          Locales.getTranslations(context).ahadeeth,
           style: theme.textTheme.titleMedium,
         ),
         const Divider(),

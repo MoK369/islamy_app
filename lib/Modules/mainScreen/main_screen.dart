@@ -6,7 +6,7 @@ import 'package:islamic_app/Modules/mainScreen/layouts/radio_layout/radio_layout
 import 'package:islamic_app/Modules/mainScreen/layouts/sebha_layout/sebha_layout.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/settings_layout/settings_layout.dart';
 import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/providers/locale_provider.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +22,11 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   List<Widget> layouts = [
-    SebhaLayout(),
-    RadioLayout(),
-    QuranLayout(),
-    HadeethLayout(),
-    SettingsLayout(),
+    const SebhaLayout(),
+    const RadioLayout(),
+    const QuranLayout(),
+    const HadeethLayout(),
+    const SettingsLayout(),
   ];
   PageController pgController = PageController(initialPage: 2);
 
@@ -44,17 +44,20 @@ class _MainScreenState extends State<MainScreen> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              Locals.getTranslations(context).islami,
+              Locales.getTranslations(context).islami,
             ),
             centerTitle: true,
           ),
-          bottomNavigationBar: CustomBottomBar(
-            onClick: (value) {
-              provider.changeBarIndex(value);
-              pgController.animateToPage(provider.bottomBarCurrentIndex,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut);
-            },
+          bottomNavigationBar: Visibility(
+            visible: mainScreenProvider.isBottomBarEnabled,
+            child: CustomBottomBar(
+              onClick: (value) {
+                provider.changeBarIndex(value);
+                pgController.animateToPage(provider.bottomBarCurrentIndex,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut);
+              },
+            ),
           ),
           body: PageView(
             controller: pgController,

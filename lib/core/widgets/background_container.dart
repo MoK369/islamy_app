@@ -3,9 +3,9 @@ import 'package:islamic_app/core/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class BgContainer extends StatelessWidget {
-  Widget child;
+  final Widget child;
 
-  BgContainer({super.key, required this.child});
+  const BgContainer({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/themes/app_themes.dart';
 
 class SebhaLayout extends StatefulWidget {
-  SebhaLayout({super.key});
+  const SebhaLayout({super.key});
 
   @override
   State<SebhaLayout> createState() => _SebhaLayoutState();
@@ -49,7 +49,7 @@ class _SebhaLayoutState extends State<SebhaLayout> {
           ),
         ),
         Center(
-            child: Text(Locals.getTranslations(context).numberOfPraises,
+            child: Text(Locales.getTranslations(context).numberOfPraises,
                 textDirection: TextDirection.rtl,
                 style: theme.textTheme.titleMedium)),
         SizedBox(
@@ -58,20 +58,17 @@ class _SebhaLayoutState extends State<SebhaLayout> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FractionallySizedBox(
-              widthFactor: 0.2,
-              //heightFactor: 0.4,
+            SizedBox(
+              height: size.height * 0.11,
+              width: (size.height * 0.11) * (69 / 81),
               child: Card(
                 color: theme.cardTheme.color == Colors.white
                     ? Themes.lightPrimaryColor
                     : theme.cardTheme.color,
                 child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(17.0),
-                    child: Text(
-                      '$numberOfTasbeehat',
-                      style: theme.textTheme.bodyLarge,
-                    ),
+                  child: Text(
+                    '$numberOfTasbeehat',
+                    style: theme.textTheme.bodyLarge,
                   ),
                 ),
               ),

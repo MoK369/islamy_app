@@ -3,15 +3,15 @@ import 'package:islamic_app/core/providers/locale_provider.dart';
 import 'package:islamic_app/core/providers/theme_provider.dart';
 
 class BottomSheetLayout extends StatelessWidget {
-  Size screenSize;
-  ThemeData theme;
-  String text1;
-  String text2;
-  bool isLangButtonPressed;
+  final Size screenSize;
+  final ThemeData theme;
+  final String text1;
+  final String text2;
+  final bool isLangButtonPressed;
 
-  void Function() function1, function2;
+  final void Function() function1, function2;
 
-  BottomSheetLayout(
+  const BottomSheetLayout(
       {super.key,
       required this.screenSize,
       required this.theme,
@@ -21,11 +21,9 @@ class BottomSheetLayout extends StatelessWidget {
       required this.function2,
       required this.isLangButtonPressed});
 
-  late ThemeProvider themeProvider;
-
   @override
   Widget build(BuildContext context) {
-    themeProvider = ThemeProvider.get(context);
+    ThemeProvider themeProvider = ThemeProvider.get(context);
     LocaleProvider localeProvider = LocaleProvider.get(context);
     return SizedBox(
       height: screenSize.height * 0.4,
