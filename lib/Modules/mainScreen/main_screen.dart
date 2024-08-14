@@ -11,24 +11,20 @@ import 'package:islamic_app/core/providers/locale_provider.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 import 'package:provider/provider.dart';
 
-class MainScreen extends StatefulWidget {
-  static String routeName = "MainScreen";
+class MainScreen extends StatelessWidget {
+  static const String routeName = "MainScreen";
 
-  const MainScreen({super.key});
+  MainScreen({super.key});
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  List<Widget> layouts = [
+  final List<Widget> layouts = [
     const SebhaLayout(),
     const RadioLayout(),
     const QuranLayout(),
     const HadeethLayout(),
     const SettingsLayout(),
   ];
-  PageController pgController = PageController(initialPage: 2);
+
+  final PageController pgController = PageController(initialPage: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
             centerTitle: true,
           ),
           bottomNavigationBar: Visibility(
-            visible: mainScreenProvider.isBottomBarEnabled,
+            visible: provider.isBottomBarEnabled,
             child: CustomBottomBar(
               onClick: (value) {
                 provider.changeBarIndex(value);
