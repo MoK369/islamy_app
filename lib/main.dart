@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       themeMode: themeProvider.currentTheme,
       routes: {
         SplashScreen.routeName: (context) => const SplashScreen(),
-        MainScreen.routeName: (context) => const MainScreen(),
+        MainScreen.routeName: (context) => MainScreen(),
         SurahScreen.routeName: (context) => const SurahScreen(),
         HadeethScreen.routeName: (context) => const HadeethScreen(),
       },
