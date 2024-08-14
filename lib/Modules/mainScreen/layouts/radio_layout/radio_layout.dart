@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 
 class RadioLayout extends StatelessWidget {
-  RadioLayout({super.key});
-
-  late ThemeData theme;
-  late Size size;
+  const RadioLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
-    theme = Theme.of(context);
+    Size size = MediaQuery.of(context).size;
+    ThemeData theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -20,7 +17,7 @@ class RadioLayout extends StatelessWidget {
             child: Image.asset('assets/images/radio_image.png')),
         Center(
             child: Text(
-          Locals.getLocals(context).holyQuranRadio,
+          Locales.getTranslations(context).holyQuranRadio,
           style: theme.textTheme.titleMedium,
         )),
         SizedBox(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/themes/app_themes.dart';
 
 class SebhaLayout extends StatefulWidget {
-  SebhaLayout({super.key});
+  const SebhaLayout({super.key});
 
   @override
   State<SebhaLayout> createState() => _SebhaLayoutState();
@@ -13,9 +13,9 @@ class _SebhaLayoutState extends State<SebhaLayout> {
   late ThemeData theme;
   late Size size;
 
-  int numberOfHymns = 0, counter = 0;
+  int numberOfTasbeehat = 0, counterOfTasbeeh = 0;
   double rotation = 0;
-  String kindOfHymn = "سبحان الله";
+  String kindOfTesbeeh = "سبحان الله";
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,14 @@ class _SebhaLayoutState extends State<SebhaLayout> {
               Transform.rotate(
                 angle: rotation,
                 child: ImageIcon(
-                  const AssetImage('assets/icons/body of sebha.png'),
+                  const AssetImage('assets/icons/body_of_sebha.png'),
                   size: (size.height * 0.4),
                 ),
               ),
               Positioned(
                 top: -(size.height * 0.4) * 0.05,
                 child: ImageIcon(
-                  const AssetImage('assets/icons/head of sebha.png'),
+                  const AssetImage('assets/icons/head_of_sebha.png'),
                   size: size.height * 0.1,
                 ),
               ),
@@ -49,7 +49,7 @@ class _SebhaLayoutState extends State<SebhaLayout> {
           ),
         ),
         Center(
-            child: Text(Locals.getLocals(context).numberOfPraises,
+            child: Text(Locales.getTranslations(context).numberOfPraises,
                 textDirection: TextDirection.rtl,
                 style: theme.textTheme.titleMedium)),
         SizedBox(
@@ -58,20 +58,17 @@ class _SebhaLayoutState extends State<SebhaLayout> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FractionallySizedBox(
-              widthFactor: 0.2,
-              //heightFactor: 0.4,
+            SizedBox(
+              height: size.height * 0.11,
+              width: (size.height * 0.11) * (69 / 81),
               child: Card(
                 color: theme.cardTheme.color == Colors.white
                     ? Themes.lightPrimaryColor
                     : theme.cardTheme.color,
                 child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(17.0),
-                    child: Text(
-                      '$numberOfHymns',
-                      style: theme.textTheme.bodyLarge,
-                    ),
+                  child: Text(
+                    '$numberOfTasbeehat',
+                    style: theme.textTheme.bodyLarge,
                   ),
                 ),
               ),
@@ -85,7 +82,7 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                 onPressed: () {
                   onClick();
                 },
-                child: Text(kindOfHymn),
+                child: Text(kindOfTesbeeh),
               ),
             ),
           ],
@@ -96,31 +93,31 @@ class _SebhaLayoutState extends State<SebhaLayout> {
 
   void onClick() {
     setState(() {
-      numberOfHymns++;
+      numberOfTasbeehat++;
       rotation += 0.5;
       rotation == 360 ? rotation = 0 : rotation = rotation;
-      if (numberOfHymns == 33) {
-        counter += 1;
-        if (counter == 4) {
-          counter = 0;
+      if (numberOfTasbeehat == 33) {
+        counterOfTasbeeh += 1;
+        if (counterOfTasbeeh == 4) {
+          counterOfTasbeeh = 0;
         }
-        numberOfHymns = 0;
+        numberOfTasbeehat = 0;
       }
-      switch (counter) {
+      switch (counterOfTasbeeh) {
         case 0:
-          kindOfHymn = 'سبحان الله';
+          kindOfTesbeeh = 'سبحان الله';
           break;
         case 1:
-          kindOfHymn = 'الحمد لله';
+          kindOfTesbeeh = 'الحمد لله';
           break;
         case 2:
-          kindOfHymn = 'الله أكبر';
+          kindOfTesbeeh = 'الله أكبر';
           break;
         case 3:
-          kindOfHymn = 'لا إله إلا الله';
+          kindOfTesbeeh = 'لا إله إلا الله';
           break;
         default:
-          kindOfHymn = '';
+          kindOfTesbeeh = '';
           break;
       }
     });

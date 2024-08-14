@@ -3,4 +3,5 @@ class DefinedFontFamilies {
   static const String elMessiri = 'El_Messiri';
   static const String arabQuran = 'ArabQuran';
   static const String ayatQuran11 = 'AyatQuran11';
+  static const String alQuranAli = 'AlQuranAli';
 }

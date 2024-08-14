@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_suras.dart';
+import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
 
 class ListOfSuras extends StatelessWidget {
-  List<String> foundUser;
-  void Function(int) onClick;
+  final List<String> foundUser;
+  final void Function(int) onClick;
 
-  ListOfSuras({super.key, required this.foundUser, required this.onClick});
-
-  late ThemeData theme;
+  const ListOfSuras(
+      {super.key, required this.foundUser, required this.onClick});
 
   @override
   Widget build(BuildContext context) {
-    theme = Theme.of(context);
+    MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
+    ThemeData theme = Theme.of(context);
     return Expanded(
       child: ListView.builder(
         itemCount: foundUser.length,
@@ -26,15 +27,21 @@ class ListOfSuras extends StatelessWidget {
                 Expanded(
                     child: Center(
                         child: Text(
-                  Suras.ayaNumber[
-                      Suras.arabicAuranSuras.indexOf(foundUser[index])],
+                  Suras.ayaNumber[mainScreenProvider
+                      .getSurasListEnglishOrArabic()
+                      .indexOf(foundUser[index])],
                   style: theme.textTheme.bodyMedium,
                 ))),
                 Expanded(
                     child: Center(
-                        child: Text(
-                  foundUser[index],
+                        child: Padding(
+                  padding: const EdgeInsets.only(left: 3, right: 3),
+                  child: FittedBox(
+                    child: Text(
+                      foundUser[index],
                   style: theme.textTheme.bodyMedium,
+                    ),
+                  ),
                 ))),
               ],
             ),

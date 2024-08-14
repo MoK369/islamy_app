@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
-import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
-import 'package:islamic_app/core/app_locals/locals.dart';
+import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 
 class HadeethLayout extends StatefulWidget {
-  HadeethLayout({super.key});
+  const HadeethLayout({super.key});
 
   @override
   State<HadeethLayout> createState() => _HadeethLayoutState();
@@ -16,6 +16,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
   List<HadethData> ahadeeth = [];
   @override
   Widget build(BuildContext context) {
+    MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
     if (ahadeeth.isEmpty) {
       readHadeeth();
     }
@@ -25,11 +26,11 @@ class _HadeethLayoutState extends State<HadeethLayout> {
       children: [
         Image.asset(
           'assets/images/hadith_header.png',
-          height: MainScreenState.screenSize.height * 0.2,
+          height: mainScreenProvider.mainScreenSize.height * 0.2,
         ),
         const Divider(),
         Text(
-          Locals.getLocals(context).ahadeeth,
+          Locales.getTranslations(context).ahadeeth,
           style: theme.textTheme.titleMedium,
         ),
         const Divider(),
@@ -49,9 +50,11 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                 context, HadeethScreen.routeName,
                                 arguments: ahadeeth[index]);
                           },
-                          child: Text(
-                            ahadeeth[index].hadeethTitle,
-                            style: theme.textTheme.bodyLarge,
+                          child: FittedBox(
+                            child: Text(
+                              ahadeeth[index].hadeethTitle,
+                              style: theme.textTheme.bodyLarge,
+                            ),
                           ));
                     },
                   ))

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
+import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/defined_fonts/defined_font_families.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
 
 class SurahScreen extends StatefulWidget {
   static const String routeName = "SurahScreen";
 
-  SurahScreen({super.key});
+  const SurahScreen({super.key});
 
   @override
   State<SurahScreen> createState() => _SurahScreenState();
@@ -39,7 +39,7 @@ class _SurahScreenState extends State<SurahScreen> {
                   size: 40,
                   Icons.arrow_back,
                 )),
-            title: const Text("إسلامي"),
+            title: Text(Locales.getTranslations(context).islami),
           ),
           body: Center(
             child: FractionallySizedBox(
@@ -58,43 +58,47 @@ class _SurahScreenState extends State<SurahScreen> {
                       endIndent: 15,
                     ),
                     Expanded(
-                      child: surahVerses.isEmpty
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                color: theme.indicatorColor,
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: 1,
-                              itemBuilder: (context, index) {
-                                return RichText(
-                                  textDirection: TextDirection.rtl,
-                                  text: TextSpan(
-                                    children: surahVerses.map<TextSpan>((e) {
-                                      return TextSpan(
-                                          text: e,
-                                          style: GoogleFonts.amiriQuran(
-                                              textStyle: theme
-                                                  .textTheme.bodyLarge!
-                                                  .copyWith(fontSize: 40)),
-                                          children: [
-                                            TextSpan(
-                                                text:
-                                                    " ${surahVerses.indexOf(e) + 1} ",
-                                                style: theme
-                                                    .textTheme.bodyLarge!
-                                                    .copyWith(
-                                                        fontSize: 60,
-                                                        fontFamily:
-                                                            DefinedFontFamilies
-                                                                .ayatQuran11))
-                                          ]);
-                                    }).toList(),
-                                  ),
-                                );
-                              },
-                            ),
-                    ),
+                        child: surahVerses.isEmpty
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: theme.indicatorColor,
+                                ),
+                              )
+                            : SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    if (args.surahIndex != 0)
+                                      Text(
+                                        "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
+                                        style: theme.textTheme.bodyLarge,
+                                      ),
+                                    RichText(
+                                      textDirection: TextDirection.rtl,
+                                      text: TextSpan(
+                                        children:
+                                            surahVerses.map<TextSpan>((e) {
+                                          return TextSpan(
+                                              text: e,
+                                              style:
+                                                  theme.textTheme.displayLarge,
+                                              children: [
+                                                TextSpan(
+                                                    text:
+                                                        " ${surahVerses.indexOf(e) + 1} ",
+                                                    style: theme
+                                                        .textTheme.bodyLarge!
+                                                        .copyWith(
+                                                            fontSize: 60,
+                                                            fontFamily:
+                                                                DefinedFontFamilies
+                                                                    .ayatQuran11))
+                                              ]);
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
                   ],
                 ),
               ),
