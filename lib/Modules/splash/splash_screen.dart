@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const Spacer(),
               ImageIcon(
-                const AssetImage('assets/images/routegold.png'),
+                const AssetImage('assets/images/branding.png'),
                 size: size.height * 0.2,
               ),
               Text(
