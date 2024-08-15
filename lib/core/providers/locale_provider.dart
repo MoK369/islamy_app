@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleProvider extends ChangeNotifier {
+  static const localeKey = 'savedLocale';
   String currentLocale = 'ar';
-  late SharedPreferences sharedPreferences;
+  final SharedPreferences sharedPreferences;
 
-  LocaleProvider() {
+  LocaleProvider(this.sharedPreferences) {
     getLocaleData();
   }
 
@@ -14,20 +15,19 @@ class LocaleProvider extends ChangeNotifier {
     return Provider.of<LocaleProvider>(context);
   }
 
-  getLocaleData() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    String savedLocale = sharedPreferences.getString('savedLocale') ?? 'ar';
-    currentLocale = savedLocale;
+  void getLocaleData() {
+    currentLocale = sharedPreferences.getString(localeKey) ?? 'ar';
     notifyListeners();
   }
 
-  void saveLocal(String locale) async {
-    sharedPreferences.setString('savedLocale', locale);
+  void saveLocal(String localeToSave) {
+    sharedPreferences.setString(localeKey, localeToSave);
   }
 
   void changeLocale(String newLocale) {
     currentLocale = newLocale;
     notifyListeners();
+    saveLocal(newLocale);
   }
 
   bool isArabicChosen() {

@@ -12,11 +12,11 @@ class MainScreenProvider extends ChangeNotifier {
   /// initialize localeProvider before getting Suras List.
   LocaleProvider? localeProvider;
 
-  late SharedPreferences sharedPreferences;
+  final SharedPreferences sharedPreferences;
   int bottomBarCurrentIndex = 2;
   bool isBottomBarEnabled = true;
 
-  MainScreenProvider() {
+  MainScreenProvider(this.sharedPreferences) {
     getBarEnablementData();
   }
 
@@ -24,8 +24,7 @@ class MainScreenProvider extends ChangeNotifier {
     return Provider.of<MainScreenProvider>(context);
   }
 
-  getBarEnablementData() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+  getBarEnablementData() {
     isBottomBarEnabled = sharedPreferences.getBool('barEnablement') ?? true;
     notifyListeners();
   }
@@ -33,14 +32,14 @@ class MainScreenProvider extends ChangeNotifier {
   saveBarEnablement(bool newValue) {
     sharedPreferences.setBool('barEnablement', newValue);
   }
+  void changeBarEnablement(bool newValue) {
+    isBottomBarEnabled = newValue;
+    notifyListeners();
+    saveBarEnablement(newValue);
+  }
 
   void changeBarIndex(int newIndex) {
     bottomBarCurrentIndex = newIndex;
-    notifyListeners();
-  }
-
-  void changeBarEnablement(bool newValue) {
-    isBottomBarEnabled = newValue;
     notifyListeners();
   }
 

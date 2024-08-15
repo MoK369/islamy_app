@@ -18,7 +18,6 @@ class SettingsLayout extends StatelessWidget {
     MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
     Size size = MediaQuery.of(context).size;
     ThemeData theme = Theme.of(context);
-    //print('${size.aspectRatio}');
     return Center(
       child: FractionallySizedBox(
         widthFactor: 0.95,
@@ -64,12 +63,10 @@ class SettingsLayout extends StatelessWidget {
                       option1Text: Locales.getTranslations(context).lightTheme,
                       option1Func: () {
                         themeProvider.changeTheme(ThemeMode.light);
-                        themeProvider.saveTheme(ThemeMode.light);
                       },
                       option2Text: Locales.getTranslations(context).darkTheme,
                       option2Func: () {
                         themeProvider.changeTheme(ThemeMode.dark);
-                        themeProvider.saveTheme(ThemeMode.dark);
                       },
                     );
                   },
@@ -101,7 +98,6 @@ class SettingsLayout extends StatelessWidget {
                           value: mainScreenProvider.isBottomBarEnabled,
                           onChanged: (value) {
                             mainScreenProvider.changeBarEnablement(value);
-                            mainScreenProvider.saveBarEnablement(value);
                           },
                         ),
                       ),
