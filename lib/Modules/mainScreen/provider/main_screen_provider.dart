@@ -6,6 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../layouts/quran_layout/quran_suras.dart';
 
 class MainScreenProvider extends ChangeNotifier {
+  static const barEnablementKey = 'barEnablement';
+  static const markedSurahKey = 'markedSurah';
+  static const markedVerseKey = 'markedVerse';
+
   /// initialize mainScreenSize with the true value before using it.
   Size mainScreenSize = const Size(0, 0);
 
@@ -15,22 +19,26 @@ class MainScreenProvider extends ChangeNotifier {
   final SharedPreferences sharedPreferences;
   int bottomBarCurrentIndex = 2;
   bool isBottomBarEnabled = true;
+  String markedSurahIndex = '';
+  String markedVerseIndex = '';
 
   MainScreenProvider(this.sharedPreferences) {
-    getBarEnablementData();
+    getMainScreenData();
   }
 
   static MainScreenProvider get(BuildContext context) {
     return Provider.of<MainScreenProvider>(context);
   }
 
-  getBarEnablementData() {
-    isBottomBarEnabled = sharedPreferences.getBool('barEnablement') ?? true;
+  getMainScreenData() {
+    isBottomBarEnabled = sharedPreferences.getBool(barEnablementKey) ?? true;
+    markedSurahIndex = sharedPreferences.getString(markedSurahKey) ?? '';
+    markedVerseIndex = sharedPreferences.getString(markedVerseKey) ?? '';
     notifyListeners();
   }
 
   saveBarEnablement(bool newValue) {
-    sharedPreferences.setBool('barEnablement', newValue);
+    sharedPreferences.setBool(barEnablementKey, newValue);
   }
   void changeBarEnablement(bool newValue) {
     isBottomBarEnabled = newValue;
@@ -49,5 +57,25 @@ class MainScreenProvider extends ChangeNotifier {
     } else {
       return Suras.englishQuranSurahs;
     }
+  }
+
+  void changeMarkedSurah(String index) {
+    markedSurahIndex = index;
+    notifyListeners();
+    saveMarkedSurah(index);
+  }
+
+  void saveMarkedSurah(String index) {
+    sharedPreferences.setString(markedSurahKey, index);
+  }
+
+  void changeMarkedVerse(String index) {
+    markedVerseIndex = index;
+    notifyListeners();
+    saveMarkedVerse(index);
+  }
+
+  void saveMarkedVerse(String index) {
+    sharedPreferences.setString(markedVerseKey, index);
   }
 }

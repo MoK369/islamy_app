@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
+import 'package:islamic_app/Modules/mainScreen/provider/main_screen_provider.dart';
 import 'package:islamic_app/core/app_locals/locales.dart';
 import 'package:islamic_app/core/defined_fonts/defined_font_families.dart';
 import 'package:islamic_app/core/widgets/background_container.dart';
@@ -22,6 +24,7 @@ class _SurahScreenState extends State<SurahScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
     args = ModalRoute.of(context)!.settings.arguments as Send;
     if (surahVerses.isEmpty) {
       readSurah();
@@ -77,21 +80,42 @@ class _SurahScreenState extends State<SurahScreen> {
                                       text: TextSpan(
                                         children:
                                             surahVerses.map<TextSpan>((e) {
+                                          int verseNumber =
+                                              surahVerses.indexOf(e) + 1;
+                                          String currentVerseIndex =
+                                              '${args.surahIndex}$verseNumber';
                                           return TextSpan(
                                               text: e,
                                               style:
                                                   theme.textTheme.displayLarge,
                                               children: [
                                                 TextSpan(
-                                                    text:
-                                                        " ${surahVerses.indexOf(e) + 1} ",
-                                                    style: theme
-                                                        .textTheme.bodyLarge!
-                                                        .copyWith(
-                                                            fontSize: 60,
-                                                            fontFamily:
-                                                                DefinedFontFamilies
-                                                                    .ayatQuran11))
+                                                  text: mainScreenProvider
+                                                              .markedVerseIndex ==
+                                                          currentVerseIndex
+                                                      ? " $verseNumber📖 "
+                                                      : ' $verseNumber ',
+                                                  style: theme
+                                                      .textTheme.bodyLarge!
+                                                      .copyWith(
+                                                          fontSize: 60,
+                                                          fontFamily:
+                                                              DefinedFontFamilies
+                                                                  .ayatQuran11),
+                                                  recognizer:
+                                                      LongPressGestureRecognizer()
+                                                        ..onLongPress = () {
+                                                          mainScreenProvider
+                                                                      .markedVerseIndex ==
+                                                                  currentVerseIndex
+                                                              ? mainScreenProvider
+                                                                  .changeMarkedVerse(
+                                                                      '')
+                                                              : mainScreenProvider
+                                                                  .changeMarkedVerse(
+                                                                      currentVerseIndex);
+                                                        },
+                                                )
                                               ]);
                                         }).toList(),
                                       ),
