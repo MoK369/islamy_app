@@ -12,8 +12,9 @@ class RadioLayout extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FractionallySizedBox(
-            widthFactor: 0.9,
+        SizedBox(
+            height: (size.width * 0.7) * (111 / 206),
+            width: size.width * 0.7,
             child: Image.asset('assets/images/radio_image.png')),
         Center(
             child: Text(

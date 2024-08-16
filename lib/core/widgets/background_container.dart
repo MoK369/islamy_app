@@ -10,11 +10,10 @@ class BgContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
-    bool isDark = themeProvider.isDarkEnabled();
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(isDark
+              image: AssetImage(themeProvider.isDarkEnabled()
                   ? 'assets/images/bg_dark.png'
                   : 'assets/images/bg.png'),
               fit: BoxFit.fill)),
