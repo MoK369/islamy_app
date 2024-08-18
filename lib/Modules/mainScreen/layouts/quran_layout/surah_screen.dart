@@ -61,68 +61,68 @@ class _SurahScreenState extends State<SurahScreen> {
                       endIndent: 15,
                     ),
                     Expanded(
-                        child: surahVerses.isEmpty
-                            ? Center(
-                                child: CircularProgressIndicator(
-                                  color: theme.indicatorColor,
+                      child: surahVerses.isEmpty
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: theme.indicatorColor,
+                              ),
+                            )
+                          : ListView(
+                              children: [
+                                if (args.surahIndex != 0)
+                                  Text(
+                                    "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
+                                    style: theme.textTheme.bodyLarge,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                const SizedBox(
+                                  height: 15,
                                 ),
-                              )
-                            : SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    if (args.surahIndex != 0)
-                                      Text(
-                                        "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
-                                        style: theme.textTheme.bodyLarge,
-                                      ),
-                                    RichText(
-                                      textDirection: TextDirection.rtl,
-                                      text: TextSpan(
-                                        children:
-                                            surahVerses.map<TextSpan>((e) {
-                                          int verseNumber =
-                                              surahVerses.indexOf(e) + 1;
-                                          String currentVerseIndex =
-                                              '${args.surahIndex}$verseNumber';
-                                          return TextSpan(
-                                              text: e,
-                                              style:
-                                                  theme.textTheme.displayLarge,
-                                              children: [
-                                                TextSpan(
-                                                  text: mainScreenProvider
-                                                              .markedVerseIndex ==
-                                                          currentVerseIndex
-                                                      ? " $verseNumber📖 "
-                                                      : ' $verseNumber ',
-                                                  style: theme
-                                                      .textTheme.bodyLarge!
-                                                      .copyWith(
-                                                          fontSize: 60,
-                                                          fontFamily:
-                                                              DefinedFontFamilies
-                                                                  .ayatQuran11),
-                                                  recognizer:
-                                                      LongPressGestureRecognizer()
-                                                        ..onLongPress = () {
-                                                          mainScreenProvider
-                                                                      .markedVerseIndex ==
-                                                                  currentVerseIndex
-                                                              ? mainScreenProvider
-                                                                  .changeMarkedVerse(
-                                                                      '')
-                                                              : mainScreenProvider
-                                                                  .changeMarkedVerse(
-                                                                      currentVerseIndex);
-                                                        },
-                                                )
-                                              ]);
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ],
+                                RichText(
+                                  textDirection: TextDirection.rtl,
+                                  text: TextSpan(
+                                    children: surahVerses.map<TextSpan>((e) {
+                                      int verseNumber =
+                                          surahVerses.indexOf(e) + 1;
+                                      String currentVerseIndex =
+                                          '${args.surahIndex}$verseNumber';
+                                      return TextSpan(
+                                          text: e,
+                                          style: theme.textTheme.displayLarge,
+                                          children: [
+                                            TextSpan(
+                                              text: mainScreenProvider
+                                                          .markedVerseIndex ==
+                                                      currentVerseIndex
+                                                  ? " $verseNumber📖 "
+                                                  : ' $verseNumber ',
+                                              style: theme.textTheme.bodyLarge!
+                                                  .copyWith(
+                                                      fontSize: 60,
+                                                      fontFamily:
+                                                          DefinedFontFamilies
+                                                              .ayatQuran11),
+                                              recognizer:
+                                                  LongPressGestureRecognizer()
+                                                    ..onLongPress = () {
+                                                      mainScreenProvider
+                                                                  .markedVerseIndex ==
+                                                              currentVerseIndex
+                                                          ? mainScreenProvider
+                                                              .changeMarkedVerse(
+                                                                  '')
+                                                          : mainScreenProvider
+                                                              .changeMarkedVerse(
+                                                                  currentVerseIndex);
+                                                    },
+                                            )
+                                          ]);
+                                    }).toList(),
+                                  ),
                                 ),
-                              )),
+                              ],
+                            ),
+                    ),
                   ],
                 ),
               ),
