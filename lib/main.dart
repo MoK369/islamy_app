@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamic_app/Modules/mainScreen/layouts/quran_layout/surah_screen.dart';
 import 'package:islamic_app/Modules/mainScreen/main_screen.dart';
@@ -13,7 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/themes/app_themes.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => ThemeProvider(sharedPreferences)),
@@ -23,8 +26,21 @@ void main() async {
   ], child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 2), () {
+      FlutterNativeSplash.remove();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +60,7 @@ class MyApp extends StatelessWidget {
         SurahScreen.routeName: (context) => const SurahScreen(),
         HadeethScreen.routeName: (context) => const HadeethScreen(),
       },
-      initialRoute: SplashScreen.routeName,
+      initialRoute: MainScreen.routeName,
     );
   }
 }

@@ -12,8 +12,9 @@ class RadioLayout extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FractionallySizedBox(
-            widthFactor: 0.9,
+        SizedBox(
+            height: (size.width * 0.7) * (111 / 206),
+            width: size.width * 0.7,
             child: Image.asset('assets/images/radio_image.png')),
         Center(
             child: Text(
@@ -23,33 +24,36 @@ class RadioLayout extends StatelessWidget {
         SizedBox(
           height: size.height * 0.05,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            InkWell(
-              splashColor: Colors.grey,
-              onTap: () {},
-              child: ImageIcon(
-                const AssetImage('assets/icons/icon_previous.png'),
-                size: size.width * 0.1,
-              ),
-            ),
-            InkWell(
-              splashColor: Colors.grey,
-              onTap: () {},
-              child: ImageIcon(
-                const AssetImage('assets/icons/icon-play.png'),
-                size: size.width * 0.1,
-              ),
-            ),
-            InkWell(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
                 splashColor: Colors.grey,
                 onTap: () {},
                 child: ImageIcon(
-                  const AssetImage('assets/icons/icon_next.png'),
+                  const AssetImage('assets/icons/icon_previous.png'),
                   size: size.width * 0.1,
-                ))
-          ],
+                ),
+              ),
+              InkWell(
+                splashColor: Colors.grey,
+                onTap: () {},
+                child: ImageIcon(
+                  const AssetImage('assets/icons/icon-play.png'),
+                  size: size.width * 0.1,
+                ),
+              ),
+              InkWell(
+                  splashColor: Colors.grey,
+                  onTap: () {},
+                  child: ImageIcon(
+                    const AssetImage('assets/icons/icon_next.png'),
+                    size: size.width * 0.1,
+                  ))
+            ],
+          ),
         )
       ],
     );

@@ -25,9 +25,9 @@ class Themes {
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
     textTheme: TextTheme(
-        // for the label on the bottom of the splash screen
-        labelSmall: TextStyle(
-            fontSize: 20,
+      // for the label on the bottom of the splash screen
+      labelSmall: TextStyle(
+          fontSize: 20,
           color: lightPrimaryColor,
           fontFamily: GoogleFonts.poppins().fontFamily),
       titleSmall: const TextStyle(
@@ -55,12 +55,10 @@ class Themes {
           fontSize: 35,
           fontWeight: FontWeight.normal,
           fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-        // for displaying suras and ahadeeth:
-        displayLarge: TextStyle(
-            color: Colors.black,
-            fontSize: 40,
-            fontWeight: FontWeight.normal,
-            fontFamily: GoogleFonts.amiriQuran().fontFamily)),
+      // for displaying suras and ahadeeth:
+      displayLarge: GoogleFonts.notoSansArabic(
+          color: Colors.black, fontWeight: FontWeight.w400, fontSize: 40),
+    ),
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: lightPrimaryColor),
       color: Colors.transparent,
@@ -141,38 +139,35 @@ class Themes {
         labelSmall: TextStyle(
             fontSize: 20,
             color: darkPrimaryColor,
-          fontFamily: GoogleFonts.poppins().fontFamily),
-      titleSmall: const TextStyle(
-          fontSize: 25,
-          color: Colors.white,
-          fontFamily: DefinedFontFamilies.elMessiri,
-          fontWeight: FontWeight.w500),
-      titleMedium: const TextStyle(
-          fontSize: 30,
-          color: Colors.white,
-          fontFamily: DefinedFontFamilies.elMessiri,
-          fontWeight: FontWeight.w700),
-      bodySmall: TextStyle(
-          color: Colors.white,
-          fontSize: 25,
-          fontWeight: FontWeight.normal,
-          fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-      bodyMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontWeight: FontWeight.normal,
-          fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-      bodyLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 35,
-          fontWeight: FontWeight.normal,
-          fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-        // for displaying suras and ahadeeth:
-        displayLarge: TextStyle(
+            fontFamily: GoogleFonts.poppins().fontFamily),
+        titleSmall: const TextStyle(
+            fontSize: 25,
             color: Colors.white,
-            fontSize: 40,
+            fontFamily: DefinedFontFamilies.elMessiri,
+            fontWeight: FontWeight.w500),
+        titleMedium: const TextStyle(
+            fontSize: 30,
+            color: Colors.white,
+            fontFamily: DefinedFontFamilies.elMessiri,
+            fontWeight: FontWeight.w700),
+        bodySmall: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
             fontWeight: FontWeight.normal,
-            fontFamily: GoogleFonts.amiriQuran().fontFamily)),
+            fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
+        bodyMedium: TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.normal,
+            fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
+        bodyLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 35,
+            fontWeight: FontWeight.normal,
+            fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
+        // for displaying suras and ahadeeth:
+        displayLarge: GoogleFonts.notoSansArabic(
+            color: Colors.white, fontWeight: FontWeight.w400, fontSize: 40)),
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(color: darkPrimaryColor),
       color: Colors.transparent,
