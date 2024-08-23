@@ -85,6 +85,7 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   // Quran layout:-------------------------------
+  final TextEditingController searchFieldController = TextEditingController();
   List<String> getSurasListEnglishOrArabic() {
     if (localeProvider!.isArabicChosen()) {
       return Suras.arabicAuranSuras;

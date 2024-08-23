@@ -10,15 +10,14 @@ class QuranLayout extends StatefulWidget {
   const QuranLayout({super.key});
 
   @override
-  State<QuranLayout> createState() => QuranLayoutState();
+  State<QuranLayout> createState() => _QuranLayoutState();
 }
 
-class QuranLayoutState extends State<QuranLayout> {
+class _QuranLayoutState extends State<QuranLayout> {
   late MainScreenProvider mainScreenProvider;
   late ThemeData theme;
   List<String>? foundUser;
   late LocaleProvider localeProvider;
-  static TextEditingController searchFieldController = TextEditingController();
 
   void runFilter(String enteredKeyWord) {
     List<String> results = [];
@@ -138,7 +137,7 @@ class QuranLayoutState extends State<QuranLayout> {
 
   void clearSearchResults() async {
     setState(() {
-      searchFieldController.clear();
+      mainScreenProvider.searchFieldController.clear();
       FocusManager.instance.primaryFocus?.unfocus();
       runFilter('');
     });
