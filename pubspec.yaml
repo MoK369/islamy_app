@@ -41,6 +41,7 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.2.3
   flutter_native_splash: ^2.3.7
+  flutter_launcher_icons: ^0.13.1
   pdfx: ^2.6.0
 
   #UI
