@@ -1,0 +1,23 @@
+{
+  "islami": "إسلامي",
+  "quranLayout": "القران",
+  "search": "البحث",
+  "nameOfSura": "اسم السورة",
+  "numberOfVerses": "عدد الآيات",
+  "alert": "انتبه",
+  "cancel": "إلغاء",
+  "ok": "حسناً",
+  "hadeethLayout": "الحديث",
+  "ahadeeth": "الأحاديث",
+  "settingsLayout": "الإعدادات",
+  "language": "اللغة",
+  "themeMode": "وضع المظهر",
+  "enableNavigationBar": "تفعيل شريط التنقل",
+  "modes": "الأوضاع",
+  "lightTheme": "المظهر الفاتح",
+  "darkTheme": "المظهر الداكن",
+  "radioLayout": "الرديو",
+  "holyQuranRadio": "إذاعة القرآن الكريم",
+  "sebhaLayout": "السبحة",
+  "numberOfPraises": "عدد التسبيحات"
+}
