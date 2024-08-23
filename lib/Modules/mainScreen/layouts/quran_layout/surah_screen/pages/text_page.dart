@@ -26,17 +26,19 @@ class TextPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(
-                    flex: 2,
+                  const SizedBox(
+                    width: 50,
                   ),
-                  Text(
-                    textScaler: const TextScaler.linear(1.0),
-                    'سورة ${args.surahName}',
-                    textDirection: TextDirection.rtl,
-                    style: theme.textTheme.titleMedium!.copyWith(
-                        fontSize: mainScreenProvider.fontSizeOfSurahVerses),
+                  Expanded(
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      textScaler: const TextScaler.linear(1.0),
+                      'سورة ${args.surahName}',
+                      textDirection: TextDirection.rtl,
+                      style: theme.textTheme.titleMedium!.copyWith(
+                          fontSize: mainScreenProvider.fontSizeOfSurahVerses),
+                    ),
                   ),
-                  const Spacer(),
                   IconButton(
                       onPressed: () {
                         CustBottomSheet.bottomSheetOfSurahAndHadeethFontSize(

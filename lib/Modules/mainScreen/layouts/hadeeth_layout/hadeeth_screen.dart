@@ -66,21 +66,17 @@ class _HadeethScreenState extends State<HadeethScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Spacer(),
-                    MediaQuery(
-                      data: MediaQuery.of(context)
-                          .copyWith(textScaler: const TextScaler.linear(1.0)),
-                      child: Expanded(
-                        flex: 5,
-                        child: Center(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            args.hadeethTitle,
-                            style: theme.textTheme.titleMedium!.copyWith(
-                                fontSize:
-                                    mainScreenProvider.fontSizeOfSurahVerses),
-                          ),
-                        ),
+                    const SizedBox(
+                      width: 50,
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        textScaler: const TextScaler.linear(1.0),
+                        args.hadeethTitle,
+                        style: theme.textTheme.titleMedium!.copyWith(
+                            fontSize: mainScreenProvider.fontSizeOfSurahVerses),
                       ),
                     ),
                     IconButton(
