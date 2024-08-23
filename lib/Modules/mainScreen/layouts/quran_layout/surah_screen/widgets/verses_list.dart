@@ -86,8 +86,9 @@ class _VersesListState extends State<VersesList> {
                                 style: theme.textTheme.bodyMedium!.copyWith(
                                     fontSize: mainScreenProvider
                                             .fontSizeOfSurahVerses +
-                                        25,
-                                    fontFamily: DefinedFontFamilies.naskh),
+                                        30,
+                                    fontFamily:
+                                        DefinedFontFamilies.ayatQuran11),
                               ),
                               onLongPress: () {
                                 mainScreenProvider.markedVerseIndex == ''

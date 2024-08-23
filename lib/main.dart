@@ -8,7 +8,6 @@ import 'package:islamy_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_scr
 import 'package:islamy_app/Modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
 import 'package:islamy_app/Modules/mainScreen/main_screen.dart';
 import 'package:islamy_app/Modules/mainScreen/provider/main_screen_provider.dart';
-import 'package:islamy_app/Modules/splash/splash_screen.dart';
 import 'package:islamy_app/core/providers/locale_provider.dart';
 import 'package:islamy_app/core/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +60,6 @@ class _MyAppState extends State<MyApp> {
       darkTheme: Themes.darkTheme,
       themeMode: themeProvider.currentTheme,
       routes: {
-        SplashScreen.routeName: (context) => const SplashScreen(),
         MainScreen.routeName: (context) => MainScreen(),
         SurahScreen.routeName: (context) => const SurahScreen(),
         HadeethScreen.routeName: (context) => const HadeethScreen(),
