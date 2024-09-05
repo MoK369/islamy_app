@@ -19,5 +19,6 @@
   "radioLayout": "Radio",
   "holyQuranRadio": "Holy Quran Radio",
   "sebhaLayout": "Sebha",
-  "numberOfPraises": "Number of Praises"
+  "numberOfPraises": "Number of Praises",
+  "pressAgain": "Press Again to exit"
 }

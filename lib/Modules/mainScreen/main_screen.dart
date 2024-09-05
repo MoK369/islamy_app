@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:islamy_app/Modules/mainScreen/custom_widgets/custom_bottom_bar.dart';
 import 'package:islamy_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_layout.dart';
 import 'package:islamy_app/Modules/mainScreen/layouts/quran_layout/quran_layout.dart';
@@ -25,43 +26,64 @@ class MainScreen extends StatelessWidget {
   ];
 
   final PageController pgController = PageController(initialPage: 2);
-
+  DateTime? lastPressed;
   @override
   Widget build(BuildContext context) {
     MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
     mainScreenProvider.localeProvider = LocaleProvider.get(context);
-    return Consumer<MainScreenProvider>(
-      builder: (context, provider, child) {
-        return SafeArea(
-            child: BgContainer(
-                child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(
-              Locales.getTranslations(context).islami,
-            ),
-            centerTitle: true,
-          ),
-          bottomNavigationBar: Visibility(
-            visible: provider.isBottomBarEnabled,
-            child: CustomBottomBar(
-              onClick: (value) {
-                provider.changeBarIndex(value);
-                pgController.animateToPage(provider.bottomBarCurrentIndex,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut);
-              },
-            ),
-          ),
-          body: PageView(
-            controller: pgController,
-            onPageChanged: (value) {
-              provider.changeBarIndex(value);
-            },
-            children: layouts,
-          ),
-        )));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        DateTime now = DateTime.now();
+        bool isWarning = lastPressed == null ||
+            now.difference(lastPressed!) > const Duration(seconds: 2);
+
+        if (isWarning) {
+          lastPressed = DateTime.now();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.symmetric(vertical: 25),
+            content: Text(Locales.getTranslations(context).pressAgain),
+            duration: const Duration(seconds: 2),
+          ));
+          return;
+        }
+        SystemNavigator.pop();
+        lastPressed = null;
       },
+      child: Consumer<MainScreenProvider>(
+        builder: (context, provider, child) {
+          return SafeArea(
+              child: BgContainer(
+                  child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              title: Text(
+                Locales.getTranslations(context).islami,
+              ),
+              centerTitle: true,
+            ),
+            bottomNavigationBar: Visibility(
+              visible: provider.isBottomBarEnabled,
+              child: CustomBottomBar(
+                onClick: (value) {
+                  provider.changeBarIndex(value);
+                  pgController.animateToPage(provider.bottomBarCurrentIndex,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut);
+                },
+              ),
+            ),
+            body: PageView(
+              controller: pgController,
+              onPageChanged: (value) {
+                provider.changeBarIndex(value);
+              },
+              children: layouts,
+            ),
+          )));
+        },
+      ),
     );
   }
 }
