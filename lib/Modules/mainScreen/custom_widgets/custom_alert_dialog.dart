@@ -11,6 +11,7 @@ class CustAlertDialog {
       builder: (context) {
         return AlertDialog(
           scrollable: true,
+          actionsAlignment: MainAxisAlignment.spaceBetween,
           title: Text(
             textAlign: TextAlign.center,
             Locales.getTranslations(context).alert,
@@ -22,31 +23,26 @@ class CustAlertDialog {
             style: theme.textTheme.bodyMedium,
           ),
           actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.red),
-                      padding: WidgetStatePropertyAll(
-                          EdgeInsets.symmetric(horizontal: 35, vertical: 2))),
-                  child: Text(Locales.getTranslations(context).cancel,
-                      style: const TextStyle(fontSize: 35)),
-                ),
-                ElevatedButton(
-                  onPressed: okButtonFunction,
-                  style: const ButtonStyle(
-                      padding: WidgetStatePropertyAll(
-                          EdgeInsets.symmetric(horizontal: 35, vertical: 2))),
-                  child: Text(
-                    Locales.getTranslations(context).ok,
-                    style: const TextStyle(fontSize: 35),
-                  ),
-                ),
-              ],
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: const ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.red),
+                  padding: WidgetStatePropertyAll(
+                      EdgeInsets.symmetric(horizontal: 35, vertical: 2))),
+              child: Text(Locales.getTranslations(context).cancel,
+                  style: const TextStyle(fontSize: 35)),
+            ),
+            ElevatedButton(
+              onPressed: okButtonFunction,
+              style: const ButtonStyle(
+                  padding: WidgetStatePropertyAll(
+                      EdgeInsets.symmetric(horizontal: 35, vertical: 2))),
+              child: Text(
+                Locales.getTranslations(context).ok,
+                style: const TextStyle(fontSize: 35),
+              ),
             ),
             //Spacer()
           ],

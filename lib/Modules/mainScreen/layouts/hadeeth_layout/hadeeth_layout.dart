@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:humanizer/humanizer.dart';
 import 'package:islamy_app/Modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/Modules/mainScreen/provider/main_screen_provider.dart';
 import 'package:islamy_app/core/app_locals/locales.dart';
+import 'package:islamy_app/core/providers/locale_provider.dart';
 
 class HadeethLayout extends StatefulWidget {
   const HadeethLayout({super.key});
@@ -14,10 +16,10 @@ class HadeethLayout extends StatefulWidget {
 class _HadeethLayoutState extends State<HadeethLayout> {
   late ThemeData theme;
   List<HadethData> ahadeeth = [];
-
   @override
   Widget build(BuildContext context) {
     MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
+    LocaleProvider localeProvider = LocaleProvider.get(context);
     Size size = MediaQuery.of(context).size;
     if (ahadeeth.isEmpty) {
       readHadeeth();
@@ -81,7 +83,11 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                 },
                                 child: FittedBox(
                                   child: Text(
-                                    ahadeeth[currentHadeethIndex].hadeethTitle,
+                                    localeProvider.isArabicChosen()
+                                        ? ahadeeth[currentHadeethIndex]
+                                            .hadeethTitle
+                                        : ("${(currentHadeethIndex + 1).toOrdinalWords()} hadith")
+                                            .toTitleCase(),
                                     style: theme.textTheme.bodyMedium!
                                         .copyWith(fontSize: 35),
                                   ),

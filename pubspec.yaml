@@ -43,6 +43,7 @@ dependencies:
   flutter_native_splash: ^2.3.7
   flutter_launcher_icons: ^0.13.1
   pdfx: ^2.6.0
+  humanizer: ^3.0.0
 
   #UI
   #fonts:
