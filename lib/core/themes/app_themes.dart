@@ -10,6 +10,8 @@ class Themes {
   static ThemeData lightTheme = ThemeData(
       scaffoldBackgroundColor: Colors.transparent,
       indicatorColor: lightPrimaryColor,
+      progressIndicatorTheme:
+          const ProgressIndicatorThemeData(color: lightPrimaryColor),
       iconTheme: const IconThemeData(color: lightPrimaryColor),
       sliderTheme: SliderThemeData(
         trackHeight: 20,
@@ -119,6 +121,8 @@ class Themes {
   static ThemeData darkTheme = ThemeData(
       scaffoldBackgroundColor: Colors.transparent,
       indicatorColor: darkPrimaryColor,
+      progressIndicatorTheme:
+          const ProgressIndicatorThemeData(color: darkPrimaryColor),
       iconTheme: const IconThemeData(color: darkPrimaryColor, size: 45),
       sliderTheme: SliderThemeData(
         trackHeight: 20,

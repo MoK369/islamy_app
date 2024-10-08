@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamy_app/Modules/mainScreen/custom_widgets/custom_bottom_sheet.dart';
 import 'package:islamy_app/Modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:islamy_app/core/app_locals/locales.dart';
 import 'package:islamy_app/core/widgets/background_container.dart';
 
-import '../../../../core/app_locals/locales.dart';
 import 'hadeeth_layout.dart';
 
 class HadeethScreen extends StatefulWidget {

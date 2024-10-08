@@ -12,11 +12,16 @@ import 'package:islamy_app/core/providers/locale_provider.dart';
 import 'package:islamy_app/core/widgets/background_container.dart';
 import 'package:provider/provider.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   static const String routeName = "MainScreen";
 
-  MainScreen({super.key});
+  const MainScreen({super.key});
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final List<Widget> layouts = [
     const SebhaLayout(),
     const RadioLayout(),
@@ -27,63 +32,84 @@ class MainScreen extends StatelessWidget {
 
   final PageController pgController = PageController(initialPage: 2);
   DateTime? lastPressed;
+  late MainScreenProvider mainScreenProvider;
+
   @override
   Widget build(BuildContext context) {
-    MainScreenProvider mainScreenProvider = MainScreenProvider.get(context);
-    mainScreenProvider.localeProvider = LocaleProvider.get(context);
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        DateTime now = DateTime.now();
-        bool isWarning = lastPressed == null ||
-            now.difference(lastPressed!) > const Duration(seconds: 2);
+    LocaleProvider localeProvider = LocaleProvider.get(context);
+    mainScreenProvider = MainScreenProvider.get(context);
+    mainScreenProvider.getLocaleProvider(LocaleProvider.get(context));
+    if (mainScreenProvider.radioViewModel.isRadioChannelsEmpty ||
+        localeProvider.didLocaleChange()) {
+      mainScreenProvider.radioViewModel.getQuranRadioChannels(
+          localeProvider.isArabicChosen() ? "ar" : "eng");
+      mainScreenProvider.radioViewModel.initPlayerStateStream();
+      mainScreenProvider.radioViewModel.initCurrentIndexStream();
+      localeProvider.oldLocale = localeProvider.currentLocale;
+    }
+    return ChangeNotifierProvider(
+      create: (context) => mainScreenProvider.radioViewModel,
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          DateTime now = DateTime.now();
+          bool isWarning = lastPressed == null ||
+              now.difference(lastPressed!) > const Duration(seconds: 2);
 
-        if (isWarning) {
-          lastPressed = DateTime.now();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.symmetric(vertical: 25),
-            content: Text(Locales.getTranslations(context).pressAgain),
-            duration: const Duration(seconds: 2),
-          ));
-          return;
-        }
-        SystemNavigator.pop();
-        lastPressed = null;
-      },
-      child: Consumer<MainScreenProvider>(
-        builder: (context, provider, child) {
-          return SafeArea(
-              child: BgContainer(
-                  child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              title: Text(
-                Locales.getTranslations(context).islami,
-              ),
-              centerTitle: true,
-            ),
-            bottomNavigationBar: Visibility(
-              visible: provider.isBottomBarEnabled,
-              child: CustomBottomBar(
-                onClick: (value) {
-                  provider.changeBarIndex(value);
-                  pgController.animateToPage(provider.bottomBarCurrentIndex,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut);
-                },
-              ),
-            ),
-            body: PageView(
-              controller: pgController,
-              onPageChanged: (value) {
-                provider.changeBarIndex(value);
-              },
-              children: layouts,
-            ),
-          )));
+          if (isWarning) {
+            lastPressed = DateTime.now();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              behavior: SnackBarBehavior.floating,
+              margin: const EdgeInsets.symmetric(vertical: 25),
+              content: Text(Locales.getTranslations(context).pressAgain),
+              duration: const Duration(seconds: 2),
+            ));
+            return;
+          }
+          SystemNavigator.pop();
+          lastPressed = null;
         },
+        child: Consumer<MainScreenProvider>(
+          builder: (context, provider, child) {
+            return SafeArea(
+                child: BgContainer(
+                    child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              appBar: AppBar(
+                title: Text(
+                  Locales.getTranslations(context).islami,
+                ),
+                centerTitle: true,
+              ),
+              bottomNavigationBar: Visibility(
+                visible: provider.isBottomBarEnabled,
+                child: CustomBottomBar(
+                  onClick: (value) {
+                    provider.changeBarIndex(value);
+                    pgController.animateToPage(provider.bottomBarCurrentIndex,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
+                  },
+                ),
+              ),
+              body: PageView(
+                controller: pgController,
+                onPageChanged: (value) {
+                  provider.changeBarIndex(value);
+                },
+                children: layouts,
+              ),
+            )));
+          },
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mainScreenProvider.radioViewModel.dispose();
+    mainScreenProvider.dispose();
   }
 }

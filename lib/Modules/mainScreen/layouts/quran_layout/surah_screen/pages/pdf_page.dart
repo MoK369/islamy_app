@@ -24,7 +24,9 @@ class _PDFPageState extends State<PDFPage> {
   void initState() {
     super.initState();
     pdfController = PdfController(
-        document: PdfDocument.openAsset("assets/suras/suras_pdf/E-Quran.pdf"),
+        document: PdfDocument.openAsset(widget.args.surahIndex == 114
+            ? "assets/doas/doas_pdf/doa_completing_the_quran.pdf"
+            : "assets/suras/suras_pdf/E-Quran.pdf"),
         initialPage: Suras.rangeOfPagesToView[widget.args.surahIndex][0]);
     sliderCurrentValue =
         Suras.rangeOfPagesToView[widget.args.surahIndex][0].toDouble();

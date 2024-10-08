@@ -33,7 +33,9 @@ class TextPage extends StatelessWidget {
                     child: Text(
                       textAlign: TextAlign.center,
                       textScaler: const TextScaler.linear(1.0),
-                      'سورة ${args.surahName}',
+                      args.surahIndex == 114
+                          ? args.surahName // in this case it's the doa
+                          : 'سورة ${args.surahName}',
                       textDirection: TextDirection.rtl,
                       style: theme.textTheme.titleMedium!.copyWith(
                           fontSize: mainScreenProvider.fontSizeOfSurahVerses),

@@ -113,7 +113,8 @@ class Suras {
     "المسد",
     "الإخلاص",
     "الفلق",
-    "الناس"
+    "الناس",
+    "دعاء ختم القرآن الكريم"
   ];
   static const List<String> ayaNumber = [
     '7',
@@ -229,7 +230,8 @@ class Suras {
     '5',
     '4',
     '5',
-    '6'
+    '6',
+    ""
   ];
   static const List<String> englishQuranSurahs = [
     "Al-Fatiha",
@@ -345,7 +347,8 @@ class Suras {
     "Al-Masad",
     "Al-Ikhlas",
     "Al-Falaq",
-    "An-Nas"
+    "An-Nas",
+    "Duaa Completing The Holy Quran"
   ];
   static const List<List<int>> rangeOfPagesToView = [
     [1, 1],
@@ -462,5 +465,6 @@ class Suras {
     [569, 569],
     [569, 569],
     [569, 569],
+    [1, 2] // doa pdf
   ];
 }

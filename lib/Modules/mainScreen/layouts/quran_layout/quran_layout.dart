@@ -69,50 +69,56 @@ class _QuranLayoutState extends State<QuranLayout> {
                     SizedBox(
                       height: 10,
                     ),
-                    Expanded(child: VerticalDivider()),
+                    //Expanded(child: VerticalDivider()),
                   ],
                 ),
                 Column(
                   children: [
                     const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            child: Center(
-                                child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: SizedBox(
-                            height: size.height * 0.05,
-                            child: FittedBox(
-                              child: Text(
-                                  Locales.getTranslations(context)
-                                      .numberOfVerses,
-                                  style: theme.textTheme.titleMedium!
-                                      .copyWith(fontWeight: FontWeight.w300)),
+                    IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              child: Center(
+                                  child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: SizedBox(
+                              height: size.height * 0.05,
+                              child: FittedBox(
+                                child: Text(
+                                    Locales.getTranslations(context)
+                                        .numberOfVerses,
+                                    style: theme.textTheme.titleMedium!
+                                        .copyWith(fontWeight: FontWeight.w300)),
+                              ),
                             ),
-                          ),
-                        ))),
-                        Expanded(
-                            child: Center(
-                                child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: SizedBox(
-                            height: size.height * 0.05,
-                            child: FittedBox(
-                              child: Text(
-                                Locales.getTranslations(context).nameOfSura,
-                                style: theme.textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w300,
+                          ))),
+                          Transform.scale(
+                              scaleY: 1.4, child: const VerticalDivider()),
+                          Expanded(
+                              child: Center(
+                                  child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: SizedBox(
+                              height: size.height * 0.05,
+                              child: FittedBox(
+                                child: Text(
+                                  Locales.getTranslations(context).nameOfSura,
+                                  style: theme.textTheme.titleMedium!.copyWith(
+                                    fontWeight: FontWeight.w300,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ))),
-                      ],
+                          ))),
+                        ],
+                      ),
                     ),
-                    const Divider(),
+                    const Divider(
+                      height: 0,
+                    ),
                     ListOfSuras(
                       foundUser: foundUser!,
                       onClick: (index) {

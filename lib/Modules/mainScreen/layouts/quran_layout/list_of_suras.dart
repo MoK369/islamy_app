@@ -40,13 +40,36 @@ class ListOfSuras extends StatelessWidget {
             onTap: () {
               onClick(indexOfFoundUserList);
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+            child: IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  if (indexOfFoundUserList != 114) ...[
+                    Expanded(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Visibility(
+                          visible: mainScreenProvider.markedSurahIndex ==
+                              currentSurahIndex(
+                                  localeProvider, indexOfFoundUserList),
+                          child: const Icon(
+                            Icons.bookmark,
+                            size: 30,
+                          ),
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              numberOfAyas,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+                    Transform.scale(scaleY: 1, child: const VerticalDivider()),
+                  ] else ...[
                     Visibility(
                       visible: mainScreenProvider.markedSurahIndex ==
                           currentSurahIndex(
@@ -55,29 +78,21 @@ class ListOfSuras extends StatelessWidget {
                         Icons.bookmark,
                         size: 30,
                       ),
-                    ),
-                    Expanded(
+                    )
+                  ],
+                  Expanded(
                       child: Center(
-                        child: Text(
-                          numberOfAyas,
-                          style: theme.textTheme.bodyMedium,
-                        ),
+                          child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: FittedBox(
+                      child: Text(
+                        foundUser[indexOfFoundUserList],
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
-                  ],
-                )),
-                Expanded(
-                    child: Center(
-                        child: Padding(
-                  padding: const EdgeInsets.only(left: 3, right: 3),
-                  child: FittedBox(
-                    child: Text(
-                      foundUser[indexOfFoundUserList],
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                  ),
-                ))),
-              ],
+                  ))),
+                ],
+              ),
             ),
           );
         },

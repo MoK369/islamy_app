@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.main369.islamy.islamy_app"
+    namespace = "com.main369.islamy"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

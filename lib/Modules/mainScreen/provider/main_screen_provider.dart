@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/Modules/mainScreen/custom_widgets/custom_alert_dialog.dart';
+import 'package:islamy_app/Modules/mainScreen/layouts/quran_layout/quran_suras.dart';
+import 'package:islamy_app/Modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/core/providers/locale_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../layouts/quran_layout/quran_suras.dart';
-
 class MainScreenProvider extends ChangeNotifier {
   static const barEnablementKey = 'barEnablement';
+  final RadioViewModel radioViewModel;
 
   /// initialize localeProvider before getting Suras List.
-  LocaleProvider? localeProvider;
+  late LocaleProvider _localeProvider;
+
+  void getLocaleProvider(LocaleProvider localeProvider) {
+    _localeProvider = localeProvider;
+  }
 
   final SharedPreferences sharedPreferences;
   int bottomBarCurrentIndex = 2;
   bool isBottomBarEnabled = true;
 
-  MainScreenProvider(this.sharedPreferences) {
+  MainScreenProvider(this.sharedPreferences, this.radioViewModel) {
     getMainScreenData();
   }
 
@@ -74,7 +79,7 @@ class MainScreenProvider extends ChangeNotifier {
     CustAlertDialog.showBookMarkAlertDialog(
       context,
       theme: theme,
-      message: localeProvider!.isArabicChosen()
+      message: _localeProvider.isArabicChosen()
           ? "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها على الحديث رقم ${int.parse(markedHadeethIndex) + 1}"
           : 'If you perceed, you\'re going to lose the old bookmark made on hadeeth number ${int.parse(markedHadeethIndex) + 1}',
       okButtonFunction: () {
@@ -87,7 +92,7 @@ class MainScreenProvider extends ChangeNotifier {
   // Quran layout:-------------------------------
   final TextEditingController searchFieldController = TextEditingController();
   List<String> getSurasListEnglishOrArabic() {
-    if (localeProvider!.isArabicChosen()) {
+    if (_localeProvider.isArabicChosen()) {
       return Suras.arabicAuranSuras;
     } else {
       return Suras.englishQuranSurahs;
@@ -146,26 +151,39 @@ class MainScreenProvider extends ChangeNotifier {
     int numberOfMarkedVerseInSurah = int.parse(verseMarkInfo[1]);
     CustAlertDialog.showBookMarkAlertDialog(context,
         theme: theme,
-        message: localeProvider!.isArabicChosen()
-            ? "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها في سورة ${Suras.arabicAuranSuras[surahIndexOfMarkedVerse]} الآية رقم $numberOfMarkedVerseInSurah"
-            : 'If you proceed, you\'re going to lose the old bookmark made in ${Suras.englishQuranSurahs[surahIndexOfMarkedVerse]} surah the verse number $numberOfMarkedVerseInSurah',
+        message: _getAlertMessageAboutVersesMarking(
+            numberOfMarkedVerseInSurah, surahIndexOfMarkedVerse),
         okButtonFunction: () {
       changeMarkedVerse(verseToMarkIndex);
       Navigator.pop(context);
     });
   }
 
+  String _getAlertMessageAboutVersesMarking(
+      int numberOfMarkedVerseInSurah, int surahIndexOfMarkedVerse) {
+    if (_localeProvider.isArabicChosen()) {
+      return "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها في ${(surahIndexOfMarkedVerse == 114) ? "${Suras.arabicAuranSuras[surahIndexOfMarkedVerse]} الفقرة رقم $numberOfMarkedVerseInSurah" : " سورة ${Suras.arabicAuranSuras[surahIndexOfMarkedVerse]} الآية رقم $numberOfMarkedVerseInSurah"}";
+    } else {
+      return "If you proceed, you're going to lose the old bookmark made in ${(surahIndexOfMarkedVerse == 114) ? "${Suras.englishQuranSurahs[surahIndexOfMarkedVerse]} the paragraph number $numberOfMarkedVerseInSurah" : "${Suras.englishQuranSurahs[surahIndexOfMarkedVerse]} surah the verse number $numberOfMarkedVerseInSurah"}";
+    }
+  }
+
   void showAlertAboutSurasMarking(
       BuildContext context, ThemeData theme, String surahToMarkIndex) {
     CustAlertDialog.showBookMarkAlertDialog(context,
         theme: theme,
-        message: localeProvider!.isArabicChosen()
-            ? "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها على سورة ${Suras.arabicAuranSuras[int.parse(markedSurahIndex)]}"
-            : 'If you perceed, you\'re going to lose the old bookmark made on ${Suras.englishQuranSurahs[int.parse(markedSurahIndex)]} surah',
-        okButtonFunction: () {
+        message: _getAlertMessageAboutSurasMarking(), okButtonFunction: () {
       changeMarkedSurah(surahToMarkIndex);
       Navigator.pop(context);
     });
+  }
+
+  String _getAlertMessageAboutSurasMarking() {
+    if (_localeProvider.isArabicChosen()) {
+      return "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها على ${(int.parse(markedSurahIndex) == 114) ? Suras.arabicAuranSuras[int.parse(markedSurahIndex)] : "سورة ${Suras.arabicAuranSuras[int.parse(markedSurahIndex)]}"}";
+    } else {
+      return "If you perceed, you're going to lose the old bookmark made on ${(int.parse(markedSurahIndex) == 114) ? Suras.englishQuranSurahs[int.parse(markedSurahIndex)] : "${Suras.englishQuranSurahs[int.parse(markedSurahIndex)]} surah"}";
+    }
   }
 
   void showAlertAboutMarkedSurahPDFPage(
@@ -176,7 +194,7 @@ class MainScreenProvider extends ChangeNotifier {
 
     CustAlertDialog.showBookMarkAlertDialog(context,
         theme: theme,
-        message: localeProvider!.isArabicChosen()
+        message: _localeProvider.isArabicChosen()
             ? "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها في سورة ${Suras.arabicAuranSuras[int.parse(surahIndexOfMarkedPage)]}صفحة رقم $indexOfMarkedPage "
             : 'If you perceed, you\'re going to lose the old bookmark made in ${Suras.englishQuranSurahs[int.parse(surahIndexOfMarkedPage)]} surah page number $indexOfMarkedPage',
         okButtonFunction: () {
