@@ -46,13 +46,13 @@ void initAudioService(RadioViewModel radioViewModel) async {
   await AudioService.init(
     builder: () => radioViewModel,
     config: AudioServiceConfig(
-        androidNotificationChannelId: 'com.main369.islamy.radioQuran.channel',
-        androidNotificationChannelName: 'Quran Audio playback',
-        androidNotificationIcon: "drawable/ic_launcher_foreground",
-        notificationColor: brightness == Brightness.light
-            ? const Color(0xFFB7935F)
-            : const Color(0xFF1e2949),
-        androidNotificationOngoing: true),
+      androidNotificationChannelId: 'com.main369.islamy.radioQuran.channel',
+      androidNotificationChannelName: 'Quran Audio playback',
+      androidNotificationIcon: "drawable/ic_launcher_monochrome",
+      notificationColor: brightness == Brightness.light
+          ? const Color(0xFFB7935F)
+          : const Color(0xFF1e2949),
+    ),
   );
 }
 

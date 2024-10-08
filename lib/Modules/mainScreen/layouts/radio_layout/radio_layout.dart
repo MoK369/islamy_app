@@ -81,6 +81,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
+                        flex: 2,
                         child: Text(
                           textAlign: TextAlign.center,
                           maxLines: 2,
@@ -90,10 +91,10 @@ class _RadioLayoutState extends State<RadioLayout> {
                         ),
                       ),
                       Expanded(
-                        flex: 2,
                         child: Directionality(
                           textDirection: TextDirection.ltr,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               InkWell(
