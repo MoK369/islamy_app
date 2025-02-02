@@ -3,8 +3,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:islamy_app/data/models/quran_radio_model.dart';
 import 'package:islamy_app/presentation/core/api_error_message/api_error_message.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
+import 'package:islamy_app/presentation/core/widgets/playing_loading_icon.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
 import 'package:provider/provider.dart';
 
 class RadioLayout extends StatefulWidget {
@@ -36,10 +38,10 @@ class _RadioLayoutState extends State<RadioLayout> {
   //
   //   //localeProvider = Provider.of<LocaleProvider>(context);
   // }
-
+  late Size size;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
     ThemeData theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +60,7 @@ class _RadioLayoutState extends State<RadioLayout> {
             )),
         Consumer<RadioViewModel>(
           builder: (context, radioViewModel, child) {
-            var viewModelResult = radioViewModel.quranRadioState;
+            var viewModelResult = radioViewModel.quranRadioChannelsState;
             switch (viewModelResult) {
               case LoadingState<List<RadioChannel>>():
                 return const Expanded(
@@ -108,18 +110,12 @@ class _RadioLayoutState extends State<RadioLayout> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () async {
-                                  radioViewModel.isRadioAudioPlaying
-                                      ? await radioViewModel.pause()
-                                      : await radioViewModel.play();
-                                },
-                                child: Icon(
-                                  radioViewModel.isRadioAudioPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  size: size.width * 0.1,
-                                ),
-                              ),
+                                  onTap: () async {
+                                    await onPlayPauseButtonPress(
+                                        radioViewModel);
+                                  },
+                                  child:
+                                      getPlayPauseButtonIcon(radioViewModel)),
                               InkWell(
                                 onTap: () async {
                                   await radioViewModel.stop();
@@ -150,5 +146,35 @@ class _RadioLayoutState extends State<RadioLayout> {
         )
       ],
     );
+  }
+
+  Future<void> onPlayPauseButtonPress(RadioViewModel radioViewModel) async {
+    switch (radioViewModel.radioAudioState) {
+      case NotPlayingAudioState():
+        await radioViewModel.play();
+      case PlayingAudioState():
+        await radioViewModel.pause();
+      case LoadingAudioState():
+        await radioViewModel.stop();
+    }
+  }
+
+  Widget getPlayPauseButtonIcon(RadioViewModel radioViewModel) {
+    switch (radioViewModel.radioAudioState) {
+      case NotPlayingAudioState():
+        return Icon(
+          Icons.play_arrow,
+          size: size.width * 0.1,
+        );
+      case PlayingAudioState():
+        return Icon(
+          Icons.pause,
+          size: size.width * 0.1,
+        );
+      case LoadingAudioState():
+        return PlayingLoadingIcon(
+          iconSize: size.width * 0.1,
+        );
+    }
   }
 }
