@@ -1,4 +1,4 @@
-# islamy_app
+# Islamy App
 Islamic Application is an application that help muslims in their daily life by providing them with set of good islamic features like:
 
 1. Complete Quran:
