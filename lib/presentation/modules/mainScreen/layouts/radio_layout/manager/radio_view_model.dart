@@ -5,6 +5,7 @@ import 'package:islamy_app/data/models/quran_radio_model.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
 import 'package:islamy_app/domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
 import 'package:just_audio/just_audio.dart';
 
 @injectable
@@ -14,28 +15,29 @@ class RadioViewModel extends BaseAudioHandler
   final QuranRadioChannelsRepository quranRadioChannelsRepo;
 
   @factoryMethod
-  RadioViewModel(this.quranRadioChannelsRepo);
+  RadioViewModel(this.quranRadioChannelsRepo) {
+    initPlayerStateStream();
+    initCurrentIndexStream();
+  }
 
-  BaseViewState<List<RadioChannel>> quranRadioState = LoadingState();
+  BaseViewState<List<RadioChannel>> quranRadioChannelsState = LoadingState();
   int _currentRadioChannelIndex = 0;
   List<RadioChannel> _radioChannels = [];
   List<MediaItem> mediaItems = [];
   late ConcatenatingAudioSource playlist;
   late RadioChannel currentRadioChannel;
-  bool isRadioAudioPlaying = false,
-      isRadioChannelsEmpty = true,
-      didAudioSourceGetSet = false,
-      didAudioPlayerStarted = false;
+  bool isRadioChannelsEmpty = true, didAudioPlayerStarted = false;
+  RadioAudioState radioAudioState = NotPlayingAudioState();
 
   Future<void> getQuranRadioChannels(String languageCode) async {
-    quranRadioState = LoadingState();
+    quranRadioChannelsState = LoadingState();
     notifyListeners();
     var quranRadioApiResult =
         await quranRadioChannelsRepo.getQuranRadioChannels(languageCode);
     // await ApiManager.getQuranRadioChannels(languageCode);
     switch (quranRadioApiResult) {
       case Success<List<RadioChannel>>():
-        quranRadioState = SuccessState(data: quranRadioApiResult.data);
+        quranRadioChannelsState = SuccessState(data: quranRadioApiResult.data);
         _radioChannels = quranRadioApiResult.data;
         if (_radioChannels.isNotEmpty) {
           await initAllAudioSources();
@@ -43,25 +45,28 @@ class RadioViewModel extends BaseAudioHandler
         isRadioChannelsEmpty = _radioChannels.isEmpty;
         break;
       case ServerError<List<RadioChannel>>():
-        quranRadioState = ErrorState(serverError: quranRadioApiResult);
+        quranRadioChannelsState = ErrorState(serverError: quranRadioApiResult);
         break;
       case CodeError<List<RadioChannel>>():
-        quranRadioState = ErrorState(codeError: quranRadioApiResult);
+        quranRadioChannelsState = ErrorState(codeError: quranRadioApiResult);
         break;
     }
     notifyListeners();
   }
 
   Future<void> initAllAudioSources() async {
-    await audioPlayer.setAudioSource(
-      await _concatenateAudioSources(),
-      preload: false,
-      initialIndex: _currentRadioChannelIndex,
-      initialPosition: Duration.zero,
-    );
-    await audioPlayer.setShuffleModeEnabled(false);
-    didAudioSourceGetSet = true;
-    currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
+    try {
+      await audioPlayer.setAudioSource(
+        await _concatenateAudioSources(),
+        preload: false,
+        initialIndex: _currentRadioChannelIndex,
+        initialPosition: Duration.zero,
+      );
+      await audioPlayer.setShuffleModeEnabled(false);
+      currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
+    } catch (e) {
+      debugPrint("Error initializing audio sources: $e");
+    }
   }
 
   Future<ConcatenatingAudioSource> _concatenateAudioSources() async {
@@ -77,7 +82,10 @@ class RadioViewModel extends BaseAudioHandler
           artUri: Uri.parse(_radioChannels[i].url ?? "")));
       audioSources.add(AudioSource.uri(url, tag: mediaItems[i]));
     }
-    playlist = ConcatenatingAudioSource(children: audioSources);
+    playlist = ConcatenatingAudioSource(
+        useLazyPreparation: true,
+        shuffleOrder: DefaultShuffleOrder(),
+        children: audioSources);
     await addQueueItems(mediaItems);
     return playlist;
   }
@@ -90,17 +98,22 @@ class RadioViewModel extends BaseAudioHandler
   void initPlayerStateStream() {
     audioPlayer.playerStateStream.listen(
       (event) {
-        if (audioPlayer.playing) {
-          isRadioAudioPlaying = true;
+        if (event.playing && event.processingState == ProcessingState.ready) {
+          debugPrint("Audio playing");
+          radioAudioState = PlayingAudioState();
         } else if (event.processingState == ProcessingState.ready &&
-            !audioPlayer.playing) {
-          isRadioAudioPlaying = false;
-        } else if (event.processingState == ProcessingState.idle ||
-            event.processingState != ProcessingState.ready) {
-          isRadioAudioPlaying = false;
-          didAudioSourceGetSet = false;
+            !event.playing) {
+          debugPrint("Audio paused");
+          radioAudioState = NotPlayingAudioState();
+        } else if (event.processingState == ProcessingState.idle) {
+          debugPrint("Audio Not Played yet");
+          radioAudioState = NotPlayingAudioState();
         } else if (event.processingState == ProcessingState.completed) {
-          isRadioAudioPlaying = false;
+          debugPrint("Audio completed");
+          radioAudioState = NotPlayingAudioState();
+        } else if (event.processingState == ProcessingState.buffering) {
+          debugPrint("Audio Loading");
+          radioAudioState = LoadingAudioState();
         }
         notifyListeners();
       },
@@ -133,20 +146,9 @@ class RadioViewModel extends BaseAudioHandler
       //mediaItem.add(queue.value[audioPlayer.currentIndex??0]);
       broadCastPlaybackState(playing: true);
     } on Exception catch (e) {
-      quranRadioState = ErrorState(codeError: CodeError(exception: e));
+      quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
       notifyListeners();
     }
-  }
-
-  @override
-  Future<void> pause() async {
-    broadCastPlaybackState(controls: [
-      MediaControl.skipToPrevious,
-      MediaControl.play,
-      MediaControl.stop,
-      MediaControl.skipToNext,
-    ]);
-    await audioPlayer.pause();
   }
 
   void broadCastPlaybackState(
@@ -172,6 +174,17 @@ class RadioViewModel extends BaseAudioHandler
       speed: audioPlayer.speed,
       queueIndex: audioPlayer.currentIndex,
     ));
+  }
+
+  @override
+  Future<void> pause() async {
+    broadCastPlaybackState(controls: [
+      MediaControl.skipToPrevious,
+      MediaControl.play,
+      MediaControl.stop,
+      MediaControl.skipToNext,
+    ]);
+    await audioPlayer.pause();
   }
 
   @override

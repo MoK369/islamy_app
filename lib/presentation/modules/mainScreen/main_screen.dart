@@ -43,8 +43,6 @@ class _MainScreenState extends State<MainScreen> {
         localeProvider.didLocaleChange()) {
       mainScreenProvider.radioViewModel.getQuranRadioChannels(
           localeProvider.isArabicChosen() ? "ar" : "eng");
-      mainScreenProvider.radioViewModel.initPlayerStateStream();
-      mainScreenProvider.radioViewModel.initCurrentIndexStream();
       localeProvider.oldLocale = localeProvider.currentLocale;
     }
     return ChangeNotifierProvider(
