@@ -11,7 +11,7 @@ class PlayingLoadingIcon extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Icon(
-          Icons.play_arrow,
+          Icons.pause,
           size: iconSize,
         ),
         const CircularProgressIndicator()

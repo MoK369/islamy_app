@@ -173,7 +173,7 @@ class _RadioLayoutState extends State<RadioLayout> {
         );
       case LoadingAudioState():
         return PlayingLoadingIcon(
-          iconSize: size.width * 0.1,
+          iconSize: size.width * 0.07,
         );
     }
   }
