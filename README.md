@@ -9,8 +9,11 @@ Islamic Application is an application that help muslims in their daily life by p
 - Browse through a collection of authentic Hadiths from trusted sources like Sahih Bukhari and Sahih Muslim.
 
 3. Quran Radio Channels
+   
 4. Tasbeeh Counter
+
 5. Localization
+ 
 6. Theming
 
 ## Things we learned/used in this project:
