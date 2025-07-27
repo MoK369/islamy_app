@@ -53,7 +53,7 @@ class _QuranLayoutState extends State<QuranLayout> {
         children: [
           Image.asset(
             'assets/icons/quran_header_icn.png',
-            height: size.height * 0.2,
+            height: size.height * 0.19,
           ),
           SearchTextField(
             onChange: (value) {
@@ -122,13 +122,19 @@ class _QuranLayoutState extends State<QuranLayout> {
                     ListOfSuras(
                       foundUser: foundUser!,
                       onClick: (index) {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         Navigator.pushNamed(context, SurahScreen.routeName,
                             arguments: SendSurahInfo(
                                 surahIndex: mainScreenProvider
                                     .getSurasListEnglishOrArabic()
                                     .indexOf(foundUser![index]),
                                 surahName: foundUser![index]));
-                        clearSearchResults();
+                        Future.delayed(
+                          const Duration(seconds: 1),
+                          () {
+                            clearSearchResults();
+                          },
+                        );
                       },
                     ),
                   ],

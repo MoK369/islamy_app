@@ -109,7 +109,7 @@ class RadioViewModel extends BaseAudioHandler
       (event) {
         if (event.playing && event.processingState == ProcessingState.ready) {
           debugPrint("Audio playing");
-          _timer?.cancel();
+          stopInternetPolling();
           radioAudioState = PlayingAudioState();
         } else if (event.processingState == ProcessingState.ready &&
             !event.playing) {
@@ -123,7 +123,7 @@ class RadioViewModel extends BaseAudioHandler
           radioAudioState = NotPlayingAudioState();
         } else if (event.processingState == ProcessingState.buffering) {
           debugPrint("Audio Loading");
-          startMonitoringConnectivity();
+          handleStreamFailure();
           radioAudioState = LoadingAudioState();
         }
         notifyListeners();
@@ -157,6 +157,27 @@ class RadioViewModel extends BaseAudioHandler
     }
   }
 
+  void handleStreamFailure() {
+    startMonitoringConnectivity();
+    startInternetPolling();
+  }
+
+  void startInternetPolling() {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      final hasInternet = await hasInternetAccess();
+      if (hasInternet) {
+        print("Internet is back. Retrying stream...");
+        stopInternetPolling();
+        retryCurrentStream();
+      }
+    });
+  }
+
+  void stopInternetPolling() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
   void startMonitoringConnectivity() {
     _connectivity.onConnectivityChanged.listen((result) async {
       print("inside monitoring connectivity $result");
@@ -166,16 +187,6 @@ class RadioViewModel extends BaseAudioHandler
           retryCurrentStream();
         } else {
           debugPrint("Connected to network, but no internet access.");
-          if (_timer?.isActive == true) return;
-          _timer = Timer.periodic(
-            const Duration(seconds: 15),
-            (timer) async {
-              final internetAvailable = await hasInternetAccess();
-              if (internetAvailable) {
-                retryCurrentStream();
-              }
-            },
-          );
         }
       }
     });
@@ -248,13 +259,14 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> pause() async {
+    print("inside pause-----");
+    await audioPlayer.pause();
     broadCastPlaybackState(playing: false, controls: [
       MediaControl.skipToPrevious,
       MediaControl.play,
       MediaControl.stop,
       MediaControl.skipToNext,
     ]);
-    await audioPlayer.pause();
   }
 
   @override
@@ -284,6 +296,9 @@ class RadioViewModel extends BaseAudioHandler
     currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
     var wasPlaying = audioPlayer.playing;
     print("$wasPlaying --------");
+    if (audioPlayer.processingState == ProcessingState.ready && !wasPlaying) {
+      mediaItem.add(queue.value[_currentRadioChannelIndex]);
+    }
     if (wasPlaying) {
       await audioPlayer.stop();
       await audioPlayer.setAudioSource(
@@ -306,6 +321,9 @@ class RadioViewModel extends BaseAudioHandler
     currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
     var wasPlaying = audioPlayer.playing;
     print("$wasPlaying --------");
+    if (audioPlayer.processingState == ProcessingState.ready && !wasPlaying) {
+      mediaItem.add(queue.value[_currentRadioChannelIndex]);
+    }
     if (wasPlaying) {
       await audioPlayer.stop();
       await audioPlayer.setAudioSource(

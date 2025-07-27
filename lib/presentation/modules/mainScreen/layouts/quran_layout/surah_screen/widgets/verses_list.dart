@@ -78,7 +78,7 @@ class _VersesListState extends State<VersesList> {
                       textDirection: TextDirection.rtl,
                       text: TextSpan(children: [
                         TextSpan(
-                          text: arList[index],
+                          text: "${arList[index]} ",
                           style: theme.textTheme.displayLarge!.copyWith(
                               height: 2,
                               fontSize:
@@ -88,22 +88,49 @@ class _VersesListState extends State<VersesList> {
                           baseline: TextBaseline.alphabetic,
                           alignment: PlaceholderAlignment.baseline,
                           child: GestureDetector(
-                            child: Text(
-                              textScaler: const TextScaler.linear(1.0),
-                              textDirection: TextDirection.rtl,
-                              mainScreenProvider.markedVerseIndex ==
-                                      currentVerseIndex
-                                  ? widget.args.surahIndex == 114
-                                      ? "۞📖"
-                                      : " $verseNumber📖 "
-                                  : widget.args.surahIndex == 114
-                                      ? "۞"
-                                      : ' $verseNumber ',
-                              style: theme.textTheme.bodyMedium!.copyWith(
-                                  fontSize:
-                                      mainScreenProvider.fontSizeOfSurahVerses +
-                                          15),
-                            ),
+                            child: widget.args.surahIndex == 114
+                                ? Text(
+                                    textScaler: const TextScaler.linear(1.0),
+                                    textDirection: TextDirection.rtl,
+                                    mainScreenProvider.markedVerseIndex ==
+                                            currentVerseIndex
+                                        ? "۞📖"
+                                        : "۞",
+                                    style: theme.textTheme.bodyMedium!.copyWith(
+                                        fontSize: mainScreenProvider
+                                                .fontSizeOfSurahVerses +
+                                            15),
+                                  )
+                                : Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          ImageIcon(
+                                            const AssetImage(
+                                                "assets/icons/ayat_number_icon.png"),
+                                            color: Colors.black,
+                                            size: mainScreenProvider
+                                                    .fontSizeOfSurahVerses +
+                                                15,
+                                          ),
+                                          Text("$verseNumber",
+                                              style: theme.textTheme.bodyMedium!
+                                                  .copyWith(
+                                                      fontSize: mainScreenProvider
+                                                          .fontSizeOfSurahVerses))
+                                        ],
+                                      ),
+                                      if (mainScreenProvider.markedVerseIndex ==
+                                          currentVerseIndex)
+                                        Text("📖",
+                                            style: theme.textTheme.bodyMedium!
+                                                .copyWith(
+                                                    fontSize: mainScreenProvider
+                                                        .fontSizeOfSurahVerses))
+                                    ],
+                                  ),
                             onLongPress: () {
                               mainScreenProvider.markedVerseIndex == ''
                                   ? mainScreenProvider

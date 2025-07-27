@@ -89,8 +89,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                             .hadeethTitle
                                         : ("${(currentHadeethIndex + 1).toOrdinalWords()} hadith")
                                             .toTitleCase(),
-                                    style: theme.textTheme.bodyMedium!
-                                        .copyWith(fontSize: 35),
+                                    style: theme.textTheme.bodyMedium,
                                   ),
                                 )),
                           ),
