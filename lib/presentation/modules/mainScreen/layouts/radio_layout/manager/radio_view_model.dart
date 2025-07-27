@@ -31,11 +31,14 @@ class RadioViewModel extends BaseAudioHandler
   List<MediaItem> mediaItems = [];
   late ConcatenatingAudioSource playlist;
   late RadioChannel currentRadioChannel;
-  bool isRadioChannelsEmpty = true, didAudioPlayerStarted = false;
+  bool isRadioChannelsEmpty = true,
+      didAudioPlayerStarted = false,
+      isRadioGoingToPlayAgain = false;
   String languageCodeOfCallingTheApi = '';
   RadioAudioState radioAudioState = NotPlayingAudioState();
 
   final Connectivity _connectivity = Connectivity();
+  Timer? _timer;
 
   Future<void> getQuranRadioChannels(String languageCode) async {
     quranRadioChannelsState = LoadingState();
@@ -106,6 +109,7 @@ class RadioViewModel extends BaseAudioHandler
       (event) {
         if (event.playing && event.processingState == ProcessingState.ready) {
           debugPrint("Audio playing");
+          _timer?.cancel();
           radioAudioState = PlayingAudioState();
         } else if (event.processingState == ProcessingState.ready &&
             !event.playing) {
@@ -162,6 +166,16 @@ class RadioViewModel extends BaseAudioHandler
           retryCurrentStream();
         } else {
           debugPrint("Connected to network, but no internet access.");
+          if (_timer?.isActive == true) return;
+          _timer = Timer.periodic(
+            const Duration(seconds: 15),
+            (timer) async {
+              final internetAvailable = await hasInternetAccess();
+              if (internetAvailable) {
+                retryCurrentStream();
+              }
+            },
+          );
         }
       }
     });
@@ -170,11 +184,12 @@ class RadioViewModel extends BaseAudioHandler
   void retryCurrentStream() async {
     try {
       print("inside retryCurrentStream");
-      await audioPlayer.setAudioSource(
-        audioSources[_currentRadioChannelIndex],
-        preload: true,
-        initialPosition: Duration.zero,
-      );
+      // await audioPlayer.setAudioSource(
+      //   audioSources[_currentRadioChannelIndex],
+      //   preload: true,
+      //   initialPosition: Duration.zero,
+      // );
+      await audioPlayer.load();
       await audioPlayer.play();
     } catch (e) {
       // Optionally log or retry again later
@@ -197,9 +212,8 @@ class RadioViewModel extends BaseAudioHandler
         initialIndex: _currentRadioChannelIndex,
         initialPosition: Duration.zero,
       );
-      audioPlayer.play();
-
-      //mediaItem.add(queue.value[audioPlayer.currentIndex??0]);
+      mediaItem.add(queue.value[_currentRadioChannelIndex]);
+      await audioPlayer.play();
       broadCastPlaybackState(playing: true);
     } on Exception catch (e) {
       quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
@@ -234,7 +248,7 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> pause() async {
-    broadCastPlaybackState(controls: [
+    broadCastPlaybackState(playing: false, controls: [
       MediaControl.skipToPrevious,
       MediaControl.play,
       MediaControl.stop,
@@ -263,7 +277,9 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> skipToNext() async {
-    _currentRadioChannelIndex++;
+    if (_currentRadioChannelIndex != audioSources.length - 1) {
+      _currentRadioChannelIndex++;
+    }
     print("$_currentRadioChannelIndex ------");
     currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
     var wasPlaying = audioPlayer.playing;
@@ -275,6 +291,7 @@ class RadioViewModel extends BaseAudioHandler
         preload: false,
         initialPosition: Duration.zero,
       );
+      mediaItem.add(queue.value[_currentRadioChannelIndex]);
       await audioPlayer.play();
     }
     notifyListeners();
@@ -282,33 +299,24 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> skipToPrevious() async {
-    currentRadioChannel = _radioChannels[--_currentRadioChannelIndex];
-    await audioPlayer.seekToPrevious();
+    if (_currentRadioChannelIndex != 0) {
+      _currentRadioChannelIndex--;
+    }
+    print("$_currentRadioChannelIndex ------");
+    currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
+    var wasPlaying = audioPlayer.playing;
+    print("$wasPlaying --------");
+    if (wasPlaying) {
+      await audioPlayer.stop();
+      await audioPlayer.setAudioSource(
+        audioSources[_currentRadioChannelIndex],
+        preload: false,
+        initialPosition: Duration.zero,
+      );
+      print("${queue.value[_currentRadioChannelIndex].title} --------");
+      mediaItem.add(queue.value[_currentRadioChannelIndex]);
+      await audioPlayer.play();
+    }
     notifyListeners();
   }
-
-// Future<void> next() async {
-//   // if (_currentRadioChannelIndex == _radioChannels.length) {
-//   //   return;
-//   // }
-//   // _currentRadioChannelIndex++;
-//   // currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-//
-//   // print("currentRadioChannel index $_currentRadioChannelIndex");
-//   //await audioPlayer.stop();
-//   await audioPlayer.seekToNext();
-//   print("Audio Player index ${audioPlayer.currentIndex}");
-// }
-//
-// Future<void> previous() async {
-//   // if (_currentRadioChannelIndex == 0) {
-//   //   return;
-//   // }
-//   // _currentRadioChannelIndex--;
-//   // currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-//   // print("currentRadioChannel index $_currentRadioChannelIndex");
-//   //await audioPlayer.stop();
-//   await audioPlayer.seekToPrevious();
-//   print("Audio Player index ${audioPlayer.currentIndex}");
-// }
 }
