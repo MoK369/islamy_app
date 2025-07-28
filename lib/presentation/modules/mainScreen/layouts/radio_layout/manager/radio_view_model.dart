@@ -13,7 +13,7 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
 import 'package:just_audio/just_audio.dart';
 
-@injectable
+@singleton
 class RadioViewModel extends BaseAudioHandler
     with ChangeNotifier, QueueHandler, SeekHandler {
   final audioPlayer = AudioPlayer();
@@ -22,6 +22,10 @@ class RadioViewModel extends BaseAudioHandler
   @factoryMethod
   RadioViewModel(this.quranRadioChannelsRepo) {
     initPlayerStateStream();
+    audioPlayer.playbackEventStream
+        .map(broadCastPlaybackState)
+        .pipe(playbackState);
+
     //initCurrentIndexStream();
   }
 
@@ -210,7 +214,7 @@ class RadioViewModel extends BaseAudioHandler
   @override
   Future<void> play() async {
     try {
-      broadCastPlaybackState(playing: false);
+      //broadCastPlaybackState(playing: false);
       didAudioPlayerStarted = true;
       //initCurrentIndexStream();
       print("before play $_currentRadioChannelIndex ------------");
@@ -225,24 +229,23 @@ class RadioViewModel extends BaseAudioHandler
       );
       mediaItem.add(queue.value[_currentRadioChannelIndex]);
       await audioPlayer.play();
-      broadCastPlaybackState(playing: true);
+      //broadCastPlaybackState(playing: true);
     } on Exception catch (e) {
       quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
     }
     notifyListeners();
   }
 
-  void broadCastPlaybackState(
-      {bool playing = true,
-      List<MediaControl> controls = const [
+  PlaybackState broadCastPlaybackState(PlaybackEvent event) {
+    return PlaybackState(
+      controls: [
         MediaControl.skipToPrevious,
-        MediaControl.pause,
+        if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
         MediaControl.stop,
         MediaControl.skipToNext,
-      ]}) {
-    playbackState.add(PlaybackState(
-      controls: controls,
-      playing: playing,
+      ],
+      playing: audioPlayer.playing,
+      androidCompactActionIndices: const [0, 1, 3],
       processingState: {
         ProcessingState.idle: AudioProcessingState.idle,
         ProcessingState.loading: AudioProcessingState.loading,
@@ -253,28 +256,20 @@ class RadioViewModel extends BaseAudioHandler
       updatePosition: audioPlayer.position,
       bufferedPosition: audioPlayer.bufferedPosition,
       speed: audioPlayer.speed,
-      queueIndex: audioPlayer.currentIndex,
-    ));
+      queueIndex: event.currentIndex,
+    );
   }
 
   @override
   Future<void> pause() async {
     print("inside pause-----");
     await audioPlayer.pause();
-    broadCastPlaybackState(playing: false, controls: [
-      MediaControl.skipToPrevious,
-      MediaControl.play,
-      MediaControl.stop,
-      MediaControl.skipToNext,
-    ]);
+    //broadCastPlaybackState();
   }
 
   @override
   Future<void> stop() async {
-    broadCastPlaybackState(
-      controls: [],
-      playing: false,
-    );
+    //broadCastPlaybackState();
     await audioPlayer.stop();
     playbackState.add(PlaybackState(
       controls: [],

@@ -45,61 +45,58 @@ class _MainScreenState extends State<MainScreen> {
           localeProvider.isArabicChosen() ? "ar" : "eng");
       localeProvider.oldLocale = localeProvider.currentLocale;
     }
-    return ChangeNotifierProvider(
-      create: (context) => mainScreenProvider.radioViewModel,
-      child: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, result) async {
-          DateTime now = DateTime.now();
-          bool isWarning = lastPressed == null ||
-              now.difference(lastPressed!) > const Duration(seconds: 2);
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        DateTime now = DateTime.now();
+        bool isWarning = lastPressed == null ||
+            now.difference(lastPressed!) > const Duration(seconds: 2);
 
-          if (isWarning) {
-            lastPressed = DateTime.now();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.floating,
-              margin: const EdgeInsets.symmetric(vertical: 25),
-              content: Text(Locales.getTranslations(context).pressAgain),
-              duration: const Duration(seconds: 2),
-            ));
-            return;
-          }
-          SystemNavigator.pop();
-          lastPressed = null;
-        },
-        child: Consumer<MainScreenProvider>(
-          builder: (context, provider, child) {
-            return SafeArea(
-                child: BgContainer(
-                    child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                title: Text(
-                  Locales.getTranslations(context).islami,
-                ),
-                centerTitle: true,
+        if (isWarning) {
+          lastPressed = DateTime.now();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.symmetric(vertical: 25),
+            content: Text(Locales.getTranslations(context).pressAgain),
+            duration: const Duration(seconds: 2),
+          ));
+          return;
+        }
+        SystemNavigator.pop();
+        lastPressed = null;
+      },
+      child: Consumer<MainScreenProvider>(
+        builder: (context, provider, child) {
+          return SafeArea(
+              child: BgContainer(
+                  child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              title: Text(
+                Locales.getTranslations(context).islami,
               ),
-              bottomNavigationBar: Visibility(
-                visible: provider.isBottomBarEnabled,
-                child: CustomBottomBar(
-                  onClick: (value) {
-                    provider.changeBarIndex(value);
-                    pgController.animateToPage(provider.bottomBarCurrentIndex,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut);
-                  },
-                ),
-              ),
-              body: PageView(
-                controller: pgController,
-                onPageChanged: (value) {
+              centerTitle: true,
+            ),
+            bottomNavigationBar: Visibility(
+              visible: provider.isBottomBarEnabled,
+              child: CustomBottomBar(
+                onClick: (value) {
                   provider.changeBarIndex(value);
+                  pgController.animateToPage(provider.bottomBarCurrentIndex,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut);
                 },
-                children: layouts,
               ),
-            )));
-          },
-        ),
+            ),
+            body: PageView(
+              controller: pgController,
+              onPageChanged: (value) {
+                provider.changeBarIndex(value);
+              },
+              children: layouts,
+            ),
+          )));
+        },
       ),
     );
   }

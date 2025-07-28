@@ -40,7 +40,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i602.QuranRadioChannelsRepository>(() =>
         _i1060.QuranRadioChannelsRepositoryImp(
             gh<_i873.QuranRadioChannelsRemoteDataSource>()));
-    gh.factory<_i647.RadioViewModel>(
+    gh.singleton<_i647.RadioViewModel>(
         () => _i647.RadioViewModel(gh<_i602.QuranRadioChannelsRepository>()));
     return this;
   }

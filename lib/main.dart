@@ -40,6 +40,9 @@ void main() async {
     ChangeNotifierProvider(create: (_) => LocaleProvider(sharedPreferences)),
     ChangeNotifierProvider(
         create: (_) => MainScreenProvider(sharedPreferences, radioViewModel)),
+    ChangeNotifierProvider(
+      create: (_) => radioViewModel,
+    )
   ], child: const MyApp()));
 }
 
@@ -51,6 +54,7 @@ void initAudioService(RadioViewModel radioViewModel) async {
       androidNotificationChannelId: 'com.main369.islamy.radioQuran.channel',
       androidNotificationChannelName: 'Quran Audio playback',
       androidNotificationIcon: "drawable/ic_launcher_foreground",
+      androidNotificationOngoing: true,
       notificationColor: brightness == Brightness.light
           ? const Color(0xFFB7935F)
           : const Color(0xFF1e2949),
