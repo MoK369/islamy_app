@@ -67,8 +67,6 @@ class _RadioLayoutState extends State<RadioLayout> {
                       ),
                     ));
               case SuccessState<List<RadioChannel>>():
-                print(
-                    "In RadioLayout ${radioViewModel.currentRadioChannel.name}----");
                 return Expanded(
                   flex: 2,
                   child: Column(
@@ -78,7 +76,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                       Expanded(
                         flex: 2,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                             textAlign: TextAlign.center,
                             maxLines: 2,

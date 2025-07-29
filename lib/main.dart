@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,6 +30,7 @@ void main() async {
   ]);
   final RadioViewModel radioViewModel = getIt<RadioViewModel>();
   initAudioService(radioViewModel);
+  await setupAudioSession();
   PlatformDispatcher.instance.onPlatformBrightnessChanged = () {
     initAudioService(radioViewModel);
   };
@@ -39,7 +41,7 @@ void main() async {
     }),
     ChangeNotifierProvider(create: (_) => LocaleProvider(sharedPreferences)),
     ChangeNotifierProvider(
-        create: (_) => MainScreenProvider(sharedPreferences, radioViewModel)),
+        create: (_) => MainScreenProvider(sharedPreferences)),
     ChangeNotifierProvider(
       create: (_) => radioViewModel,
     )
@@ -60,6 +62,11 @@ void initAudioService(RadioViewModel radioViewModel) async {
           : const Color(0xFF1e2949),
     ),
   );
+}
+
+Future<void> setupAudioSession() async {
+  final session = await AudioSession.instance;
+  await session.configure(const AudioSessionConfiguration.music());
 }
 
 class MyApp extends StatefulWidget {

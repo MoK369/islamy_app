@@ -6,6 +6,7 @@ import 'package:islamy_app/presentation/core/widgets/background_container.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/custom_widgets/custom_bottom_bar.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/radio_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/sebha_layout/sebha_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/settings_layout/settings_layout.dart';
@@ -22,6 +23,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late RadioViewModel radioViewModel;
   final List<Widget> layouts = [
     const SebhaLayout(),
     const RadioLayout(),
@@ -35,14 +37,24 @@ class _MainScreenState extends State<MainScreen> {
   late MainScreenProvider mainScreenProvider;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    radioViewModel = Provider.of<RadioViewModel>(context);
+    mainScreenProvider = MainScreenProvider.get(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     LocaleProvider localeProvider = LocaleProvider.get(context);
-    mainScreenProvider = MainScreenProvider.get(context);
     mainScreenProvider.getLocaleProvider(LocaleProvider.get(context));
-    if (mainScreenProvider.radioViewModel.isRadioChannelsEmpty ||
+    if (radioViewModel.isRadioChannelsEmpty ||
         localeProvider.didLocaleChange()) {
-      mainScreenProvider.radioViewModel.getQuranRadioChannels(
-          localeProvider.isArabicChosen() ? "ar" : "eng");
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          radioViewModel.getQuranRadioChannels(
+              localeProvider.isArabicChosen() ? "ar" : "eng");
+        },
+      );
       localeProvider.oldLocale = localeProvider.currentLocale;
     }
     return PopScope(
@@ -104,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void dispose() {
     super.dispose();
-    mainScreenProvider.radioViewModel.dispose();
+    radioViewModel.dispose();
     mainScreenProvider.dispose();
   }
 }

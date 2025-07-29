@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:islamy_app/data/models/quran_radio_model.dart';
 import 'package:islamy_app/data/services/apis/api_manager.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
@@ -25,7 +25,6 @@ class RadioViewModel extends BaseAudioHandler
     audioPlayer.playbackEventStream
         .map(broadCastPlaybackState)
         .pipe(playbackState);
-
     //initCurrentIndexStream();
   }
 
@@ -40,8 +39,7 @@ class RadioViewModel extends BaseAudioHandler
       isRadioGoingToPlayAgain = false;
   String languageCodeOfCallingTheApi = '';
   RadioAudioState radioAudioState = NotPlayingAudioState();
-
-  final Connectivity _connectivity = Connectivity();
+  final internetConnectionChecker = InternetConnection();
   Timer? _timer;
 
   Future<void> getQuranRadioChannels(String languageCode) async {
@@ -56,7 +54,7 @@ class RadioViewModel extends BaseAudioHandler
             0,
             RadioChannel(
                 id: CairoQuranRadio.id,
-                name: CairoQuranRadio.title('en'),
+                name: CairoQuranRadio.title(languageCode),
                 url: CairoQuranRadio.urlStr));
         quranRadioChannelsState = SuccessState(data: quranRadioApiResult.data);
         _radioChannels = quranRadioApiResult.data;
@@ -92,11 +90,12 @@ class RadioViewModel extends BaseAudioHandler
     for (int i = 0; i < _radioChannels.length; i++) {
       Uri url = Uri.parse(_radioChannels[i].url ?? "");
       mediaItems.add(MediaItem(
-          id: _radioChannels[i].id.toString(),
+          id: _radioChannels[i].url.toString(),
           title: _radioChannels[i].name ?? "",
           artist: "",
           duration: const Duration(seconds: 0),
-          artUri: Uri.parse(_radioChannels[i].url ?? "")));
+          artUri: Uri.parse(
+              "https://play-lh.googleusercontent.com/5COg1fxfyxDnFzLstKQ6cPWARkOxhU5cRF5jrG8ha0Qcu8rAT1TDe3bGXXeFgJYvhg")));
       audioSources.add(AudioSource.uri(url, tag: mediaItems[i]));
     }
     await addQueueItems(mediaItems);
@@ -127,7 +126,7 @@ class RadioViewModel extends BaseAudioHandler
           radioAudioState = NotPlayingAudioState();
         } else if (event.processingState == ProcessingState.buffering) {
           debugPrint("Audio Loading");
-          handleStreamFailure();
+          startMonitoringConnectivity();
           radioAudioState = LoadingAudioState();
         }
         notifyListeners();
@@ -161,16 +160,16 @@ class RadioViewModel extends BaseAudioHandler
     }
   }
 
-  void handleStreamFailure() {
-    startMonitoringConnectivity();
-    startInternetPolling();
-  }
+  // void handleStreamFailure() {
+  //   startMonitoringConnectivity();
+  //   startInternetPolling();
+  // }
 
   void startInternetPolling() {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       final hasInternet = await hasInternetAccess();
       if (hasInternet) {
-        print("Internet is back. Retrying stream...");
+        debugPrint("Internet is back. Retrying stream...");
         stopInternetPolling();
         retryCurrentStream();
       }
@@ -183,27 +182,32 @@ class RadioViewModel extends BaseAudioHandler
   }
 
   void startMonitoringConnectivity() {
-    _connectivity.onConnectivityChanged.listen((result) async {
-      print("inside monitoring connectivity $result");
-      if (result[0] != ConnectivityResult.none) {
-        final internetAvailable = await hasInternetAccess();
-        if (internetAvailable) {
+    // _connectivity.onConnectivityChanged.listen((result) async {
+    //   print("inside monitoring connectivity $result");
+    //   if (result[0] != ConnectivityResult.none) {
+    //     final internetAvailable = await hasInternetAccess();
+    //     if (internetAvailable) {
+    //       retryCurrentStream();
+    //     } else {
+    //       debugPrint("Connected to network, but no internet access.");
+    //     }
+    //   }
+    // });
+    internetConnectionChecker.onStatusChange.listen((InternetStatus status) {
+      switch (status) {
+        case InternetStatus.connected:
+          debugPrint("The internet is now connected");
           retryCurrentStream();
-        } else {
-          debugPrint("Connected to network, but no internet access.");
-        }
+          break;
+        case InternetStatus.disconnected:
+          debugPrint("The internet is now disconnected");
+          break;
       }
     });
   }
 
   void retryCurrentStream() async {
     try {
-      print("inside retryCurrentStream");
-      // await audioPlayer.setAudioSource(
-      //   audioSources[_currentRadioChannelIndex],
-      //   preload: true,
-      //   initialPosition: Duration.zero,
-      // );
       await audioPlayer.load();
       await audioPlayer.play();
     } catch (e) {
@@ -214,22 +218,20 @@ class RadioViewModel extends BaseAudioHandler
   @override
   Future<void> play() async {
     try {
-      //broadCastPlaybackState(playing: false);
       didAudioPlayerStarted = true;
-      //initCurrentIndexStream();
-      print("before play $_currentRadioChannelIndex ------------");
-      print("before play ${currentRadioChannel.name} ------------");
-      print(
-          "before play ${audioSources[_currentRadioChannelIndex].toString()} ------------");
-      await audioPlayer.setAudioSource(
-        audioSources[_currentRadioChannelIndex],
-        preload: false,
-        initialIndex: _currentRadioChannelIndex,
-        initialPosition: Duration.zero,
-      );
-      mediaItem.add(queue.value[_currentRadioChannelIndex]);
-      await audioPlayer.play();
-      //broadCastPlaybackState(playing: true);
+      if (audioPlayer.processingState == ProcessingState.ready &&
+          !audioPlayer.playing) {
+        await audioPlayer.play();
+      } else {
+        await audioPlayer.setAudioSource(
+          audioSources[_currentRadioChannelIndex],
+          preload: false,
+          initialIndex: _currentRadioChannelIndex,
+          initialPosition: Duration.zero,
+        );
+        mediaItem.add(queue.value[_currentRadioChannelIndex]);
+        await audioPlayer.play();
+      }
     } on Exception catch (e) {
       quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
     }
@@ -262,24 +264,13 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> pause() async {
-    print("inside pause-----");
     await audioPlayer.pause();
-    //broadCastPlaybackState();
   }
 
   @override
   Future<void> stop() async {
-    //broadCastPlaybackState();
     await audioPlayer.stop();
-    playbackState.add(PlaybackState(
-      controls: [],
-      systemActions: const {},
-      androidCompactActionIndices: const [],
-      processingState: AudioProcessingState.idle,
-      playing: false,
-    ));
     didAudioPlayerStarted = false;
-    //initCurrentIndexStream();
   }
 
   @override
@@ -287,15 +278,12 @@ class RadioViewModel extends BaseAudioHandler
     if (_currentRadioChannelIndex != audioSources.length - 1) {
       _currentRadioChannelIndex++;
     }
-    print("$_currentRadioChannelIndex ------");
     currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
     var wasPlaying = audioPlayer.playing;
-    print("$wasPlaying --------");
     if (audioPlayer.processingState == ProcessingState.ready && !wasPlaying) {
       mediaItem.add(queue.value[_currentRadioChannelIndex]);
     }
     if (wasPlaying) {
-      await audioPlayer.stop();
       await audioPlayer.setAudioSource(
         audioSources[_currentRadioChannelIndex],
         preload: false,
@@ -312,21 +300,17 @@ class RadioViewModel extends BaseAudioHandler
     if (_currentRadioChannelIndex != 0) {
       _currentRadioChannelIndex--;
     }
-    print("$_currentRadioChannelIndex ------");
     currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
     var wasPlaying = audioPlayer.playing;
-    print("$wasPlaying --------");
     if (audioPlayer.processingState == ProcessingState.ready && !wasPlaying) {
       mediaItem.add(queue.value[_currentRadioChannelIndex]);
     }
     if (wasPlaying) {
-      await audioPlayer.stop();
       await audioPlayer.setAudioSource(
         audioSources[_currentRadioChannelIndex],
         preload: false,
         initialPosition: Duration.zero,
       );
-      print("${queue.value[_currentRadioChannelIndex].title} --------");
       mediaItem.add(queue.value[_currentRadioChannelIndex]);
       await audioPlayer.play();
     }

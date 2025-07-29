@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/custom_widgets/custom_alert_dialog.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreenProvider extends ChangeNotifier {
   static const barEnablementKey = 'barEnablement';
-  final RadioViewModel radioViewModel;
-
   /// initialize localeProvider before getting Suras List.
   late LocaleProvider _localeProvider;
 
@@ -21,7 +18,7 @@ class MainScreenProvider extends ChangeNotifier {
   int bottomBarCurrentIndex = 2;
   bool isBottomBarEnabled = true;
 
-  MainScreenProvider(this.sharedPreferences, this.radioViewModel) {
+  MainScreenProvider(this.sharedPreferences) {
     getMainScreenData();
   }
 
