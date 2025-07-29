@@ -99,7 +99,7 @@ class _HadeethScreenState extends State<HadeethScreen> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    child: Text(
+                    child: SelectableText(
                       args.hadeethBody,
                       textDirection: TextDirection.rtl,
                       style: theme.textTheme.displayLarge!.copyWith(

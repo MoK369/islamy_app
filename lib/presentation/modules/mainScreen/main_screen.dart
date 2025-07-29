@@ -94,9 +94,9 @@ class _MainScreenState extends State<MainScreen> {
               child: CustomBottomBar(
                 onClick: (value) {
                   provider.changeBarIndex(value);
-                  pgController.animateToPage(provider.bottomBarCurrentIndex,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut);
+                  pgController.jumpToPage(
+                    provider.bottomBarCurrentIndex,
+                  );
                 },
               ),
             ),

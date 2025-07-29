@@ -12,7 +12,7 @@ class Themes {
       indicatorColor: lightPrimaryColor,
       progressIndicatorTheme:
           const ProgressIndicatorThemeData(color: lightPrimaryColor),
-      iconTheme: const IconThemeData(color: lightPrimaryColor),
+      iconTheme: const IconThemeData(color: lightPrimaryColor, size: 30),
       sliderTheme: SliderThemeData(
         trackHeight: 20,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
@@ -123,7 +123,7 @@ class Themes {
       indicatorColor: darkPrimaryColor,
       progressIndicatorTheme:
           const ProgressIndicatorThemeData(color: darkPrimaryColor),
-      iconTheme: const IconThemeData(color: darkPrimaryColor, size: 45),
+      iconTheme: const IconThemeData(color: darkPrimaryColor, size: 30),
       sliderTheme: SliderThemeData(
         trackHeight: 20,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
+import 'package:islamy_app/presentation/core/themes/app_themes.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 
 import '../../../../provider/main_screen_provider.dart';
@@ -22,13 +24,20 @@ class _VersesListState extends State<VersesList> {
       eachEnDoaLine = [];
   late MainScreenProvider mainScreenProvider;
   late LocaleProvider localeProvider;
+  late ThemeProvider themeProvider;
   late ThemeData theme;
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     mainScreenProvider = MainScreenProvider.get(context);
     localeProvider = LocaleProvider.get(context);
     theme = Theme.of(context);
+    themeProvider = ThemeProvider.get(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (widget.args.surahIndex == 114 && eachDoaLine.isEmpty) {
       readDoa();
       if (!localeProvider.isArabicChosen()) {
@@ -74,77 +83,89 @@ class _VersesListState extends State<VersesList> {
                           fontSize:
                               mainScreenProvider.fontSizeOfSurahVerses + 5),
                     ),
-                  RichText(
-                      textDirection: TextDirection.rtl,
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: "${arList[index]} ",
-                          style: theme.textTheme.displayLarge!.copyWith(
-                              height: 2,
-                              fontSize:
-                                  mainScreenProvider.fontSizeOfSurahVerses),
-                        ),
-                        WidgetSpan(
-                          baseline: TextBaseline.alphabetic,
-                          alignment: PlaceholderAlignment.baseline,
-                          child: GestureDetector(
-                            child: widget.args.surahIndex == 114
-                                ? Text(
-                                    textScaler: const TextScaler.linear(1.0),
-                                    textDirection: TextDirection.rtl,
-                                    mainScreenProvider.markedVerseIndex ==
-                                            currentVerseIndex
-                                        ? "۞📖"
-                                        : "۞",
-                                    style: theme.textTheme.bodyMedium!.copyWith(
-                                        fontSize: mainScreenProvider
-                                                .fontSizeOfSurahVerses +
-                                            15),
-                                  )
-                                : Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          ImageIcon(
-                                            const AssetImage(
-                                                "assets/icons/ayat_number_icon.png"),
-                                            color: Colors.black,
-                                            size: mainScreenProvider
-                                                    .fontSizeOfSurahVerses +
-                                                15,
-                                          ),
-                                          Text("$verseNumber",
-                                              style: theme.textTheme.bodyMedium!
-                                                  .copyWith(
-                                                      fontSize: mainScreenProvider
-                                                          .fontSizeOfSurahVerses))
-                                        ],
-                                      ),
-                                      if (mainScreenProvider.markedVerseIndex ==
-                                          currentVerseIndex)
-                                        Text("📖",
-                                            style: theme.textTheme.bodyMedium!
-                                                .copyWith(
-                                                    fontSize: mainScreenProvider
-                                                        .fontSizeOfSurahVerses))
-                                    ],
-                                  ),
-                            onLongPress: () {
-                              mainScreenProvider.markedVerseIndex == ''
-                                  ? mainScreenProvider
-                                      .changeMarkedVerse(currentVerseIndex)
-                                  : mainScreenProvider.markedVerseIndex ==
+                  SelectableText.rich(
+                    textDirection: TextDirection.rtl,
+                    TextSpan(children: [
+                      TextSpan(
+                        text: "${arList[index]} ",
+                        style: theme.textTheme.displayLarge!.copyWith(
+                            height: 2,
+                            fontSize: mainScreenProvider.fontSizeOfSurahVerses),
+                      ),
+                      WidgetSpan(
+                        baseline: TextBaseline.alphabetic,
+                        alignment: PlaceholderAlignment.middle,
+                        child: GestureDetector(
+                          child: widget.args.surahIndex == 114
+                              ? Text(
+                                  textScaler: const TextScaler.linear(1.0),
+                                  textDirection: TextDirection.rtl,
+                                  mainScreenProvider.markedVerseIndex ==
                                           currentVerseIndex
-                                      ? mainScreenProvider.changeMarkedVerse('')
-                                      : mainScreenProvider
-                                          .showAlertAboutVersesMarking(context,
-                                              theme, currentVerseIndex);
-                            },
-                          ),
-                        )
-                      ])),
+                                      ? "۞📖"
+                                      : "۞",
+                                  style: theme.textTheme.bodyMedium!.copyWith(
+                                      fontSize: mainScreenProvider
+                                              .fontSizeOfSurahVerses +
+                                          15),
+                                )
+                              : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        ImageIcon(
+                                          const AssetImage(
+                                              "assets/icons/ayat_number_icon.png"),
+                                          color: themeProvider.isDarkEnabled()
+                                              ? Themes.darkPrimaryColor
+                                              : Colors.black,
+                                          size: mainScreenProvider
+                                                  .fontSizeOfSurahVerses +
+                                              15,
+                                        ),
+                                        SizedBox(
+                                          width: mainScreenProvider
+                                              .fontSizeOfSurahVerses,
+                                          height: mainScreenProvider
+                                              .fontSizeOfSurahVerses,
+                                          child: FittedBox(
+                                            child: Text("$verseNumber",
+                                                style: theme
+                                                    .textTheme.bodyMedium!
+                                                    .copyWith(
+                                                        fontSize: mainScreenProvider
+                                                                .fontSizeOfSurahVerses -
+                                                            10)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    if (mainScreenProvider.markedVerseIndex ==
+                                        currentVerseIndex)
+                                      Text("📖",
+                                          style: theme.textTheme.bodyMedium!
+                                              .copyWith(
+                                                  fontSize: mainScreenProvider
+                                                      .fontSizeOfSurahVerses))
+                                  ],
+                                ),
+                          onLongPress: () {
+                            mainScreenProvider.markedVerseIndex == ''
+                                ? mainScreenProvider
+                                    .changeMarkedVerse(currentVerseIndex)
+                                : mainScreenProvider.markedVerseIndex ==
+                                        currentVerseIndex
+                                    ? mainScreenProvider.changeMarkedVerse('')
+                                    : mainScreenProvider
+                                        .showAlertAboutVersesMarking(
+                                            context, theme, currentVerseIndex);
+                          },
+                        ),
+                      )
+                    ]),
+                  ),
                 ],
               );
       },
@@ -157,7 +178,7 @@ class _VersesListState extends State<VersesList> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  SelectableText(
                     textDirection: TextDirection.ltr,
                     enList[index],
                     style: theme.textTheme.displayLarge!.copyWith(
