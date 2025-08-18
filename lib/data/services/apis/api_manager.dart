@@ -6,15 +6,14 @@ import 'package:islamy_app/domain/api_result/api_result.dart';
 @singleton
 class ApiManager {
   static final Dio dio = Dio();
-  static const String baseUrl = "mp3quran.net";
+  static const String baseUrl = "https://mp3quran.net";
   static const String quranRadioEndPoint = "/api/v3/radios";
 
   Future<ApiResult<List<RadioChannel>>> getQuranRadioChannels(
       String languageCode) async {
     try {
-      Uri url =
-          Uri.http(baseUrl, quranRadioEndPoint, {"language": languageCode});
-      final response = await dio.getUri(url);
+      final response = await dio.get(baseUrl + quranRadioEndPoint,
+          queryParameters: {"language": languageCode});
       QuranRadioModel quranRadioModel = QuranRadioModel.fromJson(response.data);
       if ((response.statusCode ?? 0) >= 200 &&
           (response.statusCode ?? 0) < 300) {

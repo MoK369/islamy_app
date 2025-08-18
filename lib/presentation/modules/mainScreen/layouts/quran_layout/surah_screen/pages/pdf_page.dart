@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
 import 'package:pdfx/pdfx.dart';
+import 'package:provider/provider.dart';
 
 class PDFPage extends StatefulWidget {
   final SendSurahInfo args;
@@ -17,7 +18,7 @@ class _PDFPageState extends State<PDFPage> {
   late PdfController pdfController;
   late double sliderCurrentValue;
   late int startPage, endPage;
-  late MainScreenProvider mainScreenProvider;
+  late SurahScreenProvider surahScreenProvider;
   late String currentSurahID;
 
   @override
@@ -38,23 +39,23 @@ class _PDFPageState extends State<PDFPage> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.of(context).size;
-    mainScreenProvider = MainScreenProvider.get(context);
+    surahScreenProvider = Provider.of<SurahScreenProvider>(context);
     currentSurahID = '${widget.args.surahIndex} ${sliderCurrentValue.toInt()}';
     return Stack(
       alignment: Alignment.topLeft,
       children: [
         GestureDetector(
           onTap: () {
-            mainScreenProvider.changeSurahScreenAppBarStatus(
-                !mainScreenProvider.isSurahScreenAppBarVisible);
+            surahScreenProvider.changeSurahOrHadeethScreenAppBarStatus(
+                !surahScreenProvider.isSurahOrHadeethScreenAppBarVisible);
           },
           onLongPress: () {
-            if (mainScreenProvider.markedSurahPDFPageIndex == currentSurahID) {
-              mainScreenProvider.changeMarkedSurahPDFPage('');
-            } else if (mainScreenProvider.markedSurahPDFPageIndex == '') {
-              mainScreenProvider.changeMarkedSurahPDFPage(currentSurahID);
+            if (surahScreenProvider.markedSurahPDFPageIndex == currentSurahID) {
+              surahScreenProvider.changeMarkedSurahPDFPage('');
+            } else if (surahScreenProvider.markedSurahPDFPageIndex == '') {
+              surahScreenProvider.changeMarkedSurahPDFPage(currentSurahID);
             } else {
-              mainScreenProvider.showAlertAboutMarkedSurahPDFPage(
+              surahScreenProvider.showAlertAboutMarkedSurahPDFPage(
                   context, theme, currentSurahID);
             }
           },
@@ -86,11 +87,11 @@ class _PDFPageState extends State<PDFPage> {
         ),
         Visibility(
             visible:
-                mainScreenProvider.markedSurahPDFPageIndex == currentSurahID,
+                surahScreenProvider.markedSurahPDFPageIndex == currentSurahID,
             child: Icon(
               Icons.bookmark,
               size: size.height * 0.1,
-              color: theme.indicatorColor.withOpacity(0.5),
+              color: theme.indicatorColor.withAlpha(125),
             )),
         Positioned(
           width: size.width * 0.95,

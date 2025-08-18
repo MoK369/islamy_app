@@ -5,8 +5,8 @@ import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
 import 'package:islamy_app/presentation/core/themes/app_themes.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
-
-import '../../../../provider/main_screen_provider.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
+import 'package:provider/provider.dart';
 
 class VersesList extends StatefulWidget {
   final SendSurahInfo args;
@@ -22,7 +22,7 @@ class _VersesListState extends State<VersesList> {
       enSurahVerses = [],
       eachDoaLine = [],
       eachEnDoaLine = [];
-  late MainScreenProvider mainScreenProvider;
+  late SurahScreenProvider surahScreenProvider;
   late LocaleProvider localeProvider;
   late ThemeProvider themeProvider;
   late ThemeData theme;
@@ -30,7 +30,7 @@ class _VersesListState extends State<VersesList> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    mainScreenProvider = MainScreenProvider.get(context);
+    surahScreenProvider = Provider.of<SurahScreenProvider>(context);
     localeProvider = LocaleProvider.get(context);
     theme = Theme.of(context);
     themeProvider = ThemeProvider.get(context);
@@ -81,7 +81,7 @@ class _VersesListState extends State<VersesList> {
                       "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم\n",
                       style: theme.textTheme.bodyMedium!.copyWith(
                           fontSize:
-                              mainScreenProvider.fontSizeOfSurahVerses + 5),
+                              surahScreenProvider.fontSizeOfSurahVerses + 5),
                     ),
                   SelectableText.rich(
                     textDirection: TextDirection.rtl,
@@ -90,7 +90,8 @@ class _VersesListState extends State<VersesList> {
                         text: "${arList[index]} ",
                         style: theme.textTheme.displayLarge!.copyWith(
                             height: 2,
-                            fontSize: mainScreenProvider.fontSizeOfSurahVerses),
+                            fontSize:
+                                surahScreenProvider.fontSizeOfSurahVerses),
                       ),
                       WidgetSpan(
                         baseline: TextBaseline.alphabetic,
@@ -100,12 +101,12 @@ class _VersesListState extends State<VersesList> {
                               ? Text(
                                   textScaler: const TextScaler.linear(1.0),
                                   textDirection: TextDirection.rtl,
-                                  mainScreenProvider.markedVerseIndex ==
+                                  surahScreenProvider.markedVerseIndex ==
                                           currentVerseIndex
                                       ? "۞📖"
                                       : "۞",
                                   style: theme.textTheme.bodyMedium!.copyWith(
-                                      fontSize: mainScreenProvider
+                                      fontSize: surahScreenProvider
                                               .fontSizeOfSurahVerses +
                                           15),
                                 )
@@ -121,44 +122,45 @@ class _VersesListState extends State<VersesList> {
                                           color: themeProvider.isDarkEnabled()
                                               ? Themes.darkPrimaryColor
                                               : Colors.black,
-                                          size: mainScreenProvider
+                                          size: surahScreenProvider
                                                   .fontSizeOfSurahVerses +
                                               15,
                                         ),
                                         SizedBox(
-                                          width: mainScreenProvider
+                                          width: surahScreenProvider
                                               .fontSizeOfSurahVerses,
-                                          height: mainScreenProvider
+                                          height: surahScreenProvider
                                               .fontSizeOfSurahVerses,
                                           child: FittedBox(
                                             child: Text("$verseNumber",
                                                 style: theme
                                                     .textTheme.bodyMedium!
                                                     .copyWith(
-                                                        fontSize: mainScreenProvider
-                                                                .fontSizeOfSurahVerses -
+                                                        fontSize:
+                                                            surahScreenProvider
+                                                                    .fontSizeOfSurahVerses -
                                                             10)),
                                           ),
                                         )
                                       ],
                                     ),
-                                    if (mainScreenProvider.markedVerseIndex ==
+                                    if (surahScreenProvider.markedVerseIndex ==
                                         currentVerseIndex)
                                       Text("📖",
                                           style: theme.textTheme.bodyMedium!
                                               .copyWith(
-                                                  fontSize: mainScreenProvider
+                                                  fontSize: surahScreenProvider
                                                       .fontSizeOfSurahVerses))
                                   ],
                                 ),
                           onLongPress: () {
-                            mainScreenProvider.markedVerseIndex == ''
-                                ? mainScreenProvider
+                            surahScreenProvider.markedVerseIndex == ''
+                                ? surahScreenProvider
                                     .changeMarkedVerse(currentVerseIndex)
-                                : mainScreenProvider.markedVerseIndex ==
+                                : surahScreenProvider.markedVerseIndex ==
                                         currentVerseIndex
-                                    ? mainScreenProvider.changeMarkedVerse('')
-                                    : mainScreenProvider
+                                    ? surahScreenProvider.changeMarkedVerse('')
+                                    : surahScreenProvider
                                         .showAlertAboutVersesMarking(
                                             context, theme, currentVerseIndex);
                           },
@@ -184,10 +186,10 @@ class _VersesListState extends State<VersesList> {
                     style: theme.textTheme.displayLarge!.copyWith(
                         fontFamily: GoogleFonts.notoSans().fontFamily,
                         height: 2,
-                        fontSize: mainScreenProvider.fontSizeOfSurahVerses),
+                        fontSize: surahScreenProvider.fontSizeOfSurahVerses),
                   ),
                   Divider(
-                    color: theme.textTheme.bodyMedium!.color!.withOpacity(0.5),
+                    color: theme.textTheme.bodyMedium!.color!.withAlpha(125),
                     thickness: 1.5,
                   )
                 ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:islamy_app/presentation/core/ads/ads_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/list_of_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:provider/provider.dart';
 
 class QuranLayout extends StatefulWidget {
   const QuranLayout({super.key});
@@ -121,8 +123,11 @@ class _QuranLayoutState extends State<QuranLayout> {
                     ),
                     ListOfSuras(
                       foundUser: foundUser!,
-                      onClick: (index) {
+                      onClick: (index) async {
                         FocusManager.instance.primaryFocus?.unfocus();
+                        await Provider.of<AdsProvider>(context, listen: false)
+                            .hideBannerAd();
+                        if (!context.mounted) return;
                         Navigator.pushNamed(context, SurahScreen.routeName,
                             arguments: SendSurahInfo(
                                 surahIndex: mainScreenProvider

@@ -1,0 +1,2 @@
+/media/Volume4/StudioProjects/islamy_app/android/app/.cxx/RelWithDebInfo/v18v4b59/x86_64/CMakeFiles/edit_cache.dir
+/media/Volume4/StudioProjects/islamy_app/android/app/.cxx/RelWithDebInfo/v18v4b59/x86_64/CMakeFiles/rebuild_cache.dir

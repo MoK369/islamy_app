@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:humanizer/humanizer.dart';
+import 'package:islamy_app/presentation/core/ads/ads_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:provider/provider.dart';
 
 class HadeethLayout extends StatefulWidget {
   const HadeethLayout({super.key});
@@ -77,7 +79,11 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                             theme, "$currentHadeethIndex");
                                   }
                                 },
-                                onPressed: () {
+                                onPressed: () async {
+                                  await Provider.of<AdsProvider>(context,
+                                          listen: false)
+                                      .hideBannerAd();
+                                  if (!context.mounted) return;
                                   Navigator.pushNamed(
                                       context, HadeethScreen.routeName,
                                       arguments: ahadeeth[currentHadeethIndex]);

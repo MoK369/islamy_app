@@ -1,9 +1,13 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:islamy_app/di.dart';
+import 'package:islamy_app/presentation/core/ads/ads_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/custom_widgets/custom_bottom_sheet.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/widgets/change_verses_size_widget.dart';
+import 'package:provider/provider.dart';
 
 import 'hadeeth_layout.dart';
 
@@ -26,94 +30,144 @@ class _HadeethScreenState extends State<HadeethScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+    BackButtonInterceptor.add(myInterceptor);
   }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    Navigator.pop(context);
+    showBanner();
+
+    return true;
+  }
+
+  void showBanner() {
+    Provider.of<AdsProvider>(context, listen: false).showBannerAd();
+  }
+
+  SurahScreenProvider surahScreenProvider = getIt.get<SurahScreenProvider>();
+  ValueNotifier<bool> showBottomWidgetNotifier = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
-    final MainScreenProvider mainScreenProvider =
-        MainScreenProvider.get(context);
     HadethData args = ModalRoute.of(context)!.settings.arguments as HadethData;
     ThemeData theme = Theme.of(context);
-    return SafeArea(
+    return ChangeNotifierProvider(
+      create: (context) => surahScreenProvider,
+      child: SafeArea(
         child: BgContainer(
-            child: Scaffold(
-      appBar: mainScreenProvider.isHadeethScreenAppBarVisible
-          ? AppBar(
-              title: Text(
-                Locales.getTranslations(context).islami,
-              ),
-              centerTitle: true,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.arrow_back,
-                  size: 40,
-                ),
-              ),
-            )
-          : null,
-      body: Center(
-        child: GestureDetector(
-          onTap: () {
-            mainScreenProvider.changeHadeethScreenAppBarStatus(
-                !mainScreenProvider.isHadeethScreenAppBarVisible);
-          },
-          child: Card(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        textScaler: const TextScaler.linear(1.0),
-                        args.hadeethTitle,
-                        style: theme.textTheme.titleMedium!.copyWith(
-                            fontSize: mainScreenProvider.fontSizeOfSurahVerses),
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          CustBottomSheet.bottomSheetOfSurahAndHadeethFontSize(
-                              context, mainScreenProvider);
-                        },
-                        icon: const Icon(
-                          Icons.format_size,
-                          size: 50,
-                        ))
-                  ],
-                ),
-                const Divider(
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: SelectableText(
-                      args.hadeethBody,
-                      textDirection: TextDirection.rtl,
-                      style: theme.textTheme.displayLarge!.copyWith(
-                          height: 1.5,
-                          fontSize: mainScreenProvider.fontSizeOfSurahVerses),
+          child: Consumer<SurahScreenProvider>(
+            builder: (context, surahScreenProvider, child) {
+              return Scaffold(
+                appBar: surahScreenProvider.isSurahOrHadeethScreenAppBarVisible
+                    ? AppBar(
+                        forceMaterialTransparency: true,
+                        title: Text(
+                          Locales.getTranslations(context).islami,
+                        ),
+                        centerTitle: true,
+                        leading: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            showBanner();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            size: 40,
+                          ),
+                        ),
+                      )
+                    : null,
+                body: Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      surahScreenProvider
+                          .changeSurahOrHadeethScreenAppBarStatus(
+                              !surahScreenProvider
+                                  .isSurahOrHadeethScreenAppBarVisible);
+                    },
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      clipBehavior: Clip.none,
+                      children: [
+                        Card(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
+                                  Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      textScaler: const TextScaler.linear(1.0),
+                                      args.hadeethTitle,
+                                      style: theme.textTheme.titleMedium!
+                                          .copyWith(
+                                              fontSize: surahScreenProvider
+                                                  .fontSizeOfSurahVerses),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        showBottomWidgetNotifier.value =
+                                            !showBottomWidgetNotifier.value;
+                                      },
+                                      icon: const Icon(
+                                        Icons.format_size,
+                                        size: 50,
+                                      ))
+                                ],
+                              ),
+                              const Divider(
+                                indent: 20,
+                                endIndent: 20,
+                              ),
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: SelectableText(
+                                    args.hadeethBody,
+                                    textDirection: TextDirection.rtl,
+                                    style: theme.textTheme.displayLarge!
+                                        .copyWith(
+                                            height: 1.5,
+                                            fontSize: surahScreenProvider
+                                                .fontSizeOfSurahVerses),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: showBottomWidgetNotifier,
+                          builder: (context, value, child) {
+                            if (value) {
+                              return ChangeVersesSizeWidget(
+                                onCloseButtonClick: () {
+                                  showBottomWidgetNotifier.value = false;
+                                },
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        )
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
-    )));
+    );
   }
 
   @override
@@ -123,5 +177,6 @@ class _HadeethScreenState extends State<HadeethScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    BackButtonInterceptor.remove(myInterceptor);
   }
 }
