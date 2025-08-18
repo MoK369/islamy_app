@@ -8,6 +8,7 @@ import 'package:islamy_app/data/models/quran_radio_model.dart';
 import 'package:islamy_app/data/services/apis/api_manager.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
 import 'package:islamy_app/domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart';
+import 'package:islamy_app/main.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/cairo_quran_radio.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
@@ -34,17 +35,13 @@ class RadioViewModel extends BaseAudioHandler
   List<MediaItem> mediaItems = [];
   late ConcatenatingAudioSource playlist;
   late RadioChannel currentRadioChannel;
-  bool isRadioChannelsEmpty = true,
-      didAudioPlayerStarted = false,
-      isRadioGoingToPlayAgain = false;
-  String languageCodeOfCallingTheApi = '';
+  bool isRadioChannelsEmpty = true, isRadioGoingToPlayAgain = false;
   RadioAudioState radioAudioState = NotPlayingAudioState();
   final internetConnectionChecker = InternetConnection();
   Timer? _timer;
 
   Future<void> getQuranRadioChannels(String languageCode) async {
     quranRadioChannelsState = LoadingState();
-    languageCodeOfCallingTheApi = languageCode;
     notifyListeners();
     var quranRadioApiResult =
         await quranRadioChannelsRepo.getQuranRadioChannels(languageCode);
@@ -95,7 +92,7 @@ class RadioViewModel extends BaseAudioHandler
           artist: "",
           duration: const Duration(seconds: 0),
           artUri: Uri.parse(
-              "https://play-lh.googleusercontent.com/5COg1fxfyxDnFzLstKQ6cPWARkOxhU5cRF5jrG8ha0Qcu8rAT1TDe3bGXXeFgJYvhg")));
+              "https://drive.google.com/file/d/1mfqCP8Xn9cyzRtUDJ9-A-ieEKCWsKXtc/view?usp=drive_link")));
       audioSources.add(AudioSource.uri(url, tag: mediaItems[i]));
     }
     await addQueueItems(mediaItems);
@@ -218,19 +215,22 @@ class RadioViewModel extends BaseAudioHandler
   @override
   Future<void> play() async {
     try {
-      didAudioPlayerStarted = true;
-      if (audioPlayer.processingState == ProcessingState.ready &&
-          !audioPlayer.playing) {
-        await audioPlayer.play();
+      if (await audioSession.setActive(true)) {
+        if (audioPlayer.processingState == ProcessingState.ready &&
+            !audioPlayer.playing) {
+          await audioPlayer.play();
+        } else {
+          await audioPlayer.setAudioSource(
+            audioSources[_currentRadioChannelIndex],
+            preload: true,
+            initialIndex: _currentRadioChannelIndex,
+            initialPosition: Duration.zero,
+          );
+          mediaItem.add(queue.value[_currentRadioChannelIndex]);
+          await audioPlayer.play();
+        }
       } else {
-        await audioPlayer.setAudioSource(
-          audioSources[_currentRadioChannelIndex],
-          preload: false,
-          initialIndex: _currentRadioChannelIndex,
-          initialPosition: Duration.zero,
-        );
-        mediaItem.add(queue.value[_currentRadioChannelIndex]);
-        await audioPlayer.play();
+        debugPrint("Audio Session isn't Active");
       }
     } on Exception catch (e) {
       quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
@@ -247,6 +247,12 @@ class RadioViewModel extends BaseAudioHandler
         MediaControl.skipToNext,
       ],
       playing: audioPlayer.playing,
+      systemActions: {
+        MediaAction.skipToPrevious,
+        if (audioPlayer.playing) MediaAction.pause else MediaAction.play,
+        MediaAction.stop,
+        MediaAction.skipToNext
+      },
       androidCompactActionIndices: const [0, 1, 3],
       processingState: {
         ProcessingState.idle: AudioProcessingState.idle,
@@ -270,11 +276,11 @@ class RadioViewModel extends BaseAudioHandler
   @override
   Future<void> stop() async {
     await audioPlayer.stop();
-    didAudioPlayerStarted = false;
   }
 
   @override
   Future<void> skipToNext() async {
+    if (isLastAudioChannel) return;
     if (_currentRadioChannelIndex != audioSources.length - 1) {
       _currentRadioChannelIndex++;
     }
@@ -297,6 +303,7 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> skipToPrevious() async {
+    if (isFirstAudioChannel) return;
     if (_currentRadioChannelIndex != 0) {
       _currentRadioChannelIndex--;
     }
@@ -316,4 +323,8 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
+
+  bool get isLastAudioChannel =>
+      _currentRadioChannelIndex == _radioChannels.length - 1;
+  bool get isFirstAudioChannel => _currentRadioChannelIndex == 0;
 }

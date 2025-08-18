@@ -17,8 +17,8 @@ class Themes {
         trackHeight: 20,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
-        activeTrackColor: lightPrimaryColor.withOpacity(0.7),
-        inactiveTrackColor: Colors.grey.withOpacity(0.5),
+        activeTrackColor: lightPrimaryColor.withAlpha(178),
+        inactiveTrackColor: Colors.grey.withAlpha(125),
         thumbColor: lightPrimaryColor,
         valueIndicatorColor: lightPrimaryColor,
         valueIndicatorTextStyle:
@@ -84,7 +84,7 @@ class Themes {
           style: ButtonStyle(
               foregroundColor: const WidgetStatePropertyAll(Colors.white),
               textStyle: WidgetStatePropertyAll(
-                  GoogleFonts.ibmPlexSansArabic(fontSize: 25)),
+                  GoogleFonts.ibmPlexSansArabic(fontSize: 20)),
               backgroundColor: const WidgetStatePropertyAll(lightPrimaryColor),
               shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100))),
@@ -128,8 +128,8 @@ class Themes {
         trackHeight: 20,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
-        activeTrackColor: darkPrimaryColor.withOpacity(0.7),
-        inactiveTrackColor: Colors.grey.withOpacity(0.5),
+        activeTrackColor: darkPrimaryColor.withAlpha(178),
+        inactiveTrackColor: Colors.grey..withAlpha(125),
         thumbColor: darkPrimaryColor,
         valueIndicatorColor: lightPrimaryColor,
         valueIndicatorTextStyle:
@@ -194,7 +194,7 @@ class Themes {
           style: ButtonStyle(
               foregroundColor: const WidgetStatePropertyAll(Colors.black),
               textStyle: WidgetStatePropertyAll(
-                  GoogleFonts.ibmPlexSansArabic(fontSize: 25)),
+                  GoogleFonts.ibmPlexSansArabic(fontSize: 20)),
               backgroundColor: const WidgetStatePropertyAll(darkPrimaryColor),
               shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100))),

@@ -17,6 +17,7 @@ class LocaleProvider extends ChangeNotifier {
 
   void getLocaleData() {
     currentLocale = sharedPreferences.getString(localeKey) ?? 'ar';
+    oldLocale = currentLocale;
     notifyListeners();
   }
 
@@ -25,6 +26,7 @@ class LocaleProvider extends ChangeNotifier {
   }
 
   void changeLocale(String newLocale) {
+    oldLocale = currentLocale;
     currentLocale = newLocale;
     notifyListeners();
     saveLocal(newLocale);

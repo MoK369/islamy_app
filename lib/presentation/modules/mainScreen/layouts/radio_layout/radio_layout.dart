@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/data/models/quran_radio_model.dart';
 import 'package:islamy_app/presentation/core/api_error_message/api_error_message.dart';
+import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
+import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/widgets/playing_loading_icon.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
@@ -15,17 +17,14 @@ class RadioLayout extends StatefulWidget {
 }
 
 class _RadioLayoutState extends State<RadioLayout> {
+  late LocaleProvider localeProvider;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    localeProvider = LocaleProvider.get(context);
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //
-  //   //localeProvider = Provider.of<LocaleProvider>(context);
-  // }
   late Size size;
   @override
   Widget build(BuildContext context) {
@@ -59,11 +58,25 @@ class _RadioLayoutState extends State<RadioLayout> {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                            ApiErrorMessage.getErrorMessage(
-                                serverError: viewModelResult.serverError,
-                                codeError: viewModelResult.codeError),
-                            style: theme.textTheme.titleMedium),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                ApiErrorMessage.getErrorMessage(
+                                    serverError: viewModelResult.serverError,
+                                    codeError: viewModelResult.codeError),
+                                style: theme.textTheme.titleMedium),
+                            const SizedBox(height: 4,),
+                            ElevatedButton(
+                                onPressed: () {
+                                  radioViewModel.getQuranRadioChannels(
+                                      localeProvider.isArabicChosen()
+                                          ? "ar"
+                                          : "eng");
+                                },
+                                child: Text(Locales.getTranslations(context).tryAgain))
+                          ],
+                        ),
                       ),
                     ));
               case SuccessState<List<RadioChannel>>():
