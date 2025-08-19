@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamy_app/di.dart';
-import 'package:islamy_app/presentation/core/ads/ads_provider.dart';
+import 'package:islamy_app/main.dart';
+import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
@@ -14,6 +15,7 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/sebha_layout/
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/settings_layout/settings_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:startapp_sdk/startapp.dart';
 
 class MainScreen extends StatefulWidget {
   static const String routeName = "MainScreen";
@@ -39,13 +41,15 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   DateTime? lastPressed;
   MainScreenProvider mainScreenProvider = getIt.get<MainScreenProvider>();
 
-  late AdsProvider appodealAdsProvider;
+  //late AdsProvider appodealAdsProvider;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     getQuranRadioChannels();
+    Provider.of<StartIoAdProvider>(globalNavigatorKey.currentContext!)
+        .showBannerAd();
   }
 
   @override
@@ -53,15 +57,15 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     super.didChangeDependencies();
     radioViewModel = Provider.of<RadioViewModel>(context);
     localeProvider = LocaleProvider.get(context);
-    appodealAdsProvider = Provider.of<AdsProvider>(context);
+    //appodealAdsProvider = Provider.of<AdsProvider>(context);
     if (localeProvider.didLocaleChange()) {
       getQuranRadioChannels();
       localeProvider.oldLocale = localeProvider.currentLocale;
     }
-    if (appodealAdsProvider.isInitializationFinished) {
-      appodealAdsProvider.showInterstitialAd();
-      appodealAdsProvider.showBannerAd();
-    }
+    // if (appodealAdsProvider.isInitializationFinished) {
+    //   appodealAdsProvider.showInterstitialAd();
+    //   appodealAdsProvider.showBannerAd();
+    // }
   }
 
   void getQuranRadioChannels() {
@@ -110,32 +114,52 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           builder: (context, provider, child) {
             return SafeArea(
                 child: BgContainer(
-                    child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                title: Text(
-                  Locales.getTranslations(context).islami,
+                    child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  appBar: AppBar(
+                    title: Text(
+                      Locales.getTranslations(context).islami,
+                    ),
+                    centerTitle: true,
+                  ),
+                  bottomNavigationBar: Visibility(
+                    visible: provider.isBottomBarEnabled,
+                    child: CustomBottomBar(
+                      onClick: (value) {
+                        provider.changeBarIndex(value);
+                        pgController.jumpToPage(
+                          provider.bottomBarCurrentIndex,
+                        );
+                      },
+                    ),
+                  ),
+                  body: PageView(
+                    controller: pgController,
+                    onPageChanged: (value) {
+                      provider.changeBarIndex(value);
+                    },
+                    children: layouts,
+                  ),
                 ),
-                centerTitle: true,
-              ),
-              bottomNavigationBar: Visibility(
-                visible: provider.isBottomBarEnabled,
-                child: CustomBottomBar(
-                  onClick: (value) {
-                    provider.changeBarIndex(value);
-                    pgController.jumpToPage(
-                      provider.bottomBarCurrentIndex,
-                    );
+                Consumer<StartIoAdProvider>(
+                  builder: (context, startIoAdProvider, child) {
+                    if (startIoAdProvider.startAppBannerAd == null) {
+                      return const SizedBox();
+                    }
+                    if (startIoAdProvider.startAppInterstitialAd != null) {
+                      startIoAdProvider.startAppInterstitialAd!.show().then(
+                        (value) {
+                          startIoAdProvider.startAppInterstitialAd = null;
+                        },
+                      );
+                    }
+                    return StartAppBanner(startIoAdProvider.startAppBannerAd!);
                   },
                 ),
-              ),
-              body: PageView(
-                controller: pgController,
-                onPageChanged: (value) {
-                  provider.changeBarIndex(value);
-                },
-                children: layouts,
-              ),
+              ],
             )));
           },
         ),

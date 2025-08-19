@@ -6,8 +6,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:islamy_app/presentation/core/ads/ads_provider.dart';
-import 'package:islamy_app/presentation/core/ads/constants.dart';
+import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
@@ -22,13 +21,16 @@ import 'di.dart';
 import 'presentation/core/themes/app_themes.dart';
 
 late final AudioSession audioSession;
+GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey();
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await configureDependencies();
   final RadioViewModel radioViewModel = getIt<RadioViewModel>();
-  AdsProvider appodealAdsProvider =
-      getIt.get<AdsProvider>(instanceName: AdsConstants.appodealAdsProvider);
+  // AdsProvider appodealAdsProvider =
+  //     getIt.get<AdsProvider>(instanceName: AdsConstants.appodealAdsProvider);
+  StartIoAdProvider startIoAdProvider = getIt.get<StartIoAdProvider>();
+
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(MultiProvider(providers: [
@@ -40,7 +42,7 @@ void main() async {
       create: (_) => radioViewModel,
     ),
     ChangeNotifierProvider(
-      create: (_) => appodealAdsProvider,
+      create: (_) => startIoAdProvider,
     )
   ], child: const MyApp()));
 
@@ -58,10 +60,12 @@ void main() async {
       };
 
       // Initializing Appodeal
-      await appodealAdsProvider.initialize();
+      //await appodealAdsProvider.initialize();
+      await startIoAdProvider.initialize();
 
-      Future.delayed(const Duration(seconds: 2), (){
+      Future.delayed(const Duration(seconds: 2), () async {
         FlutterNativeSplash.remove();
+        await startIoAdProvider.showInterstitialAd();
       });
     },
   );
@@ -121,6 +125,7 @@ class _MyAppState extends State<MyApp> {
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
       themeMode: themeProvider.currentTheme,
+      navigatorKey: globalNavigatorKey,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
         SurahScreen.routeName: (context) => const SurahScreen(),

@@ -23,6 +23,7 @@ import 'domain/repositories/quran_radio_channels/quran_radio_channels_repository
     as _i602;
 import 'presentation/core/ads/ads_provider.dart' as _i140;
 import 'presentation/core/ads/appodeal_ad_provider.dart' as _i504;
+import 'presentation/core/ads/start_io_ad_provider.dart' as _i680;
 import 'presentation/core/shared_preferences/shared_preferences_provider.dart'
     as _i596;
 import 'presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart'
@@ -44,6 +45,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final sharedPreferencesProvider = _$SharedPreferencesProvider();
+    gh.factory<_i680.StartIoAdProvider>(() => _i680.StartIoAdProvider());
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => sharedPreferencesProvider.provide(),
       preResolve: true,
