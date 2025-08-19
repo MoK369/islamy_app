@@ -37,8 +37,8 @@ class RadioViewModel extends BaseAudioHandler
   late RadioChannel currentRadioChannel;
   bool isRadioChannelsEmpty = true, isRadioGoingToPlayAgain = false;
   RadioAudioState radioAudioState = NotPlayingAudioState();
-  final internetConnectionChecker = InternetConnection();
   Timer? _timer;
+  late StreamSubscription<InternetStatus> listenOnInternetChangeStream;
 
   Future<void> getQuranRadioChannels(String languageCode) async {
     quranRadioChannelsState = LoadingState();
@@ -190,7 +190,8 @@ class RadioViewModel extends BaseAudioHandler
     //     }
     //   }
     // });
-    internetConnectionChecker.onStatusChange.listen((InternetStatus status) {
+    listenOnInternetChangeStream =
+        InternetConnection().onStatusChange.listen((InternetStatus status) {
       switch (status) {
         case InternetStatus.connected:
           debugPrint("The internet is now connected");
@@ -275,6 +276,7 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
+    await listenOnInternetChangeStream.cancel();
     await audioPlayer.stop();
   }
 

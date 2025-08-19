@@ -62,7 +62,6 @@ void main() async {
 
       Future.delayed(const Duration(seconds: 1), () async {
         FlutterNativeSplash.remove();
-        await startIoAdProvider.showInterstitialAd();
       });
     },
   );

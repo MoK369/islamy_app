@@ -49,6 +49,8 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     getQuranRadioChannels();
     Provider.of<StartIoAdProvider>(globalNavigatorKey.currentContext!)
+        .showInterstitialAd();
+    Provider.of<StartIoAdProvider>(globalNavigatorKey.currentContext!)
         .showBannerAd();
   }
 
@@ -153,6 +155,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       startIoAdProvider.startAppInterstitialAd!.show().then(
                         (value) {
                           startIoAdProvider.startAppInterstitialAd = null;
+                          startIoAdProvider.showInterstitialListener.cancel();
                         },
                       );
                     }
