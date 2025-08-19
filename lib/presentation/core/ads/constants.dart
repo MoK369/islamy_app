@@ -1,6 +1,6 @@
 abstract class AdsConstants {
   static const String appodealAndroidKey =
-      "c0ddaf9b54c30bfb199f8654e68e00310c648c99016e3510";
+      "dae502c5c2df5425c2560511b2257b6c59321e725329bdca";
 
   static const String appodealAdsProvider = "AppodealAdsProvider";
 }

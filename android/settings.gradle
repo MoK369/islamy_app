@@ -26,9 +26,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
+        maven { url "https://storage.googleapis.com/download.flutter.io" }
         // ✅ Flutter's Maven repo
-        maven { url = uri("https://artifactory.appodeal.com/appodeal") } // ✅ Appodeal repo
+        maven { url "https://artifactory.appodeal.com/appodeal" } // ✅ Appodeal repo
     }
 }
 

@@ -10,7 +10,7 @@ class AppodealAdsProvider extends AdsProvider {
   @override
   Future<void> initialize() async {
     try {
-      Appodeal.setTesting(kReleaseMode ? false : true); //only not release mode
+      Appodeal.setTesting(false); //only not release mode
       Appodeal.setLogLevel(Appodeal.LogLevelVerbose);
       Appodeal.setAutoCache(AppodealAdType.Interstitial, false);
       Appodeal.setAutoCache(AppodealAdType.RewardedVideo, false);
