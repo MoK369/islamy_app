@@ -56,8 +56,6 @@ dependencies:
   curved_labeled_navigation_bar: ^2.0.5
   internet_connection_checker_plus: ^2.7.2
   audio_session: ^0.1.25
-  stack_appodeal_flutter: 3.8.0
-  back_button_interceptor: ^8.0.4
   startapp_sdk: ^1.0.1
 
 
@@ -121,19 +119,6 @@ flutter:
           weight: 700
         - asset: assets/fonts/El_Messiri/ElMessiri-SemiBold.ttf
           weight: 500
-
-    - family: ArabQuran
-      fonts:
-        - asset: assets/fonts/ArabQuranIslamic140.ttf
-    - family: AyatQuran11
-      fonts:
-        - asset: assets/fonts/AyatQuran11.ttf
-    - family: AlQuranAli
-      fonts:
-        - asset: assets/fonts/AlQuranAli.ttf
-    - family: Naskh
-      fonts:
-        - asset: assets/fonts/TraditionalNaskhRegular.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

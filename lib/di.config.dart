@@ -21,8 +21,6 @@ import 'data/repositories_imp/quran_radio_channels_repository_imp.dart'
 import 'data/services/apis/api_manager.dart' as _i265;
 import 'domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart'
     as _i602;
-import 'presentation/core/ads/ads_provider.dart' as _i140;
-import 'presentation/core/ads/appodeal_ad_provider.dart' as _i504;
 import 'presentation/core/ads/start_io_ad_provider.dart' as _i680;
 import 'presentation/core/shared_preferences/shared_preferences_provider.dart'
     as _i596;
@@ -51,10 +49,6 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i265.ApiManager>(() => _i265.ApiManager());
-    gh.lazySingleton<_i140.AdsProvider>(
-      () => _i504.AppodealAdsProvider(),
-      instanceName: 'AppodealAdsProvider',
-    );
     gh.factory<_i70.SurahScreenProvider>(
         () => _i70.SurahScreenProvider(gh<_i460.SharedPreferences>()));
     gh.factory<_i545.MainScreenProvider>(

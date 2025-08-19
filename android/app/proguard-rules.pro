@@ -1,21 +1,21 @@
 -keep public class com.google.android.gms.** { public protected *; }
--keep class com.appodeal.** { *; }
 -keep class com.google.android.gms.ads.** { *; }
 -keep class com.google.firebase.** { *; }
 -keep class io.flutter.** { *; }
--keep class com.applovin.** { *; }
--keep class com.ironsource.** { *; }
--keep class com.unity3d.ads.** { *; }
--keep class com.vungle.** { *; }
--keep class com.mopub.** { *; }
--keep class com.facebook.ads.** { *; }
--keep class com.inmobi.** { *; }
+
+# Keep Start.io SDK classes
 -keep class com.startapp.** { *; }
--keep class com.yandex.** { *; }
--keep class com.my.target.** { *; }
--keep class com.chartboost.** { *; }
--keep class com.tapjoy.** { *; }
--keep class com.adcolony.** { *; }
--keep class com.mintegral.** { *; }
--keep class com.bytedance.** { *; }
--keep class com.pangle.** { *; }
+
+# Keep Flutter plugin wrapper classes
+-keep class com.startapp.flutter.sdk.** { *; }
+
+# Keep WebView JavaScript interfaces (if used)
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# Optional: Keep line numbers for better crash logs
+-keepattributes SourceFile,LineNumberTable
+
+# Ignore warnings to prevent build failures due to missing references
+-ignorewarnings

@@ -18,16 +18,6 @@
         <meta-data
             android:name="com.startapp.sdk.APPLICATION_ID"
             android:value="207290180" />
-
-        <!-- ✅ Appodeal SDK Key -->
-        <meta-data
-            android:name="com.appodeal.ads.sdk.key"
-            android:value="dae502c5c2df5425c2560511b2257b6c59321e725329bdca" />
-
-        <!-- ✅ AdMob App ID -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8062947452524883~2195729908" />
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

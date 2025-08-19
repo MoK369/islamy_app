@@ -27,7 +27,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url "https://storage.googleapis.com/download.flutter.io" } // ✅ Flutter's Maven repo
-        maven { url "https://artifactory.appodeal.com/appodeal" } // ✅ Appodeal repo
     }
 }
 

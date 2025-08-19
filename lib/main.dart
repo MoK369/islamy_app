@@ -27,8 +27,6 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await configureDependencies();
   final RadioViewModel radioViewModel = getIt<RadioViewModel>();
-  // AdsProvider appodealAdsProvider =
-  //     getIt.get<AdsProvider>(instanceName: AdsConstants.appodealAdsProvider);
   StartIoAdProvider startIoAdProvider = getIt.get<StartIoAdProvider>();
 
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -60,10 +58,9 @@ void main() async {
       };
 
       // Initializing Appodeal
-      //await appodealAdsProvider.initialize();
       await startIoAdProvider.initialize();
 
-      Future.delayed(const Duration(seconds: 2), () async {
+      Future.delayed(const Duration(seconds: 1), () async {
         FlutterNativeSplash.remove();
         await startIoAdProvider.showInterstitialAd();
       });

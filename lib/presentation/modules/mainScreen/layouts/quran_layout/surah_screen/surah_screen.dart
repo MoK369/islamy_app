@@ -1,8 +1,6 @@
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamy_app/di.dart';
-import 'package:islamy_app/presentation/core/ads/ads_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
@@ -37,19 +35,9 @@ class _SurahScreenState extends State<SurahScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    BackButtonInterceptor.add(myInterceptor);
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    Navigator.pop(context);
-    showBanner();
 
-    return true;
-  }
-
-  void showBanner() {
-    Provider.of<AdsProvider>(context, listen: false).showBannerAd();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +59,6 @@ class _SurahScreenState extends State<SurahScreen> {
                           leading: IconButton(
                         onPressed: () {
                           Navigator.pop(context);
-                                showBanner();
                               },
                         icon: const Icon(
                           size: 40,
@@ -122,6 +109,5 @@ class _SurahScreenState extends State<SurahScreen> {
     super.dispose();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    BackButtonInterceptor.remove(myInterceptor);
   }
 }

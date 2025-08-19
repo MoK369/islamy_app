@@ -1,8 +1,6 @@
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamy_app/di.dart';
-import 'package:islamy_app/presentation/core/ads/ads_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
@@ -30,19 +28,8 @@ class _HadeethScreenState extends State<HadeethScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    BackButtonInterceptor.add(myInterceptor);
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    Navigator.pop(context);
-    showBanner();
-
-    return true;
-  }
-
-  void showBanner() {
-    Provider.of<AdsProvider>(context, listen: false).showBannerAd();
-  }
 
   SurahScreenProvider surahScreenProvider = getIt.get<SurahScreenProvider>();
   ValueNotifier<bool> showBottomWidgetNotifier = ValueNotifier(false);
@@ -68,7 +55,6 @@ class _HadeethScreenState extends State<HadeethScreen> {
                         leading: IconButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            showBanner();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -177,6 +163,5 @@ class _HadeethScreenState extends State<HadeethScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    BackButtonInterceptor.remove(myInterceptor);
   }
 }
