@@ -38,7 +38,7 @@ class RadioViewModel extends BaseAudioHandler
   bool isRadioChannelsEmpty = true, isRadioGoingToPlayAgain = false;
   RadioAudioState radioAudioState = NotPlayingAudioState();
   Timer? _timer;
-  late StreamSubscription<InternetStatus> listenOnInternetChangeStream;
+  StreamSubscription<InternetStatus>? listenOnInternetChangeStream;
 
   Future<void> getQuranRadioChannels(String languageCode) async {
     quranRadioChannelsState = LoadingState();
@@ -276,7 +276,7 @@ class RadioViewModel extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
-    await listenOnInternetChangeStream.cancel();
+    await listenOnInternetChangeStream?.cancel();
     await audioPlayer.stop();
   }
 
