@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:islamy_app/data/models/check_app_version_model.dart';
 import 'package:islamy_app/data/models/quran_radio_model.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
 
@@ -8,6 +9,9 @@ class ApiManager {
   static final Dio dio = Dio();
   static const String baseUrl = "https://mp3quran.net";
   static const String quranRadioEndPoint = "/api/v3/radios";
+
+  static const String _checkVersionUrl =
+      'https://mok369.github.io/islamy-app-version-checker/version_on_aptoide.json';
 
   Future<ApiResult<List<RadioChannel>>> getQuranRadioChannels(
       String languageCode) async {
@@ -18,6 +22,23 @@ class ApiManager {
       if ((response.statusCode ?? 0) >= 200 &&
           (response.statusCode ?? 0) < 300) {
         return Success(data: quranRadioModel.radios ?? []);
+      } else {
+        return ServerError(code: -1, message: "Something Went Wrong 🤔");
+      }
+    } on Exception catch (e) {
+      return CodeError(exception: e);
+    }
+  }
+
+  Future<ApiResult<CheckAppVersionModel>> checkForUpdate() async {
+    try {
+      final response = await dio.get(_checkVersionUrl);
+
+      if (response.statusCode == 200) {
+        CheckAppVersionModel checkAppVersionModel =
+            CheckAppVersionModel.fromJson(response.data);
+
+        return Success(data: checkAppVersionModel);
       } else {
         return ServerError(code: -1, message: "Something Went Wrong 🤔");
       }

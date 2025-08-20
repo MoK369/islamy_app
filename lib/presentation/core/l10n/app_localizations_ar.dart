@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -76,4 +77,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tryAgain => 'حاول مجدداً';
+
+  @override
+  String get updateAvailable => 'تحديث متوفر';
+
+  @override
+  String newVersionMessage(Object version) {
+    return 'إصدار جديد $version متاح.';
+  }
+
+  @override
+  String get update => 'تحديث';
+
+  @override
+  String get later => 'لاحقًا';
 }

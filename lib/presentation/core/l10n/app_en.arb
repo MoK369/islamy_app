@@ -21,5 +21,9 @@
   "sebhaLayout": "Sebha",
   "numberOfPraises": "Number of Praises",
   "pressAgain": "Press Again to exit",
-  "tryAgain": "Try Again"
+  "tryAgain": "Try Again",
+  "updateAvailable": "Update Available",
+  "newVersionMessage": "A new version {version} is available.",
+  "update": "update",
+  "later": "later"
 }

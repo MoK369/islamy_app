@@ -232,6 +232,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'حاول مجدداً'**
   String get tryAgain;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث متوفر'**
+  String get updateAvailable;
+
+  /// No description provided for @newVersionMessage.
+  ///
+  /// In ar, this message translates to:
+  /// **'إصدار جديد {version} متاح.'**
+  String newVersionMessage(Object version);
+
+  /// No description provided for @update.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث'**
+  String get update;
+
+  /// No description provided for @later.
+  ///
+  /// In ar, this message translates to:
+  /// **'لاحقًا'**
+  String get later;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

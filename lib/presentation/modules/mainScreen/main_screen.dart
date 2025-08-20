@@ -152,12 +152,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       return const SizedBox();
                     }
                     if (startIoAdProvider.startAppInterstitialAd != null) {
-                      startIoAdProvider.startAppInterstitialAd!.show().then(
-                        (value) {
-                          startIoAdProvider.startAppInterstitialAd = null;
-                          startIoAdProvider.showInterstitialListener.cancel();
-                        },
-                      );
+                      startIoAdProvider.startAppInterstitialAd!.show();
                     }
                     return StartAppBanner(startIoAdProvider.startAppBannerAd!);
                   },

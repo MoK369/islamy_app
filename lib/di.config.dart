@@ -16,12 +16,17 @@ import 'data/data_sources/quran_radio_channnels_data_sources/quran_radio_channel
     as _i873;
 import 'data/data_sources_imp/quran_radio_channnels_remote_data_source_imp.dart'
     as _i936;
+import 'data/repositories_imp/app_version_check_repo_imp.dart' as _i829;
 import 'data/repositories_imp/quran_radio_channels_repository_imp.dart'
     as _i1060;
 import 'data/services/apis/api_manager.dart' as _i265;
+import 'domain/repositories/app_version_check/app_version_check_repo.dart'
+    as _i347;
 import 'domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart'
     as _i602;
 import 'presentation/core/ads/start_io_ad_provider.dart' as _i680;
+import 'presentation/core/app_version_checker/app_version_checker.dart'
+    as _i680;
 import 'presentation/core/shared_preferences/shared_preferences_provider.dart'
     as _i596;
 import 'presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart'
@@ -55,6 +60,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i545.MainScreenProvider(gh<_i460.SharedPreferences>()));
     gh.factory<_i873.QuranRadioChannelsRemoteDataSource>(() =>
         _i936.QuranRadioChannelsRemoteDataSourceImp(gh<_i265.ApiManager>()));
+    gh.factory<_i347.AppVersionCheckRepo>(
+        () => _i829.AppVersionCheckRepoImp(gh<_i265.ApiManager>()));
+    gh.factory<_i680.AppVersionCheckerViewModel>(() =>
+        _i680.AppVersionCheckerViewModel(gh<_i347.AppVersionCheckRepo>()));
     gh.factory<_i602.QuranRadioChannelsRepository>(() =>
         _i1060.QuranRadioChannelsRepositoryImp(
             gh<_i873.QuranRadioChannelsRemoteDataSource>()));

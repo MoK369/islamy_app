@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
+import 'package:islamy_app/presentation/core/app_version_checker/app_version_checker.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
@@ -58,7 +59,10 @@ void main() async {
       };
 
       // Initializing Appodeal
-      await startIoAdProvider.initialize();
+      //await startIoAdProvider.initialize();
+
+      // check app version:
+      getIt.get<AppVersionCheckerViewModel>().checkAppVersion();
 
       Future.delayed(const Duration(seconds: 1), () async {
         FlutterNativeSplash.remove();
@@ -108,7 +112,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = ThemeProvider.get(context);
