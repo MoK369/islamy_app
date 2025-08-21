@@ -16,7 +16,6 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/main_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'di.dart';
 import 'presentation/core/themes/app_themes.dart';
@@ -30,13 +29,12 @@ void main() async {
   final RadioViewModel radioViewModel = getIt<RadioViewModel>();
   StartIoAdProvider startIoAdProvider = getIt.get<StartIoAdProvider>();
 
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
-      return ThemeProvider(sharedPreferences);
+      return getIt.get<ThemeProvider>();
     }),
-    ChangeNotifierProvider(create: (_) => LocaleProvider(sharedPreferences)),
+    ChangeNotifierProvider(create: (_) => getIt.get<LocaleProvider>()),
     ChangeNotifierProvider(
       create: (_) => radioViewModel,
     ),

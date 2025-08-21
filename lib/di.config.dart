@@ -27,8 +27,14 @@ import 'domain/repositories/quran_radio_channels/quran_radio_channels_repository
 import 'presentation/core/ads/start_io_ad_provider.dart' as _i680;
 import 'presentation/core/app_version_checker/app_version_checker.dart'
     as _i680;
-import 'presentation/core/shared_preferences/shared_preferences_provider.dart'
-    as _i596;
+import 'presentation/core/l10n/app_localizations.dart' as _i632;
+import 'presentation/core/providers/locale_provider.dart' as _i125;
+import 'presentation/core/providers/theme_provider.dart' as _i797;
+import 'presentation/core/utils/app_localizations/app_localizations_provider.dart'
+    as _i211;
+import 'presentation/core/utils/saved_locale/get_saved_locale.dart' as _i472;
+import 'presentation/core/utils/shared_preferences/shared_preferences_provider.dart'
+    as _i301;
 import 'presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart'
     as _i70;
 import 'presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart'
@@ -48,29 +54,50 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final sharedPreferencesProvider = _$SharedPreferencesProvider();
+    final getSavedLocale = _$GetSavedLocale();
+    final appLocalizationsProvider = _$AppLocalizationsProvider();
     gh.factory<_i680.StartIoAdProvider>(() => _i680.StartIoAdProvider());
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => sharedPreferencesProvider.provide(),
       preResolve: true,
     );
     gh.singleton<_i265.ApiManager>(() => _i265.ApiManager());
+    gh.factory<_i797.ThemeProvider>(
+        () => _i797.ThemeProvider(gh<_i460.SharedPreferences>()));
     gh.factory<_i70.SurahScreenProvider>(
         () => _i70.SurahScreenProvider(gh<_i460.SharedPreferences>()));
     gh.factory<_i545.MainScreenProvider>(
         () => _i545.MainScreenProvider(gh<_i460.SharedPreferences>()));
+    gh.factory<String>(
+      () => getSavedLocale.getSavedLocale(gh<_i460.SharedPreferences>()),
+      instanceName: 'getSavedLocale',
+    );
     gh.factory<_i873.QuranRadioChannelsRemoteDataSource>(() =>
         _i936.QuranRadioChannelsRemoteDataSourceImp(gh<_i265.ApiManager>()));
     gh.factory<_i347.AppVersionCheckRepo>(
         () => _i829.AppVersionCheckRepoImp(gh<_i265.ApiManager>()));
+    gh.factory<_i125.LocaleProvider>(() => _i125.LocaleProvider(
+          gh<_i460.SharedPreferences>(),
+          gh<String>(instanceName: 'getSavedLocale'),
+        ));
     gh.factory<_i680.AppVersionCheckerViewModel>(() =>
         _i680.AppVersionCheckerViewModel(gh<_i347.AppVersionCheckRepo>()));
     gh.factory<_i602.QuranRadioChannelsRepository>(() =>
         _i1060.QuranRadioChannelsRepositoryImp(
             gh<_i873.QuranRadioChannelsRemoteDataSource>()));
+    await gh.factoryAsync<_i632.AppLocalizations>(
+      () => appLocalizationsProvider
+          .provide(gh<String>(instanceName: 'getSavedLocale')),
+      preResolve: true,
+    );
     gh.singleton<_i647.RadioViewModel>(
         () => _i647.RadioViewModel(gh<_i602.QuranRadioChannelsRepository>()));
     return this;
   }
 }
 
-class _$SharedPreferencesProvider extends _i596.SharedPreferencesProvider {}
+class _$SharedPreferencesProvider extends _i301.SharedPreferencesProvider {}
+
+class _$GetSavedLocale extends _i472.GetSavedLocale {}
+
+class _$AppLocalizationsProvider extends _i211.AppLocalizationsProvider {}

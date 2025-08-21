@@ -10,6 +10,34 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get noInternetConnection => 'No Internet connection 😑';
+
+  @override
+  String get couldNotFindSource => 'Couldn\'t find the source 😱';
+
+  @override
+  String get badResponse => 'Bad response format 👎';
+
+  @override
+  String get connectionTimeout => 'Connection timeout with server ⌛';
+
+  @override
+  String get sendTimeout => 'Send timeout in connection with server ⏱';
+
+  @override
+  String get receiveTimeout => 'Receive timeout in connection with server ⏰';
+
+  @override
+  String get badCertificate =>
+      'The certificate provided by the server is not valid 📑';
+
+  @override
+  String get requestCanceled => 'Request to server was cancelled ✖';
+
+  @override
+  String get somethingWentWrong => 'Something Went Wrong 🤔';
+
+  @override
   String get islami => 'Islamic';
 
   @override

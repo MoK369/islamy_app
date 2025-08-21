@@ -1,4 +1,13 @@
 {
+  "noInternetConnection": "No Internet connection \uD83D\uDE11",
+  "couldNotFindSource": "Couldn't find the source \uD83D\uDE31",
+  "badResponse": "Bad response format \uD83D\uDC4E",
+  "connectionTimeout": "Connection timeout with server ⌛",
+  "sendTimeout": "Send timeout in connection with server ⏱",
+  "receiveTimeout": "Receive timeout in connection with server ⏰",
+  "badCertificate": "The certificate provided by the server is not valid \uD83D\uDCD1",
+  "requestCanceled": "Request to server was cancelled ✖",
+  "somethingWentWrong": "Something Went Wrong \uD83E\uDD14",
   "islami": "Islamic",
   "quranLayout": "Quran",
   "search": "Search",

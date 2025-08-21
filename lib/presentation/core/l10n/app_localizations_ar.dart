@@ -10,6 +10,33 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get noInternetConnection => 'لا يوجد اتصال بالإنترنت 😑';
+
+  @override
+  String get couldNotFindSource => 'تعذر العثور على المصدر 😱';
+
+  @override
+  String get badResponse => 'تنسيق الاستجابة غير صالح 👎';
+
+  @override
+  String get connectionTimeout => 'انتهت مهلة الاتصال بالخادم ⌛';
+
+  @override
+  String get sendTimeout => 'انتهت مهلة الإرسال في الاتصال بالخادم ⏱';
+
+  @override
+  String get receiveTimeout => 'انتهت مهلة الاستلام في الاتصال بالخادم ⏰';
+
+  @override
+  String get badCertificate => 'شهادة الخادم غير صالحة 📑';
+
+  @override
+  String get requestCanceled => 'تم إلغاء الطلب إلى الخادم ✖';
+
+  @override
+  String get somethingWentWrong => 'حدث خطأ ما 🤔';
+
+  @override
   String get islami => 'إسلامي';
 
   @override

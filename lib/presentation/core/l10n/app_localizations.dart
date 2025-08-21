@@ -95,6 +95,60 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
+  /// No description provided for @noInternetConnection.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد اتصال بالإنترنت 😑'**
+  String get noInternetConnection;
+
+  /// No description provided for @couldNotFindSource.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر العثور على المصدر 😱'**
+  String get couldNotFindSource;
+
+  /// No description provided for @badResponse.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنسيق الاستجابة غير صالح 👎'**
+  String get badResponse;
+
+  /// No description provided for @connectionTimeout.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهت مهلة الاتصال بالخادم ⌛'**
+  String get connectionTimeout;
+
+  /// No description provided for @sendTimeout.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهت مهلة الإرسال في الاتصال بالخادم ⏱'**
+  String get sendTimeout;
+
+  /// No description provided for @receiveTimeout.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهت مهلة الاستلام في الاتصال بالخادم ⏰'**
+  String get receiveTimeout;
+
+  /// No description provided for @badCertificate.
+  ///
+  /// In ar, this message translates to:
+  /// **'شهادة الخادم غير صالحة 📑'**
+  String get badCertificate;
+
+  /// No description provided for @requestCanceled.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء الطلب إلى الخادم ✖'**
+  String get requestCanceled;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدث خطأ ما 🤔'**
+  String get somethingWentWrong;
+
   /// No description provided for @islami.
   ///
   /// In ar, this message translates to:

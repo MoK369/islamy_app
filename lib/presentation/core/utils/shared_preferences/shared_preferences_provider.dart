@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 @module
 abstract class SharedPreferencesProvider {
   @preResolve
-  Future<SharedPreferences> provide() {
-    return SharedPreferences.getInstance();
+  Future<SharedPreferences> provide() async {
+    return await SharedPreferences.getInstance();
   }
 }

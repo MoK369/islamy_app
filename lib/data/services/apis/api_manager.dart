@@ -11,7 +11,7 @@ class ApiManager {
   static const String quranRadioEndPoint = "/api/v3/radios";
 
   static const String _checkVersionUrl =
-      'https://mok369.github.io/islamy-app-version-checker/version_on_aptoide.json';
+      'https://mok369.github.io/islamy-app-version-checker/app_version.json';
 
   Future<ApiResult<List<RadioChannel>>> getQuranRadioChannels(
       String languageCode) async {
@@ -33,10 +33,12 @@ class ApiManager {
   Future<ApiResult<CheckAppVersionModel>> checkForUpdate() async {
     try {
       final response = await dio.get(_checkVersionUrl);
-
       if (response.statusCode == 200) {
+        List keys = (response.data as Map).keys.toList();
+        const String store = String.fromEnvironment('STORE');
         CheckAppVersionModel checkAppVersionModel =
-            CheckAppVersionModel.fromJson(response.data);
+            CheckAppVersionModel.fromJson(
+                response.data[store.isNotEmpty ? store : keys.first]);
 
         return Success(data: checkAppVersionModel);
       } else {

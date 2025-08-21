@@ -87,7 +87,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        flex: 2,
+                        flex: 5,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
@@ -101,6 +101,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                         ),
                       ),
                       Expanded(
+                        flex: 4,
                         child: Directionality(
                           textDirection: TextDirection.ltr,
                           child: Row(
