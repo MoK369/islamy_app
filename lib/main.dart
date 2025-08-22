@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +13,7 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layou
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/main_screen.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 
 import 'di.dart';
@@ -50,12 +49,8 @@ void main() async {
         DeviceOrientation.portraitUp,
       ]);
 
-      initAudioService(radioViewModel);
       await setupAudioSession();
-      PlatformDispatcher.instance.onPlatformBrightnessChanged = () {
-        initAudioService(radioViewModel);
-      };
-
+      await initBackgroundAudio();
       // Initializing Appodeal
       //await startIoAdProvider.initialize();
 
@@ -69,37 +64,18 @@ void main() async {
   );
 }
 
-void initAudioService(RadioViewModel radioViewModel) async {
-  final Brightness brightness = PlatformDispatcher.instance.platformBrightness;
-  await AudioService.init(
-    builder: () => radioViewModel,
-    config: AudioServiceConfig(
-      androidNotificationChannelId: 'com.main369.islamy.radioQuran.channel',
-      androidNotificationChannelName: 'Quran Audio playback',
-      androidNotificationIcon: "drawable/ic_launcher_foreground",
-      androidNotificationOngoing: true,
-      notificationColor: brightness == Brightness.light
-          ? const Color(0xFFB7935F)
-          : const Color(0xFF1e2949),
-    ),
+Future<void> initBackgroundAudio() {
+  return JustAudioBackground.init(
+    androidNotificationChannelId: 'com.main369.islamy.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+    androidNotificationIcon: "drawable/ic_launcher_foreground",
   );
 }
 
 Future<void> setupAudioSession() async {
   audioSession = await AudioSession.instance;
-  //await session.configure(const AudioSessionConfiguration.music());
-  await audioSession.configure(const AudioSessionConfiguration(
-    avAudioSessionCategory: AVAudioSessionCategory.playback,
-    avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.mixWithOthers,
-    avAudioSessionMode: AVAudioSessionMode.defaultMode,
-    androidAudioAttributes: AndroidAudioAttributes(
-      contentType: AndroidAudioContentType.music,
-      usage: AndroidAudioUsage.media,
-      flags: AndroidAudioFlags.none,
-    ),
-    androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientExclusive,
-    androidWillPauseWhenDucked: true,
-  ));
+  await audioSession.configure(const AudioSessionConfiguration.speech());
 }
 
 class MyApp extends StatefulWidget {

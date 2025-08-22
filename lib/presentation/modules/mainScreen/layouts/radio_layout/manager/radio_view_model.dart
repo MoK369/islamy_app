@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -12,25 +11,23 @@ import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/cairo_quran_radio.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 @singleton
-class RadioViewModel extends BaseAudioHandler
-    with ChangeNotifier, QueueHandler, SeekHandler {
+class RadioViewModel extends ChangeNotifier {
   final audioPlayer = AudioPlayer();
   final QuranRadioChannelsRepository quranRadioChannelsRepo;
   @factoryMethod
   RadioViewModel(this.quranRadioChannelsRepo) {
-    initPlayerStateStream();
-    audioPlayer.playbackEventStream
-        .map(broadCastPlaybackState)
-        .pipe(playbackState);
+    _initPlayerStateStream();
+    _initIndexStream();
   }
   BaseViewState<List<RadioChannel>> quranRadioChannelsState = LoadingState();
   int _currentRadioChannelIndex = 0;
   List<RadioChannel> _radioChannels = [];
   List<MediaItem> mediaItems = [];
-  late RadioChannel currentRadioChannel;
-  bool isRadioChannelsEmpty = true, isRadioGoingToPlayAgain = false;
+  RadioChannel? currentRadioChannel;
+  bool allowChangeOfCurrentRadioChannel = true;
   RadioAudioState radioAudioState = NotPlayingAudioState();
   StreamSubscription<InternetStatus>? listenOnInternetChangeStream;
   Future<void> getQuranRadioChannels(String languageCode) async {
@@ -51,7 +48,6 @@ class RadioViewModel extends BaseAudioHandler
         if (_radioChannels.isNotEmpty) {
           await initAllAudioSources();
         }
-        isRadioChannelsEmpty = _radioChannels.isEmpty;
         break;
       case ServerError<List<RadioChannel>>():
         quranRadioChannelsState = ErrorState(serverError: quranRadioApiResult);
@@ -88,16 +84,10 @@ class RadioViewModel extends BaseAudioHandler
               "https://mok369.github.io/islamy-app-version-checker/app_icon.png")));
       audioSources.add(AudioSource.uri(url, tag: mediaItems[i]));
     }
-    await addQueueItems(mediaItems);
     return audioSources;
   }
 
-  @override
-  Future<void> addQueueItems(List<MediaItem> mediaItems) async {
-    queue.add(mediaItems);
-  }
-
-  void initPlayerStateStream() {
+  void _initPlayerStateStream() {
     audioPlayer.playerStateStream.listen(
       (event) {
         if (event.playing && event.processingState == ProcessingState.ready) {
@@ -123,6 +113,20 @@ class RadioViewModel extends BaseAudioHandler
     );
   }
 
+  void _initIndexStream() {
+    audioPlayer.currentIndexStream.listen((index) {
+      if (index != null) {
+        if (_currentRadioChannelIndex != index) {
+          _currentRadioChannelIndex = index;
+          if (allowChangeOfCurrentRadioChannel) {
+            currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
+          }
+          notifyListeners();
+        }
+      }
+    });
+  }
+
   void startMonitoringConnectivity() {
     listenOnInternetChangeStream =
         InternetConnection().onStatusChange.listen((InternetStatus status) {
@@ -140,126 +144,71 @@ class RadioViewModel extends BaseAudioHandler
 
   void retryCurrentStream() async {
     try {
-      mediaItem.add(queue.value[_currentRadioChannelIndex]);
-      await audioPlayer.load();
+      await audioPlayer.stop();
       await audioPlayer.play();
     } catch (e) {
       // Optionally log or retry again later
     }
   }
 
-  @override
   Future<void> play() async {
     try {
-      mediaItem.add(queue.value[_currentRadioChannelIndex]);
       if (await audioSession.setActive(true)) {
-        if (audioPlayer.processingState == ProcessingState.ready &&
-            !audioPlayer.playing &&
-            audioPlayer.audioSource ==
-                audioSources[_currentRadioChannelIndex]) {
-          await audioPlayer.play();
-        } else {
-          await audioPlayer.setAudioSource(
-            audioSources[_currentRadioChannelIndex],
+        if (audioPlayer.audioSources.isEmpty) {
+          allowChangeOfCurrentRadioChannel = false;
+          await audioPlayer.setAudioSources(
+            audioSources,
             preload: false,
+            initialIndex: _currentRadioChannelIndex,
             initialPosition: Duration.zero,
           );
-          await audioPlayer.play();
+          allowChangeOfCurrentRadioChannel = true;
         }
+        await audioPlayer.play();
       } else {
         debugPrint("Audio Session isn't Active");
       }
     } on Exception catch (e) {
+      allowChangeOfCurrentRadioChannel = true;
       quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
     }
     notifyListeners();
   }
 
-  PlaybackState broadCastPlaybackState(PlaybackEvent event) {
-    return PlaybackState(
-      controls: [
-        MediaControl.skipToPrevious,
-        if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
-        MediaControl.stop,
-        MediaControl.skipToNext,
-      ],
-      playing: audioPlayer.playing,
-      systemActions: {
-        MediaAction.skipToPrevious,
-        if (audioPlayer.playing) MediaAction.pause else MediaAction.play,
-        MediaAction.stop,
-        MediaAction.skipToNext
-      },
-      androidCompactActionIndices: const [0, 1, 3],
-      processingState: {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.completed,
-      }[audioPlayer.processingState]!,
-      updatePosition: audioPlayer.position,
-      bufferedPosition: audioPlayer.bufferedPosition,
-      speed: audioPlayer.speed,
-      queueIndex: event.currentIndex,
-    );
-  }
-
-  @override
   Future<void> pause() async {
     await audioPlayer.pause();
   }
 
-  @override
   Future<void> stop() async {
     await listenOnInternetChangeStream?.cancel();
-    mediaItem.add(null);
     await audioPlayer.stop();
   }
 
-  @override
   Future<void> skipToNext() async {
     if (isLastAudioChannel) return;
     if (_currentRadioChannelIndex != audioSources.length - 1) {
       _currentRadioChannelIndex++;
     }
+    if (!audioPlayer.playing &&
+        audioPlayer.processingState == ProcessingState.ready) {
+      await audioPlayer.stop();
+    }
+    await audioPlayer.seekToNext();
     currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-    var wasPlaying = audioPlayer.playing;
-    if (audioPlayer.processingState == ProcessingState.ready && !wasPlaying) {
-      mediaItem.add(queue.value[_currentRadioChannelIndex]);
-    }
-    if (wasPlaying) {
-      await audioPlayer.setAudioSource(
-        audioSources[_currentRadioChannelIndex],
-        preload: false,
-        initialPosition: Duration.zero,
-      );
-      mediaItem.add(queue.value[_currentRadioChannelIndex]);
-      await audioPlayer.play();
-    }
     notifyListeners();
   }
 
-  @override
   Future<void> skipToPrevious() async {
     if (isFirstAudioChannel) return;
     if (_currentRadioChannelIndex != 0) {
       _currentRadioChannelIndex--;
     }
+    if (!audioPlayer.playing &&
+        audioPlayer.processingState == ProcessingState.ready) {
+      await audioPlayer.stop();
+    }
+    await audioPlayer.seekToPrevious();
     currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-    var wasPlaying = audioPlayer.playing;
-    if (audioPlayer.processingState == ProcessingState.ready && !wasPlaying) {
-      mediaItem.add(queue.value[_currentRadioChannelIndex]);
-    }
-    if (wasPlaying) {
-      await audioPlayer.setAudioSource(
-        audioSources[_currentRadioChannelIndex],
-        preload: false,
-        initialPosition: Duration.zero,
-      );
-      mediaItem.add(queue.value[_currentRadioChannelIndex]);
-      await audioPlayer.play();
-    }
     notifyListeners();
   }
 

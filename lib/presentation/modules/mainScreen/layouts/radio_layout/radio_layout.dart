@@ -94,7 +94,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            radioViewModel.currentRadioChannel.name ??
+                            radioViewModel.currentRadioChannel?.name ??
                                 "No Name",
                             style: theme.textTheme.titleMedium,
                           ),
