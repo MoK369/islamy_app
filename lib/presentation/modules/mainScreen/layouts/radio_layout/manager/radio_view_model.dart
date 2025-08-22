@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:islamy_app/data/models/quran_radio_model.dart';
-import 'package:islamy_app/data/services/apis/api_manager.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
 import 'package:islamy_app/domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart';
 import 'package:islamy_app/main.dart';
@@ -19,16 +18,13 @@ class RadioViewModel extends BaseAudioHandler
     with ChangeNotifier, QueueHandler, SeekHandler {
   final audioPlayer = AudioPlayer();
   final QuranRadioChannelsRepository quranRadioChannelsRepo;
-
   @factoryMethod
   RadioViewModel(this.quranRadioChannelsRepo) {
     initPlayerStateStream();
     audioPlayer.playbackEventStream
         .map(broadCastPlaybackState)
         .pipe(playbackState);
-    //initCurrentIndexStream();
   }
-
   BaseViewState<List<RadioChannel>> quranRadioChannelsState = LoadingState();
   int _currentRadioChannelIndex = 0;
   List<RadioChannel> _radioChannels = [];
@@ -37,9 +33,7 @@ class RadioViewModel extends BaseAudioHandler
   late RadioChannel currentRadioChannel;
   bool isRadioChannelsEmpty = true, isRadioGoingToPlayAgain = false;
   RadioAudioState radioAudioState = NotPlayingAudioState();
-  Timer? _timer;
   StreamSubscription<InternetStatus>? listenOnInternetChangeStream;
-
   Future<void> getQuranRadioChannels(String languageCode) async {
     quranRadioChannelsState = LoadingState();
     notifyListeners();
@@ -69,7 +63,6 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
-
   List<AudioSource> audioSources = [];
   Future<void> initAllAudioSources() async {
     try {
@@ -80,7 +73,6 @@ class RadioViewModel extends BaseAudioHandler
       debugPrint("Error initializing audio sources: $e");
     }
   }
-
   Future<List<AudioSource>> _concatenateAudioSources() async {
     List<AudioSource> audioSources = [];
     mediaItems.clear();
@@ -92,24 +84,21 @@ class RadioViewModel extends BaseAudioHandler
           artist: "",
           duration: const Duration(seconds: 0),
           artUri: Uri.parse(
-              "https://drive.google.com/file/d/1mfqCP8Xn9cyzRtUDJ9-A-ieEKCWsKXtc/view?usp=drive_link")));
+              "https://mok369.github.io/islamy-app-version-checker/app_icon.png")));
       audioSources.add(AudioSource.uri(url, tag: mediaItems[i]));
     }
     await addQueueItems(mediaItems);
     return audioSources;
   }
-
   @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {
     queue.add(mediaItems);
   }
-
   void initPlayerStateStream() {
     audioPlayer.playerStateStream.listen(
       (event) {
         if (event.playing && event.processingState == ProcessingState.ready) {
           debugPrint("Audio playing");
-          stopInternetPolling();
           radioAudioState = PlayingAudioState();
         } else if (event.processingState == ProcessingState.ready &&
             !event.playing) {
@@ -131,65 +120,7 @@ class RadioViewModel extends BaseAudioHandler
     );
   }
 
-  // void initCurrentIndexStream() {
-  //   audioPlayer.currentIndexStream.listen(
-  //     (index) {
-  //       if (index != null) {
-  //         _currentRadioChannelIndex = index;
-  //         currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-  //         if (didAudioPlayerStarted) {
-  //           mediaItem.add(queue.value[index]);
-  //         }
-  //       }
-  //       notifyListeners();
-  //     },
-  //   );
-  // }
-
-  Future<bool> hasInternetAccess() async {
-    try {
-      final response = await ApiManager.dio
-          .getUri(Uri.parse('https://www.google.com'))
-          .timeout(const Duration(seconds: 5));
-      return response.statusCode == 200;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  // void handleStreamFailure() {
-  //   startMonitoringConnectivity();
-  //   startInternetPolling();
-  // }
-
-  void startInternetPolling() {
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-      final hasInternet = await hasInternetAccess();
-      if (hasInternet) {
-        debugPrint("Internet is back. Retrying stream...");
-        stopInternetPolling();
-        retryCurrentStream();
-      }
-    });
-  }
-
-  void stopInternetPolling() {
-    _timer?.cancel();
-    _timer = null;
-  }
-
   void startMonitoringConnectivity() {
-    // _connectivity.onConnectivityChanged.listen((result) async {
-    //   print("inside monitoring connectivity $result");
-    //   if (result[0] != ConnectivityResult.none) {
-    //     final internetAvailable = await hasInternetAccess();
-    //     if (internetAvailable) {
-    //       retryCurrentStream();
-    //     } else {
-    //       debugPrint("Connected to network, but no internet access.");
-    //     }
-    //   }
-    // });
     listenOnInternetChangeStream =
         InternetConnection().onStatusChange.listen((InternetStatus status) {
       switch (status) {
@@ -206,19 +137,22 @@ class RadioViewModel extends BaseAudioHandler
 
   void retryCurrentStream() async {
     try {
+      mediaItem.add(queue.value[_currentRadioChannelIndex]);
       await audioPlayer.load();
       await audioPlayer.play();
     } catch (e) {
       // Optionally log or retry again later
     }
   }
-
   @override
   Future<void> play() async {
     try {
+      mediaItem.add(queue.value[_currentRadioChannelIndex]);
       if (await audioSession.setActive(true)) {
         if (audioPlayer.processingState == ProcessingState.ready &&
-            !audioPlayer.playing) {
+            !audioPlayer.playing &&
+            audioPlayer.audioSource ==
+                audioSources[_currentRadioChannelIndex]) {
           await audioPlayer.play();
         } else {
           await audioPlayer.setAudioSource(
@@ -227,7 +161,6 @@ class RadioViewModel extends BaseAudioHandler
             initialIndex: _currentRadioChannelIndex,
             initialPosition: Duration.zero,
           );
-          mediaItem.add(queue.value[_currentRadioChannelIndex]);
           await audioPlayer.play();
         }
       } else {
@@ -238,7 +171,6 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
-
   PlaybackState broadCastPlaybackState(PlaybackEvent event) {
     return PlaybackState(
       controls: [
@@ -268,18 +200,16 @@ class RadioViewModel extends BaseAudioHandler
       queueIndex: event.currentIndex,
     );
   }
-
   @override
   Future<void> pause() async {
     await audioPlayer.pause();
   }
-
   @override
   Future<void> stop() async {
     await listenOnInternetChangeStream?.cancel();
+    mediaItem.add(null);
     await audioPlayer.stop();
   }
-
   @override
   Future<void> skipToNext() async {
     if (isLastAudioChannel) return;
@@ -302,7 +232,6 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
-
   @override
   Future<void> skipToPrevious() async {
     if (isFirstAudioChannel) return;
@@ -325,7 +254,6 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
-
   bool get isLastAudioChannel =>
       _currentRadioChannelIndex == _radioChannels.length - 1;
   bool get isFirstAudioChannel => _currentRadioChannelIndex == 0;
