@@ -29,7 +29,6 @@ class RadioViewModel extends BaseAudioHandler
   int _currentRadioChannelIndex = 0;
   List<RadioChannel> _radioChannels = [];
   List<MediaItem> mediaItems = [];
-  late ConcatenatingAudioSource playlist;
   late RadioChannel currentRadioChannel;
   bool isRadioChannelsEmpty = true, isRadioGoingToPlayAgain = false;
   RadioAudioState radioAudioState = NotPlayingAudioState();
@@ -63,6 +62,7 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
+
   List<AudioSource> audioSources = [];
   Future<void> initAllAudioSources() async {
     try {
@@ -73,6 +73,7 @@ class RadioViewModel extends BaseAudioHandler
       debugPrint("Error initializing audio sources: $e");
     }
   }
+
   Future<List<AudioSource>> _concatenateAudioSources() async {
     List<AudioSource> audioSources = [];
     mediaItems.clear();
@@ -90,10 +91,12 @@ class RadioViewModel extends BaseAudioHandler
     await addQueueItems(mediaItems);
     return audioSources;
   }
+
   @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {
     queue.add(mediaItems);
   }
+
   void initPlayerStateStream() {
     audioPlayer.playerStateStream.listen(
       (event) {
@@ -144,6 +147,7 @@ class RadioViewModel extends BaseAudioHandler
       // Optionally log or retry again later
     }
   }
+
   @override
   Future<void> play() async {
     try {
@@ -157,8 +161,7 @@ class RadioViewModel extends BaseAudioHandler
         } else {
           await audioPlayer.setAudioSource(
             audioSources[_currentRadioChannelIndex],
-            preload: true,
-            initialIndex: _currentRadioChannelIndex,
+            preload: false,
             initialPosition: Duration.zero,
           );
           await audioPlayer.play();
@@ -171,6 +174,7 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
+
   PlaybackState broadCastPlaybackState(PlaybackEvent event) {
     return PlaybackState(
       controls: [
@@ -200,16 +204,19 @@ class RadioViewModel extends BaseAudioHandler
       queueIndex: event.currentIndex,
     );
   }
+
   @override
   Future<void> pause() async {
     await audioPlayer.pause();
   }
+
   @override
   Future<void> stop() async {
     await listenOnInternetChangeStream?.cancel();
     mediaItem.add(null);
     await audioPlayer.stop();
   }
+
   @override
   Future<void> skipToNext() async {
     if (isLastAudioChannel) return;
@@ -232,6 +239,7 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
+
   @override
   Future<void> skipToPrevious() async {
     if (isFirstAudioChannel) return;
@@ -254,6 +262,7 @@ class RadioViewModel extends BaseAudioHandler
     }
     notifyListeners();
   }
+
   bool get isLastAudioChannel =>
       _currentRadioChannelIndex == _radioChannels.length - 1;
   bool get isFirstAudioChannel => _currentRadioChannelIndex == 0;

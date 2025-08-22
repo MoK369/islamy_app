@@ -44,8 +44,8 @@ dependencies:
   pdfx: ^2.8.0
   humanizer: ^3.0.0
   dio: ^5.7.0
-  just_audio: ^0.9.42
-  audio_service: ^0.18.15
+  just_audio: ^0.10.4
+  audio_service: ^0.18.18
   injectable: ^2.5.0
   get_it: ^8.0.2
 
