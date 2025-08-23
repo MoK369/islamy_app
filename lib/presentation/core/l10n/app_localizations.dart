@@ -310,6 +310,36 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لاحقًا'**
   String get later;
+
+  /// No description provided for @errorInitializingAudioSources.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في تهيئة مصادر الصوت: '**
+  String get errorInitializingAudioSources;
+
+  /// No description provided for @errorReplayingAudio.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في إعادة تشغيل الصوت: '**
+  String get errorReplayingAudio;
+
+  /// No description provided for @audioSessionNotActive.
+  ///
+  /// In ar, this message translates to:
+  /// **'جلسة الصوت غير مفعّلة'**
+  String get audioSessionNotActive;
+
+  /// No description provided for @errorMovingToNextChannel.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في الانتقال إلى القناة التالية: '**
+  String get errorMovingToNextChannel;
+
+  /// No description provided for @errorMovingToPreviousChannel.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في الانتقال إلى القناة السابقة: '**
+  String get errorMovingToPreviousChannel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

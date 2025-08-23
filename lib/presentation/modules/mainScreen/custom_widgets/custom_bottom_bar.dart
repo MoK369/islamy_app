@@ -25,7 +25,7 @@ class CustomBottomBar extends StatelessWidget {
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/sebha_icon.png'),
                   size: 40, color: colorOfItem(theme, mainScreenProvider, 0)),
-              label: Locales.getTranslations(context).settingsLayout,
+              label: Locales.getTranslations(context).sebhaLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 0)),
           CurvedNavigationBarItem(
               child: ImageIcon(const AssetImage('assets/icons/radio_icon.png'),

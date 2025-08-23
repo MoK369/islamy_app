@@ -66,7 +66,9 @@ class _RadioLayoutState extends State<RadioLayout> {
                                     serverError: viewModelResult.serverError,
                                     codeError: viewModelResult.codeError),
                                 style: theme.textTheme.titleMedium),
-                            const SizedBox(height: 4,),
+                            const SizedBox(
+                              height: 4,
+                            ),
                             ElevatedButton(
                                 onPressed: () {
                                   radioViewModel.getQuranRadioChannels(
@@ -74,7 +76,8 @@ class _RadioLayoutState extends State<RadioLayout> {
                                           ? "ar"
                                           : "eng");
                                 },
-                                child: Text(Locales.getTranslations(context).tryAgain))
+                                child: Text(
+                                    Locales.getTranslations(context).tryAgain))
                           ],
                         ),
                       ),

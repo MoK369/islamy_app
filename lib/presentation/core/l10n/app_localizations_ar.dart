@@ -118,4 +118,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get later => 'لاحقًا';
+
+  @override
+  String get errorInitializingAudioSources => 'خطأ في تهيئة مصادر الصوت: ';
+
+  @override
+  String get errorReplayingAudio => 'خطأ في إعادة تشغيل الصوت: ';
+
+  @override
+  String get audioSessionNotActive => 'جلسة الصوت غير مفعّلة';
+
+  @override
+  String get errorMovingToNextChannel => 'خطأ في الانتقال إلى القناة التالية: ';
+
+  @override
+  String get errorMovingToPreviousChannel => 'خطأ في الانتقال إلى القناة السابقة: ';
 }

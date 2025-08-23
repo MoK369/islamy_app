@@ -34,5 +34,10 @@
   "updateAvailable": "Update Available",
   "newVersionMessage": "A new version {version} is available.",
   "update": "update",
-  "later": "later"
+  "later": "later",
+  "errorInitializingAudioSources": "Error initializing audio sources: ",
+  "errorReplayingAudio": "Error replaying audio: ",
+  "audioSessionNotActive": "Audio Session isn't Active",
+  "errorMovingToNextChannel": "Error Moving to next channel: ",
+  "errorMovingToPreviousChannel": "Error Moving to previous channel: "
 }

@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:islamy_app/data/models/quran_radio_model.dart';
+import 'package:islamy_app/di.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
 import 'package:islamy_app/domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart';
 import 'package:islamy_app/main.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
+import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
+import 'package:islamy_app/presentation/core/widgets/toast_widget.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/cairo_quran_radio.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
 import 'package:just_audio/just_audio.dart';
@@ -66,7 +70,9 @@ class RadioViewModel extends ChangeNotifier {
       await audioPlayer.setShuffleModeEnabled(false);
       currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
     } catch (e) {
-      debugPrint("Error initializing audio sources: $e");
+      showErrorToast(
+          getIt.get<AppLocalizations>().errorInitializingAudioSources +
+              e.toString());
     }
   }
 
@@ -147,13 +153,16 @@ class RadioViewModel extends ChangeNotifier {
       await audioPlayer.stop();
       await audioPlayer.play();
     } catch (e) {
-      // Optionally log or retry again later
+      showErrorToast(
+          getIt.get<AppLocalizations>().errorReplayingAudio + e.toString());
     }
   }
 
   Future<void> play() async {
     try {
-      if (await audioSession.setActive(true)) {
+      if (!(await InternetConnection().hasInternetAccess)) {
+        showErrorToast(getIt.get<AppLocalizations>().noInternetConnection);
+      } else if (await audioSession.setActive(true)) {
         if (audioPlayer.audioSources.isEmpty) {
           allowChangeOfCurrentRadioChannel = false;
           await audioPlayer.setAudioSources(
@@ -166,11 +175,14 @@ class RadioViewModel extends ChangeNotifier {
         }
         await audioPlayer.play();
       } else {
-        debugPrint("Audio Session isn't Active");
+        showErrorToast(getIt.get<AppLocalizations>().audioSessionNotActive);
       }
     } on Exception catch (e) {
       allowChangeOfCurrentRadioChannel = true;
       quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
+      showErrorToast(e.toString());
+    } catch (e) {
+      showErrorToast(e.toString());
     }
     notifyListeners();
   }
@@ -185,34 +197,56 @@ class RadioViewModel extends ChangeNotifier {
   }
 
   Future<void> skipToNext() async {
-    if (isLastAudioChannel) return;
-    if (_currentRadioChannelIndex != audioSources.length - 1) {
-      _currentRadioChannelIndex++;
+    try {
+      if (isLastAudioChannel) return;
+      if (_currentRadioChannelIndex != audioSources.length - 1) {
+        _currentRadioChannelIndex++;
+      }
+      if (!audioPlayer.playing &&
+          audioPlayer.processingState == ProcessingState.ready) {
+        await audioPlayer.stop();
+      }
+      await audioPlayer.seekToNext();
+      currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
+      notifyListeners();
+    } catch (e) {
+      showErrorToast(getIt.get<AppLocalizations>().errorMovingToNextChannel +
+          e.toString());
     }
-    if (!audioPlayer.playing &&
-        audioPlayer.processingState == ProcessingState.ready) {
-      await audioPlayer.stop();
-    }
-    await audioPlayer.seekToNext();
-    currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-    notifyListeners();
   }
 
   Future<void> skipToPrevious() async {
-    if (isFirstAudioChannel) return;
-    if (_currentRadioChannelIndex != 0) {
-      _currentRadioChannelIndex--;
+    try {
+      if (isFirstAudioChannel) return;
+      if (_currentRadioChannelIndex != 0) {
+        _currentRadioChannelIndex--;
+      }
+      if (!audioPlayer.playing &&
+          audioPlayer.processingState == ProcessingState.ready) {
+        await audioPlayer.stop();
+      }
+      await audioPlayer.seekToPrevious();
+      currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
+      notifyListeners();
+    } catch (e) {
+      showErrorToast(
+          getIt.get<AppLocalizations>().errorMovingToPreviousChannel +
+              e.toString());
     }
-    if (!audioPlayer.playing &&
-        audioPlayer.processingState == ProcessingState.ready) {
-      await audioPlayer.stop();
-    }
-    await audioPlayer.seekToPrevious();
-    currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-    notifyListeners();
   }
 
   bool get isLastAudioChannel =>
       _currentRadioChannelIndex == _radioChannels.length - 1;
   bool get isFirstAudioChannel => _currentRadioChannelIndex == 0;
+
+  void showErrorToast(String message) {
+    getIt.get<FToast>().showToast(
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: const Duration(seconds: 3),
+        child: ToastWidget(
+          text: message,
+          color: Colors.red,
+          icon: Icons.error_outline,
+        ));
+  }
 }

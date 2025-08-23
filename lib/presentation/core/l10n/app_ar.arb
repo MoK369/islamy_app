@@ -34,5 +34,10 @@
   "updateAvailable": "تحديث متوفر",
   "newVersionMessage": "إصدار جديد {version} متاح.",
   "update": "تحديث",
-  "later": "لاحقًا"
+  "later": "لاحقًا",
+  "errorInitializingAudioSources": "خطأ في تهيئة مصادر الصوت: ",
+  "errorReplayingAudio": "خطأ في إعادة تشغيل الصوت: ",
+  "audioSessionNotActive": "جلسة الصوت غير مفعّلة",
+  "errorMovingToNextChannel": "خطأ في الانتقال إلى القناة التالية: ",
+  "errorMovingToPreviousChannel": "خطأ في الانتقال إلى القناة السابقة: "
 }

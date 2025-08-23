@@ -60,6 +60,7 @@ dependencies:
   package_info_plus: ^8.3.1
   url_launcher: ^6.3.2
   just_audio_background: ^0.0.1-beta.17
+  fluttertoast: ^8.2.12
 
 
 dev_dependencies:

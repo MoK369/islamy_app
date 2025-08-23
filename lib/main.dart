@@ -4,6 +4,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/app_version_checker/app_version_checker.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
@@ -28,7 +29,6 @@ void main() async {
   final RadioViewModel radioViewModel = getIt<RadioViewModel>();
   StartIoAdProvider startIoAdProvider = getIt.get<StartIoAdProvider>();
 
-
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
       return getIt.get<ThemeProvider>();
@@ -51,9 +51,9 @@ void main() async {
 
       await setupAudioSession();
       await initBackgroundAudio();
-      // Initializing Appodeal
-      //await startIoAdProvider.initialize();
-
+      getIt.registerLazySingleton<FToast>(
+        () => FToast().init(globalNavigatorKey.currentContext!),
+      );
       // check app version:
       getIt.get<AppVersionCheckerViewModel>().checkAppVersion();
 
@@ -104,6 +104,15 @@ class _MyAppState extends State<MyApp> {
         SurahScreen.routeName: (context) => const SurahScreen(),
         HadeethScreen.routeName: (context) => const HadeethScreen(),
       },
+      builder: (context, child) => Overlay(
+        initialEntries: [
+          if (child != null) ...[
+            OverlayEntry(
+              builder: (context) => child,
+            ),
+          ],
+        ],
+      ),
       initialRoute: MainScreen.routeName,
     );
   }

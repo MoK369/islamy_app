@@ -28,8 +28,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receiveTimeout => 'Receive timeout in connection with server ⏰';
 
   @override
-  String get badCertificate =>
-      'The certificate provided by the server is not valid 📑';
+  String get badCertificate => 'The certificate provided by the server is not valid 📑';
 
   @override
   String get requestCanceled => 'Request to server was cancelled ✖';
@@ -119,4 +118,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get later => 'later';
+
+  @override
+  String get errorInitializingAudioSources => 'Error initializing audio sources: ';
+
+  @override
+  String get errorReplayingAudio => 'Error replaying audio: ';
+
+  @override
+  String get audioSessionNotActive => 'Audio Session isn\'t Active';
+
+  @override
+  String get errorMovingToNextChannel => 'Error Moving to next channel: ';
+
+  @override
+  String get errorMovingToPreviousChannel => 'Error Moving to previous channel: ';
 }
