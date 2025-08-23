@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/list_of_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
@@ -52,7 +53,7 @@ class _QuranLayoutState extends State<QuranLayout> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Image.asset(
-            'assets/icons/quran_header_icn.png',
+            AssetsPaths.quranHeaderIcon,
             height: size.height * 0.19,
           ),
           SearchTextField(

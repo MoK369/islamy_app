@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:humanizer/humanizer.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
 
@@ -30,7 +31,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Image.asset(
-          'assets/images/hadith_header.png',
+          AssetsPaths.hadithHeaderImage,
           height: size.height * 0.2,
         ),
         const Divider(),
@@ -102,8 +103,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
   }
 
   void readHadeeth() async {
-    String hadeeths =
-        await rootBundle.loadString('assets/hadeeths/ahadeth.txt');
+    String hadeeths = await rootBundle.loadString(AssetsPaths.ahadeethTextFile);
     List<String> eachHadeethList = hadeeths.trim().split('#');
     setState(() {
       for (int i = 0; i < eachHadeethList.length; i++) {

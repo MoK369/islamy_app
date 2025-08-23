@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
 import 'package:islamy_app/presentation/core/themes/app_themes.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
 import 'package:provider/provider.dart';
@@ -117,8 +118,8 @@ class _VersesListState extends State<VersesList> {
                                       alignment: Alignment.center,
                                       children: [
                                         ImageIcon(
-                                          const AssetImage(
-                                              "assets/icons/ayat_number_icon.png"),
+                                          AssetImage(
+                                              AssetsPaths.ayatNumberIcon),
                                           color: themeProvider.isDarkEnabled()
                                               ? Themes.darkPrimaryColor
                                               : Colors.black,
@@ -139,7 +140,7 @@ class _VersesListState extends State<VersesList> {
                                                         fontSize:
                                                             surahScreenProvider
                                                                     .fontSizeOfSurahVerses -
-                                                            10)),
+                                                                10)),
                                           ),
                                         )
                                       ],
@@ -199,8 +200,8 @@ class _VersesListState extends State<VersesList> {
   }
 
   void readSurah() async {
-    String surah = await rootBundle.loadString(
-        'assets/suras/suras_text/${widget.args.surahIndex + 1}.txt');
+    String surah = await rootBundle
+        .loadString(AssetsPaths.getArSurahTextFile(widget.args.surahIndex + 1));
     surahVerses = surah.trim().split('\n');
 
     setState(() {
@@ -209,8 +210,8 @@ class _VersesListState extends State<VersesList> {
   }
 
   void readEnSurah() async {
-    String enSurah = await rootBundle.loadString(
-        'assets/suras/suras_text/${widget.args.surahIndex + 1}_en.txt');
+    String enSurah = await rootBundle
+        .loadString(AssetsPaths.getEnSurahTextFile(widget.args.surahIndex + 1));
     enSurahVerses = enSurah.trim().split('\n');
     setState(() {
       enSurahVerses = enSurahVerses.map((e) => e = e.trim()).toList();
@@ -218,8 +219,8 @@ class _VersesListState extends State<VersesList> {
   }
 
   void readDoa() async {
-    String doa = await rootBundle
-        .loadString("assets/doas/doas_text/doa_completing_the_quran.txt");
+    String doa =
+        await rootBundle.loadString(AssetsPaths.arDoaCompletingTheQuran);
     eachDoaLine = doa.trim().split("۞");
     setState(() {
       eachDoaLine = eachDoaLine.map(
@@ -231,8 +232,8 @@ class _VersesListState extends State<VersesList> {
   }
 
   void readEnDoa() async {
-    String doa = await rootBundle
-        .loadString("assets/doas/doas_text/doa_completing_the_quran_en.txt");
+    String doa =
+        await rootBundle.loadString(AssetsPaths.enDoaCompletingTheQuran);
     eachEnDoaLine = doa.trim().split("۞");
     setState(() {
       eachEnDoaLine = eachEnDoaLine.map(

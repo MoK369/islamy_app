@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/themes/app_themes.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 
 class SebhaLayout extends StatefulWidget {
   const SebhaLayout({super.key});
@@ -44,14 +45,14 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                 Transform.rotate(
                   angle: rotation,
                   child: ImageIcon(
-                    const AssetImage('assets/icons/body_of_sebha.png'),
+                    AssetImage(AssetsPaths.bodyOfSebha),
                     size: (size.height * 0.4),
                   ),
                 ),
                 Positioned(
                   top: -(size.height * 0.4) * 0.05,
                   child: ImageIcon(
-                    const AssetImage('assets/icons/head_of_sebha.png'),
+                    AssetImage(AssetsPaths.headOfSebha),
                     size: size.height * 0.1,
                   ),
                 ),

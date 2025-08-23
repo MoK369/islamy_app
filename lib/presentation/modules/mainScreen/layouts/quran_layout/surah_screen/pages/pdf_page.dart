@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
@@ -26,8 +27,8 @@ class _PDFPageState extends State<PDFPage> {
     super.initState();
     pdfController = PdfController(
         document: PdfDocument.openAsset(widget.args.surahIndex == 114
-            ? "assets/doas/doas_pdf/doa_completing_the_quran.pdf"
-            : "assets/suras/suras_pdf/E-Quran.pdf"),
+            ? AssetsPaths.doasPDFFile
+            : AssetsPaths.surasPDFFile),
         initialPage: Suras.rangeOfPagesToView[widget.args.surahIndex][0]);
     sliderCurrentValue =
         Suras.rangeOfPagesToView[widget.args.surahIndex][0].toDouble();

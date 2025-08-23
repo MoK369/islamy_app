@@ -4,6 +4,7 @@ import 'package:islamy_app/presentation/core/api_error_message/api_error_message
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/core/widgets/playing_loading_icon.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
@@ -40,7 +41,7 @@ class _RadioLayoutState extends State<RadioLayout> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.asset(
-                  'assets/images/radio_image.png',
+                  AssetsPaths.radioImage,
                   fit: BoxFit.contain,
                 ),
               ],
@@ -116,8 +117,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                                   await radioViewModel.skipToPrevious();
                                 },
                                 child: ImageIcon(
-                                  const AssetImage(
-                                      'assets/icons/icon_previous.png'),
+                                  AssetImage(AssetsPaths.iconPrevious),
                                   size: size.width * 0.1,
                                 ),
                               ),
@@ -142,8 +142,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                                     await radioViewModel.skipToNext();
                                   },
                                   child: ImageIcon(
-                                    const AssetImage(
-                                        'assets/icons/icon_next.png'),
+                                    AssetImage(AssetsPaths.iconNext),
                                     size: size.width * 0.1,
                                   ))
                             ],
