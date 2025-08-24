@@ -41,21 +41,21 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.3.3
   flutter_native_splash: ^2.4.3
-  pdfx: ^2.8.0
+  pdfx: ^2.9.2
   humanizer: ^3.0.0
-  dio: ^5.7.0
+  dio: ^5.9.0
   just_audio: ^0.10.4
   audio_service: ^0.18.18
-  injectable: ^2.5.0
-  get_it: ^8.0.2
+  injectable: ^2.5.1
+  get_it: ^8.2.0
 
   #UI
   #fonts:
-  google_fonts: ^6.2.1
+  google_fonts: ^6.3.0
   #curved navigation bar:
-  curved_labeled_navigation_bar: ^2.0.5
+  curved_labeled_navigation_bar: ^2.0.6
   internet_connection_checker_plus: ^2.7.2
-  audio_session: ^0.1.25
+  audio_session: ^0.2.2
   startapp_sdk: ^1.0.1
   package_info_plus: ^8.3.1
   url_launcher: ^6.3.2
