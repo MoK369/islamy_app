@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
@@ -31,7 +32,9 @@ class RadioViewModel extends ChangeNotifier {
   List<RadioChannel> _radioChannels = [];
   List<MediaItem> mediaItems = [];
   RadioChannel? currentRadioChannel;
-  bool allowChangeOfCurrentRadioChannel = true;
+  bool allowChangeOfCurrentRadioChannel = true,
+      audioPlayerWasPlaying = false,
+      wasPlayerBufferingBeforeStop = false;
   RadioAudioState radioAudioState = NotPlayingAudioState();
   StreamSubscription<InternetStatus>? listenOnInternetChangeStream;
   Future<void> getQuranRadioChannels(String languageCode) async {
@@ -95,13 +98,14 @@ class RadioViewModel extends ChangeNotifier {
 
   void _initPlayerStateStream() {
     audioPlayer.playerStateStream.listen(
-      (event) {
+      (event) async {
         if (event.playing && event.processingState == ProcessingState.ready) {
           debugPrint("Audio playing");
           radioAudioState = PlayingAudioState();
         } else if (event.processingState == ProcessingState.ready &&
             !event.playing) {
           debugPrint("Audio paused");
+          await listenOnInternetChangeStream?.cancel();
           radioAudioState = NotPlayingAudioState();
         } else if (event.processingState == ProcessingState.idle) {
           debugPrint("Audio Not Played yet");
@@ -133,16 +137,19 @@ class RadioViewModel extends ChangeNotifier {
     });
   }
 
-  void startMonitoringConnectivity() {
+  void startMonitoringConnectivity() async {
+    if (listenOnInternetChangeStream != null) {
+      await listenOnInternetChangeStream!.cancel();
+    }
     listenOnInternetChangeStream =
         InternetConnection().onStatusChange.listen((InternetStatus status) {
       switch (status) {
         case InternetStatus.connected:
-          debugPrint("The internet is now connected");
+          debugPrint("The internet is now connected ****");
           retryCurrentStream();
           break;
         case InternetStatus.disconnected:
-          debugPrint("The internet is now disconnected");
+          debugPrint("The internet is now disconnected ****");
           break;
       }
     });
@@ -150,6 +157,7 @@ class RadioViewModel extends ChangeNotifier {
 
   void retryCurrentStream() async {
     try {
+      print("inside retry ------");
       await audioPlayer.stop();
       await audioPlayer.play();
     } catch (e) {
@@ -174,6 +182,7 @@ class RadioViewModel extends ChangeNotifier {
           allowChangeOfCurrentRadioChannel = true;
         }
         await audioPlayer.play();
+        audioPlayerWasPlaying = true;
       } else {
         showErrorToast(getIt.get<AppLocalizations>().audioSessionNotActive);
       }
