@@ -61,6 +61,10 @@ dependencies:
   url_launcher: ^6.3.2
   just_audio_background: ^0.0.1-beta.17
   fluttertoast: ^8.2.12
+  stash: ^5.2.0
+  stash_file: ^5.2.0
+  path_provider: ^2.1.5
+  archive: ^4.0.7
 
 
 dev_dependencies:

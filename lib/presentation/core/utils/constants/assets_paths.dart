@@ -23,21 +23,21 @@ abstract class AssetsPaths {
   static const String _logDarkImage = "assets/images/logo_dark.webp";
   static const String _radioImage = "assets/images/radio_image.webp";
 
-  static const String _ahadeethTextFile = "assets/hadeeths/ahadeeth.txt";
+  static const String _ahadeethTextFile = "assets/hadeeths/ahadeeth.txt.gz";
   static const String _arDoaCompletingTheQuran =
-      "assets/doas/doas_text/doa_completing_the_quran.txt";
+      "assets/doas/doas_text/doa_completing_the_quran.txt.gz";
   static const String _enDoaCompletingTheQuran =
-      "assets/doas/doas_text/doa_completing_the_quran_en.txt";
+      "assets/doas/doas_text/doa_completing_the_quran_en.txt.gz";
   static const String _doasPDFFile =
       "assets/doas/doas_pdf/doa_completing_the_quran.pdf";
   static const String _surasPDFFile = "assets/suras/suras_pdf/E-Quran.pdf";
 
   static String getArSurahTextFile(int surahNumber) {
-    return "assets/suras/suras_text/$surahNumber.txt";
+    return "assets/suras/suras_text/$surahNumber.txt.gz";
   }
 
   static String getEnSurahTextFile(int surahNumber) {
-    return "assets/suras/suras_text/${surahNumber}_en.txt";
+    return "assets/suras/suras_text/${surahNumber}_en.txt.gz";
   }
 
   static String get ayatNumberIcon => _ayatNumberIcon;

@@ -17,84 +17,93 @@ class ListOfSuras extends StatelessWidget {
     LocaleProvider localeProvider = LocaleProvider.get(context);
     return Expanded(
       child: ListView.builder(
-        itemCount: foundUser.length,
+        itemCount: foundUser.length + 1,
         itemBuilder: (context, indexOfFoundUserList) {
-          String numberOfAyas = Suras.ayaNumber[mainScreenProvider
-              .getSurasListEnglishOrArabic()
-              .indexOf(foundUser[indexOfFoundUserList])];
-          return InkWell(
-            splashColor: Colors.transparent,
-            onLongPress: () {
-              mainScreenProvider.markedSurahIndex == ''
-                  ? mainScreenProvider.changeMarkedSurah(
-                      currentSurahIndex(localeProvider, indexOfFoundUserList))
-                  : currentSurahIndex(localeProvider, indexOfFoundUserList) ==
-                          mainScreenProvider.markedSurahIndex
-                      ? mainScreenProvider.changeMarkedSurah('')
-                      : mainScreenProvider.showAlertAboutSurasMarking(
-                          context,
-                          theme,
-                          currentSurahIndex(
-                              localeProvider, indexOfFoundUserList));
-            },
-            onTap: () {
-              onClick(indexOfFoundUserList);
-            },
-            child: IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  if (indexOfFoundUserList != 114) ...[
-                    Expanded(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+          String numberOfAyas = indexOfFoundUserList == foundUser.length
+              ? ''
+              : Suras.ayaNumber[mainScreenProvider
+                  .getSurasListEnglishOrArabic()
+                  .indexOf(foundUser[indexOfFoundUserList])];
+          return indexOfFoundUserList == foundUser.length
+              ? const SizedBox(
+                  height: 45,
+                )
+              : InkWell(
+                  splashColor: Colors.transparent,
+                  onLongPress: () {
+                    mainScreenProvider.markedSurahIndex == ''
+                        ? mainScreenProvider.changeMarkedSurah(
+                            currentSurahIndex(
+                                localeProvider, indexOfFoundUserList))
+                        : currentSurahIndex(
+                                    localeProvider, indexOfFoundUserList) ==
+                                mainScreenProvider.markedSurahIndex
+                            ? mainScreenProvider.changeMarkedSurah('')
+                            : mainScreenProvider.showAlertAboutSurasMarking(
+                                context,
+                                theme,
+                                currentSurahIndex(
+                                    localeProvider, indexOfFoundUserList));
+                  },
+                  onTap: () {
+                    onClick(indexOfFoundUserList);
+                  },
+                  child: IntrinsicHeight(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Visibility(
-                          visible: mainScreenProvider.markedSurahIndex ==
-                              currentSurahIndex(
-                                  localeProvider, indexOfFoundUserList),
-                          child: const Icon(
-                            Icons.bookmark,
-                            size: 30,
-                          ),
-                        ),
+                        if (indexOfFoundUserList != 114) ...[
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Visibility(
+                                visible: mainScreenProvider.markedSurahIndex ==
+                                    currentSurahIndex(
+                                        localeProvider, indexOfFoundUserList),
+                                child: const Icon(
+                                  Icons.bookmark,
+                                  size: 30,
+                                ),
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    numberOfAyas,
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                          Transform.scale(
+                              scaleY: 1, child: const VerticalDivider()),
+                        ] else ...[
+                          Visibility(
+                            visible: mainScreenProvider.markedSurahIndex ==
+                                currentSurahIndex(
+                                    localeProvider, indexOfFoundUserList),
+                            child: const Icon(
+                              Icons.bookmark,
+                              size: 30,
+                            ),
+                          )
+                        ],
                         Expanded(
-                          child: Center(
+                            child: Center(
+                                child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: FittedBox(
                             child: Text(
-                              numberOfAyas,
+                              foundUser[indexOfFoundUserList],
                               style: theme.textTheme.bodyMedium,
                             ),
                           ),
-                        ),
+                        ))),
                       ],
-                    )),
-                    Transform.scale(scaleY: 1, child: const VerticalDivider()),
-                  ] else ...[
-                    Visibility(
-                      visible: mainScreenProvider.markedSurahIndex ==
-                          currentSurahIndex(
-                              localeProvider, indexOfFoundUserList),
-                      child: const Icon(
-                        Icons.bookmark,
-                        size: 30,
-                      ),
-                    )
-                  ],
-                  Expanded(
-                      child: Center(
-                          child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: FittedBox(
-                      child: Text(
-                        foundUser[indexOfFoundUserList],
-                        style: theme.textTheme.bodyMedium,
-                      ),
                     ),
-                  ))),
-                ],
-              ),
-            ),
-          );
+                  ),
+                );
         },
       ),
     );

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:humanizer/humanizer.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
+import 'package:islamy_app/presentation/core/utils/text_file_caching/text_file_caching.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+
+import '../../../../core/utils/gzip_decompressor/gzip_decompressor.dart';
 
 class HadeethLayout extends StatefulWidget {
   const HadeethLayout({super.key});
@@ -48,54 +50,65 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                   ))
                 : ListView.builder(
                     physics: const BouncingScrollPhysics(),
-                    itemCount: ahadeeth.length,
+                    itemCount: ahadeeth.length + 1,
                     itemBuilder: (context, currentHadeethIndex) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Visibility(
-                            visible: mainScreenProvider.markedHadeethIndex ==
-                                '$currentHadeethIndex',
-                            child: const Icon(
-                              Icons.bookmark,
-                              size: 30,
-                            ),
-                          ),
-                          Expanded(
-                            child: TextButton(
-                                onLongPress: () {
-                                  if (mainScreenProvider.markedHadeethIndex ==
-                                      '') {
-                                    mainScreenProvider.changeMarkedHadeeth(
-                                        "$currentHadeethIndex");
-                                  } else if (mainScreenProvider
-                                          .markedHadeethIndex ==
-                                      '$currentHadeethIndex') {
-                                    mainScreenProvider.changeMarkedHadeeth('');
-                                  } else {
-                                    mainScreenProvider
-                                        .showAlertAboutHadeethMarking(context,
-                                            theme, "$currentHadeethIndex");
-                                  }
-                                },
-                                onPressed: () async {
-                                  Navigator.pushNamed(
-                                      context, HadeethScreen.routeName,
-                                      arguments: ahadeeth[currentHadeethIndex]);
-                                },
-                                child: FittedBox(
-                                  child: Text(
-                                    localeProvider.isArabicChosen()
-                                        ? ahadeeth[currentHadeethIndex]
-                                            .hadeethTitle
-                                        : ("${(currentHadeethIndex + 1).toOrdinalWords()} hadith")
-                                            .toTitleCase(),
-                                    style: theme.textTheme.bodyMedium,
+                      return currentHadeethIndex == ahadeeth.length
+                          ? const SizedBox(
+                              height: 40,
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Visibility(
+                                  visible:
+                                      mainScreenProvider.markedHadeethIndex ==
+                                          '$currentHadeethIndex',
+                                  child: const Icon(
+                                    Icons.bookmark,
+                                    size: 30,
                                   ),
-                                )),
-                          ),
-                        ],
-                      );
+                                ),
+                                Expanded(
+                                  child: TextButton(
+                                      onLongPress: () {
+                                        if (mainScreenProvider
+                                                .markedHadeethIndex ==
+                                            '') {
+                                          mainScreenProvider
+                                              .changeMarkedHadeeth(
+                                                  "$currentHadeethIndex");
+                                        } else if (mainScreenProvider
+                                                .markedHadeethIndex ==
+                                            '$currentHadeethIndex') {
+                                          mainScreenProvider
+                                              .changeMarkedHadeeth('');
+                                        } else {
+                                          mainScreenProvider
+                                              .showAlertAboutHadeethMarking(
+                                                  context,
+                                                  theme,
+                                                  "$currentHadeethIndex");
+                                        }
+                                      },
+                                      onPressed: () async {
+                                        Navigator.pushNamed(
+                                            context, HadeethScreen.routeName,
+                                            arguments:
+                                                ahadeeth[currentHadeethIndex]);
+                                      },
+                                      child: FittedBox(
+                                        child: Text(
+                                          localeProvider.isArabicChosen()
+                                              ? ahadeeth[currentHadeethIndex]
+                                                  .hadeethTitle
+                                              : ("${(currentHadeethIndex + 1).toOrdinalWords()} hadith")
+                                                  .toTitleCase(),
+                                          style: theme.textTheme.bodyMedium,
+                                        ),
+                                      )),
+                                ),
+                              ],
+                            );
                     },
                   ))
       ],
@@ -103,8 +116,20 @@ class _HadeethLayoutState extends State<HadeethLayout> {
   }
 
   void readHadeeth() async {
-    String hadeeths = await rootBundle.loadString(AssetsPaths.ahadeethTextFile);
-    List<String> eachHadeethList = hadeeths.trim().split('#');
+    String ahadeethKey = AssetsPaths.ahadeethTextFile
+        .split('/')
+        .last
+        .replaceAll(RegExp(r'.gz'), '');
+    String? cachedAhadeeth = await TextFileCaching.getCachedText(ahadeethKey);
+    List<String> eachHadeethList = [];
+    if (cachedAhadeeth != null) {
+      eachHadeethList = cachedAhadeeth.split('#');
+    } else {
+      String hadeeths = await GzipDecompressor.loadCompressedInBackground(
+          AssetsPaths.ahadeethTextFile);
+      await TextFileCaching.cacheText(ahadeethKey, hadeeths.trim());
+      eachHadeethList = hadeeths.trim().split('#');
+    }
     setState(() {
       for (int i = 0; i < eachHadeethList.length; i++) {
         List<String> singleHadeeth = eachHadeethList[i].trim().split('\n');
