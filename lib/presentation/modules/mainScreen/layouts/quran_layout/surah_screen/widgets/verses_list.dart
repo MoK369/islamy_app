@@ -217,10 +217,8 @@ class _VersesListState extends State<VersesList> {
     String? cachedSurah = await TextFileCaching.getCachedText(surahKey);
 
     if (cachedSurah != null) {
-      print("surah was cached -----------");
       surahVerses = cachedSurah.split('\n');
     } else {
-      print("surah was NOT cached XXXXXXXXXX");
       String surah = await GzipDecompressor.loadCompressedInBackground(
           AssetsPaths.getArSurahTextFile(widget.args.surahIndex + 1));
       await TextFileCaching.cacheText(surahKey, surah.trim());

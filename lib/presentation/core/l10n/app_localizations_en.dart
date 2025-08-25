@@ -132,4 +132,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorMovingToPreviousChannel => 'Error Moving to previous channel: ';
+
+  @override
+  String get errorOccurred => 'An error occurred. Please try again later';
 }

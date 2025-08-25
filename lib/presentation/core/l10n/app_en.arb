@@ -39,5 +39,6 @@
   "errorReplayingAudio": "Error replaying audio: ",
   "audioSessionNotActive": "Audio Session isn't Active",
   "errorMovingToNextChannel": "Error Moving to next channel: ",
-  "errorMovingToPreviousChannel": "Error Moving to previous channel: "
+  "errorMovingToPreviousChannel": "Error Moving to previous channel: ",
+  "errorOccurred": "An error occurred. Please try again later"
 }

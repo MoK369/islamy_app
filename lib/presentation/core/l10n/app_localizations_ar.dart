@@ -132,4 +132,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorMovingToPreviousChannel => 'خطأ في الانتقال إلى القناة السابقة: ';
+
+  @override
+  String get errorOccurred => 'حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا';
 }

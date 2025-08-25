@@ -39,5 +39,6 @@
   "errorReplayingAudio": "خطأ في إعادة تشغيل الصوت: ",
   "audioSessionNotActive": "جلسة الصوت غير مفعّلة",
   "errorMovingToNextChannel": "خطأ في الانتقال إلى القناة التالية: ",
-  "errorMovingToPreviousChannel": "خطأ في الانتقال إلى القناة السابقة: "
+  "errorMovingToPreviousChannel": "خطأ في الانتقال إلى القناة السابقة: ",
+  "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا"
 }

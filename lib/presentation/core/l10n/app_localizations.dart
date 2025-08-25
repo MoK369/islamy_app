@@ -340,6 +340,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'خطأ في الانتقال إلى القناة السابقة: '**
   String get errorMovingToPreviousChannel;
+
+  /// No description provided for @errorOccurred.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا'**
+  String get errorOccurred;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

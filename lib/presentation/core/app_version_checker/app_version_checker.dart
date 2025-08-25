@@ -42,8 +42,9 @@ class AppVersionCheckerViewModel {
       case Success<CheckAppVersionModel>():
         final packageInfo = await PackageInfo.fromPlatform();
         final currentVersion = packageInfo.version;
-
-        if (repoResult.data.latestVersion != currentVersion) {
+        if (repoResult.data.latestVersion == null) return;
+        if (areLatestVersionNumbersGreaterThenCurrentOnes(
+            currentVersion, repoResult.data.latestVersion!)) {
           _checkAppVersionListener.cancel();
           showDialog(
             barrierDismissible: false,
@@ -53,6 +54,9 @@ class AppVersionCheckerViewModel {
                   Locales.getTranslations(globalNavigatorKey.currentContext!)
                       .updateAvailable,
                   textAlign: TextAlign.center,
+                  style: Theme.of(globalNavigatorKey.currentContext!)
+                      .textTheme
+                      .bodyMedium,
                 ),
                 content: Text(
                     Locales.getTranslations(globalNavigatorKey.currentContext!)
@@ -113,5 +117,27 @@ class AppVersionCheckerViewModel {
       case CodeError<CheckAppVersionModel>():
         debugPrint("Error checking app version ${repoResult.exception}");
     }
+  }
+
+  bool areLatestVersionNumbersGreaterThenCurrentOnes(
+      String currentVersion, String latestVersion) {
+    List<int> currentVersionNumbers = currentVersion
+        .split('.')
+        .map(
+          (e) => int.parse(e),
+        )
+        .toList();
+    List<int> latestVersionNumbers = latestVersion
+        .split('.')
+        .map(
+          (e) => int.parse(e),
+        )
+        .toList();
+    for (int i = 0; i < currentVersionNumbers.length; i++) {
+      if (latestVersionNumbers[i] > currentVersionNumbers[i]) {
+        return true;
+      }
+    }
+    return false;
   }
 }

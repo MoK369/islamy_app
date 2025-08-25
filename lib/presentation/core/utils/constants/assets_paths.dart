@@ -40,6 +40,9 @@ abstract class AssetsPaths {
     return "assets/suras/suras_text/${surahNumber}_en.txt.gz";
   }
 
+  static const String _errorOccurredAnimation =
+      "assets/animation/error_occurred_animation.json";
+
   static String get ayatNumberIcon => _ayatNumberIcon;
 
   static String get bodyOfSebha => _bodyOfSebha;
@@ -95,4 +98,6 @@ abstract class AssetsPaths {
   static String get doasPDFFile => _doasPDFFile;
 
   static String get surasPDFFile => _surasPDFFile;
+
+  static String get errorOccurredAnimation => _errorOccurredAnimation;
 }

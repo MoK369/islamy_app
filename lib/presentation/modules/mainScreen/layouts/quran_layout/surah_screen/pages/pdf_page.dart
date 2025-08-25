@@ -43,10 +43,9 @@ class _PDFPageState extends State<PDFPage> {
     final Size size = MediaQuery.of(context).size;
     surahScreenProvider = Provider.of<SurahScreenProvider>(context);
     currentSurahID = '${widget.args.surahIndex} ${sliderCurrentValue.toInt()}';
-    markedPageNumber =
-        int.parse(surahScreenProvider.markedSurahPDFPageIndex
-            .split(' ')
-            .last);
+    markedPageNumber = int.tryParse(
+            surahScreenProvider.markedSurahPDFPageIndex.split(' ').last) ??
+        -1;
     return Stack(
       alignment: Alignment.topCenter,
       fit: StackFit.expand,
@@ -109,7 +108,7 @@ class _PDFPageState extends State<PDFPage> {
           left: 3,
           child: Visibility(
               visible:
-              surahScreenProvider.markedSurahPDFPageIndex == currentSurahID,
+                  surahScreenProvider.markedSurahPDFPageIndex == currentSurahID,
               child: Icon(
                 Icons.bookmark,
                 size: size.longestSide * 0.1,
@@ -121,25 +120,29 @@ class _PDFPageState extends State<PDFPage> {
           top: 5,
           bottom: 25,
           right: -10,
-          child: RotatedBox(
-            quarterTurns: 3,
-            child: Slider(
-              allowedInteraction: SliderInteraction.slideThumb,
-              divisions: startPage == endPage ? null : (endPage - startPage),
-              min: startPage.toDouble(),
-              max: startPage == endPage
-                  ? endPage.toDouble() + 1
-                  : endPage.toDouble(),
-              value: startPage == endPage ? startPage + 1 : sliderCurrentValue,
-              label: '${sliderCurrentValue.toInt()}',
-              onChanged: (value) {
-                setState(() {
-                  sliderCurrentValue = value;
-                  pdfController.animateToPage(sliderCurrentValue.toInt(),
-                      duration: const Duration(milliseconds: 50),
-                      curve: Curves.bounceIn);
-                });
-              },
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: RotatedBox(
+              quarterTurns: 3,
+              child: Slider(
+                allowedInteraction: SliderInteraction.slideThumb,
+                divisions: startPage == endPage ? null : (endPage - startPage),
+                min: startPage.toDouble(),
+                max: startPage == endPage
+                    ? endPage.toDouble() + 1
+                    : endPage.toDouble(),
+                value:
+                    startPage == endPage ? startPage + 1 : sliderCurrentValue,
+                label: '${sliderCurrentValue.toInt()}',
+                onChanged: (value) {
+                  setState(() {
+                    sliderCurrentValue = value;
+                    pdfController.animateToPage(sliderCurrentValue.toInt(),
+                        duration: const Duration(milliseconds: 50),
+                        curve: Curves.bounceIn);
+                  });
+                },
+              ),
             ),
           ),
         )
