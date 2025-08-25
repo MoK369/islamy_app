@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/custom_widgets/custom_alert_dialog.dart';
@@ -62,6 +63,11 @@ class SurahScreenProvider extends ChangeNotifier {
 
   void changeSurahOrHadeethScreenAppBarStatus(bool newValue) {
     isSurahOrHadeethScreenAppBarVisible = newValue;
+    if (isSurahOrHadeethScreenAppBarVisible) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    }
     notifyListeners();
   }
 

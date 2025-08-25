@@ -46,60 +46,70 @@ class _SurahScreenState extends State<SurahScreen> {
     surahScreenProvider.getLocaleProvider(LocaleProvider.get(context));
     return ChangeNotifierProvider(
       create: (context) => surahScreenProvider,
-      child: SafeArea(
-        child: BgContainer(
-          child: DefaultTabController(
-            length: 2,
-            child: Consumer<SurahScreenProvider>(
-              builder: (context, surahScreenProvider, child) {
-                return Scaffold(
-                  appBar: surahScreenProvider
+      child: Selector<SurahScreenProvider, bool>(
+        selector: (context, surahScreenProvider) =>
+        surahScreenProvider.isSurahOrHadeethScreenAppBarVisible,
+        builder: (BuildContext context, bool value, Widget? child) {
+          return SafeArea(
+            top: value,
+            bottom: value,
+            child: BgContainer(
+              child: DefaultTabController(
+                length: 2,
+                child: Consumer<SurahScreenProvider>(
+                  builder: (context, surahScreenProvider, child) {
+                    return Scaffold(
+                      appBar: surahScreenProvider
                           .isSurahOrHadeethScreenAppBarVisible
-                      ? AppBar(
-                          leading: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                              },
-                        icon: const Icon(
-                          size: 40,
-                          Icons.arrow_back,
-                        )),
-                    title: Text(Locales.getTranslations(context).islami),
-                    bottom: TabBar(
-                        indicatorColor: theme.indicatorColor,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        tabs: [
-                          Tab(
-                            icon: Icon(
-                              Icons.text_format,
+                          ? AppBar(
+                        leading: IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
                               size: 40,
-                              color: theme.indicatorColor,
-                            ),
+                              Icons.arrow_back,
+                            )),
+                        title: Text(Locales
+                            .getTranslations(context)
+                            .islami),
+                        bottom: TabBar(
+                            indicatorColor: theme.indicatorColor,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            tabs: [
+                              Tab(
+                                icon: Icon(
+                                  Icons.text_format,
+                                  size: 40,
+                                  color: theme.indicatorColor,
+                                ),
+                              ),
+                              Tab(
+                                icon: Icon(
+                                  Icons.picture_as_pdf,
+                                  size: 40,
+                                  color: theme.indicatorColor,
+                                ),
+                              ),
+                            ]),
+                      )
+                          : null,
+                      body: TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          const TextPage(),
+                          PDFPage(
+                            args: args,
                           ),
-                          Tab(
-                            icon: Icon(
-                              Icons.picture_as_pdf,
-                              size: 40,
-                              color: theme.indicatorColor,
-                            ),
-                          ),
-                        ]),
-                  )
-                      : null,
-                  body: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      const TextPage(),
-                      PDFPage(
-                        args: args,
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

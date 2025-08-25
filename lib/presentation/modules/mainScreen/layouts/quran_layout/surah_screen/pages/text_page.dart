@@ -3,7 +3,7 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/widgets/verses_list.dart';
 import 'package:provider/provider.dart';
-
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../widgets/change_verses_size_widget.dart';
 
 class TextPage extends StatefulWidget {
@@ -15,6 +15,23 @@ class TextPage extends StatefulWidget {
 
 class _TextPageState extends State<TextPage> {
   ValueNotifier<bool> showBottomWidgetNotifier = ValueNotifier(false);
+  late SurahScreenProvider surahScreenProvider;
+  late int surahIndexHasMark;
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+  ItemPositionsListener.create();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    surahScreenProvider = Provider.of<SurahScreenProvider>(context);
+    surahIndexHasMark =
+        int.tryParse(surahScreenProvider.markedVerseIndex
+            .split(' ')
+            .first) ??
+            -1;
+  }
+
   @override
   Widget build(BuildContext context) {
     final SendSurahInfo args =
@@ -40,9 +57,25 @@ class _TextPageState extends State<TextPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(
-                        width: 50,
-                      ),
+                      surahIndexHasMark == args.surahIndex
+                          ? IconButton(
+                        onPressed: () async {
+                          final int markedVerseNum = int.parse(
+                              surahScreenProvider.markedVerseIndex
+                                  .split(' ')
+                                  .last);
+                          await itemScrollController.scrollTo(
+                            index: markedVerseNum - 1,
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.flag,
+                          size: 50,
+                        ),
+                      )
+                          : const SizedBox(width: 50),
                       Expanded(
                         child: Text(
                           textAlign: TextAlign.center,
@@ -57,21 +90,26 @@ class _TextPageState extends State<TextPage> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {
-                            showBottomWidgetNotifier.value =
-                                !showBottomWidgetNotifier.value;
-                          },
-                          icon: const Icon(
-                            Icons.format_size,
-                            size: 50,
-                          ))
+                        onPressed: () {
+                          showBottomWidgetNotifier.value =
+                          !showBottomWidgetNotifier.value;
+                        },
+                        icon: const Icon(
+                          Icons.format_size,
+                          size: 50,
+                        ),
+                      )
                     ],
                   ),
                   const Divider(
                     indent: 15,
                     endIndent: 15,
                   ),
-                  VersesList(args: args),
+                  VersesList(
+                    args: args,
+                    itemScrollController: itemScrollController,
+                    itemPositionsListener: itemPositionsListener,
+                  ),
                 ],
               ),
             ),

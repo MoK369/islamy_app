@@ -6,6 +6,7 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class QuranLayout extends StatefulWidget {
   const QuranLayout({super.key});
@@ -19,6 +20,10 @@ class _QuranLayoutState extends State<QuranLayout> {
   late ThemeData theme;
   List<String>? foundUser;
   late LocaleProvider localeProvider;
+
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+  ItemPositionsListener.create();
 
   void runFilter(String enteredKeyWord) {
     List<String> results = [];
@@ -52,9 +57,26 @@ class _QuranLayoutState extends State<QuranLayout> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset(
-            AssetsPaths.quranHeaderIcon,
-            height: size.height * 0.19,
+          Row(
+            children: [
+              SizedBox(
+                width: size.width * 0.3,
+              ),
+              Image.asset(
+                AssetsPaths.quranHeaderIcon,
+                height: size.height * 0.19,
+              ),
+              const Spacer(),
+              if (mainScreenProvider.markedSurahIndex.isNotEmpty)
+                IconButton(
+                    onPressed: () async {
+                      await itemScrollController.scrollTo(
+                          index: int.parse(mainScreenProvider.markedSurahIndex),
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.easeInOut);
+                    },
+                    icon: const Icon(Icons.flag)),
+            ],
           ),
           SearchTextField(
             onChange: (value) {
@@ -76,51 +98,58 @@ class _QuranLayoutState extends State<QuranLayout> {
                 Column(
                   children: [
                     const Divider(),
-                    IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Center(
-                                  child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: SizedBox(
-                              height: size.height * 0.05,
-                              child: FittedBox(
-                                child: Text(
-                                    Locales.getTranslations(context)
-                                        .numberOfVerses,
-                                    style: theme.textTheme.titleMedium!
-                                        .copyWith(fontWeight: FontWeight.w300)),
-                              ),
-                            ),
-                          ))),
-                          Transform.scale(
-                              scaleY: 1.4, child: const VerticalDivider()),
-                          Expanded(
-                              child: Center(
-                                  child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: SizedBox(
-                              height: size.height * 0.05,
-                              child: FittedBox(
-                                child: Text(
-                                  Locales.getTranslations(context).nameOfSura,
-                                  style: theme.textTheme.titleMedium!.copyWith(
-                                    fontWeight: FontWeight.w300,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5),
+                                  child: SizedBox(
+                                    height: size.height * 0.05,
+                                    child: FittedBox(
+                                      child: Text(
+                                          Locales
+                                              .getTranslations(context)
+                                              .numberOfVerses,
+                                          style: theme.textTheme.titleMedium!
+                                              .copyWith(
+                                              fontWeight: FontWeight.w300)),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ))),
-                        ],
-                      ),
+                                ))),
+                        Transform.scale(
+                            scaleY: 1.4, child: const VerticalDivider()),
+                        Expanded(
+                            child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5),
+                                  child: SizedBox(
+                                    height: size.height * 0.05,
+                                    child: FittedBox(
+                                      child: Text(
+                                        Locales
+                                            .getTranslations(context)
+                                            .nameOfSura,
+                                        style: theme.textTheme.titleMedium!
+                                            .copyWith(
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ))),
+                      ],
                     ),
                     const Divider(
                       height: 0,
                     ),
                     ListOfSuras(
+                      itemScrollController: itemScrollController,
+                      itemPositionsListener: itemPositionsListener,
                       foundUser: foundUser!,
                       onClick: (index) async {
                         FocusManager.instance.primaryFocus?.unfocus();

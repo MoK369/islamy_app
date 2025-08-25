@@ -21,6 +21,7 @@ class _PDFPageState extends State<PDFPage> {
   late int startPage, endPage;
   late SurahScreenProvider surahScreenProvider;
   late String currentSurahID;
+  late int markedPageNumber;
 
   @override
   void initState() {
@@ -42,8 +43,13 @@ class _PDFPageState extends State<PDFPage> {
     final Size size = MediaQuery.of(context).size;
     surahScreenProvider = Provider.of<SurahScreenProvider>(context);
     currentSurahID = '${widget.args.surahIndex} ${sliderCurrentValue.toInt()}';
+    markedPageNumber =
+        int.parse(surahScreenProvider.markedSurahPDFPageIndex
+            .split(' ')
+            .last);
     return Stack(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.topCenter,
+      fit: StackFit.expand,
       children: [
         GestureDetector(
           onTap: () {
@@ -62,8 +68,11 @@ class _PDFPageState extends State<PDFPage> {
           },
           child: PdfView(
             controller: pdfController,
-            scrollDirection: Axis.horizontal,
-            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            physics: const PageScrollPhysics(),
+            renderer: (page) {
+              return page.render(width: 1300, height: 1850);
+            },
             builders: PdfViewBuilders<DefaultBuilderOptions>(
               options: const DefaultBuilderOptions(),
               documentLoaderBuilder: (_) => Center(
@@ -86,34 +95,52 @@ class _PDFPageState extends State<PDFPage> {
             },
           ),
         ),
-        Visibility(
-            visible:
-                surahScreenProvider.markedSurahPDFPageIndex == currentSurahID,
-            child: Icon(
-              Icons.bookmark,
-              size: size.height * 0.1,
-              color: theme.indicatorColor.withAlpha(125),
-            )),
+        if (markedPageNumber >= startPage && markedPageNumber <= endPage)
+          Positioned(
+            top: 5,
+            child: Center(
+                child: IconButton(
+                    onPressed: () {
+                      pdfController.jumpToPage(markedPageNumber);
+                    },
+                    icon: const Icon(Icons.flag))),
+          ),
         Positioned(
-          width: size.width * 0.95,
-          bottom: 5,
-          child: Slider(
-            allowedInteraction: SliderInteraction.slideThumb,
-            divisions: startPage == endPage ? null : (endPage - startPage),
-            min: startPage.toDouble(),
-            max: startPage == endPage
-                ? endPage.toDouble() + 1
-                : endPage.toDouble(),
-            value: startPage == endPage ? startPage + 1 : sliderCurrentValue,
-            label: '${sliderCurrentValue.toInt()}',
-            onChanged: (value) {
-              setState(() {
-                sliderCurrentValue = value;
-                pdfController.animateToPage(sliderCurrentValue.toInt(),
-                    duration: const Duration(milliseconds: 50),
-                    curve: Curves.bounceIn);
-              });
-            },
+          left: 3,
+          child: Visibility(
+              visible:
+              surahScreenProvider.markedSurahPDFPageIndex == currentSurahID,
+              child: Icon(
+                Icons.bookmark,
+                size: size.longestSide * 0.1,
+                color: theme.indicatorColor.withAlpha(125),
+              )),
+        ),
+        Positioned(
+          //width: size.width * 0.95,
+          top: 5,
+          bottom: 25,
+          right: -10,
+          child: RotatedBox(
+            quarterTurns: 3,
+            child: Slider(
+              allowedInteraction: SliderInteraction.slideThumb,
+              divisions: startPage == endPage ? null : (endPage - startPage),
+              min: startPage.toDouble(),
+              max: startPage == endPage
+                  ? endPage.toDouble() + 1
+                  : endPage.toDouble(),
+              value: startPage == endPage ? startPage + 1 : sliderCurrentValue,
+              label: '${sliderCurrentValue.toInt()}',
+              onChanged: (value) {
+                setState(() {
+                  sliderCurrentValue = value;
+                  pdfController.animateToPage(sliderCurrentValue.toInt(),
+                      duration: const Duration(milliseconds: 50),
+                      curve: Curves.bounceIn);
+                });
+              },
+            ),
           ),
         )
       ],

@@ -6,6 +6,7 @@ import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/core/utils/text_file_caching/text_file_caching.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../core/utils/gzip_decompressor/gzip_decompressor.dart';
 
@@ -19,6 +20,9 @@ class HadeethLayout extends StatefulWidget {
 class _HadeethLayoutState extends State<HadeethLayout> {
   late ThemeData theme;
   List<HadethData> ahadeeth = [];
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+  ItemPositionsListener.create();
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +36,26 @@ class _HadeethLayoutState extends State<HadeethLayout> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Image.asset(
-          AssetsPaths.hadithHeaderImage,
-          height: size.height * 0.2,
+        Row(
+          children: [
+            SizedBox(
+              width: size.width * 0.18,
+            ),
+            Image.asset(
+              AssetsPaths.hadithHeaderImage,
+              height: size.height * 0.2,
+            ),
+            const Spacer(),
+            if (mainScreenProvider.markedHadeethIndex.isNotEmpty)
+              IconButton(
+                  onPressed: () async {
+                    await itemScrollController.scrollTo(
+                        index: int.parse(mainScreenProvider.markedHadeethIndex),
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.easeInOut);
+                  },
+                  icon: const Icon(Icons.flag))
+          ],
         ),
         const Divider(),
         Text(
@@ -48,8 +69,9 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                     child: CircularProgressIndicator(
                     color: theme.indicatorColor,
                   ))
-                : ListView.builder(
-                    physics: const BouncingScrollPhysics(),
+                : ScrollablePositionedList.builder(
+              itemScrollController: itemScrollController,
+              itemPositionsListener: itemPositionsListener,
                     itemCount: ahadeeth.length + 1,
                     itemBuilder: (context, currentHadeethIndex) {
                       return currentHadeethIndex == ahadeeth.length

@@ -56,10 +56,8 @@ void main() async {
       );
       // check app version:
       getIt.get<AppVersionCheckerViewModel>().checkAppVersion();
-
-      Future.delayed(const Duration(seconds: 1), () async {
-        FlutterNativeSplash.remove();
-      });
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+      FlutterNativeSplash.remove();
     },
   );
 }

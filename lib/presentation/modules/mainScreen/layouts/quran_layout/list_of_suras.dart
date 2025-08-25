@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ListOfSuras extends StatelessWidget {
   final List<String> foundUser;
+  final ItemScrollController itemScrollController;
+  final ItemPositionsListener itemPositionsListener;
+
   final void Function(int) onClick;
 
-  const ListOfSuras(
-      {super.key, required this.foundUser, required this.onClick});
+  const ListOfSuras({super.key,
+    required this.foundUser,
+    required this.onClick,
+    required this.itemScrollController,
+    required this.itemPositionsListener});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,9 @@ class ListOfSuras extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     LocaleProvider localeProvider = LocaleProvider.get(context);
     return Expanded(
-      child: ListView.builder(
+      child: ScrollablePositionedList.builder(
+        itemScrollController: itemScrollController,
+        itemPositionsListener: itemPositionsListener,
         itemCount: foundUser.length + 1,
         itemBuilder: (context, indexOfFoundUserList) {
           String numberOfAyas = indexOfFoundUserList == foundUser.length

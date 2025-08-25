@@ -10,11 +10,17 @@ import 'package:islamy_app/presentation/core/utils/text_file_caching/text_file_c
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class VersesList extends StatefulWidget {
   final SendSurahInfo args;
+  final ItemScrollController itemScrollController;
+  final ItemPositionsListener itemPositionsListener;
 
-  const VersesList({super.key, required this.args});
+  const VersesList({super.key,
+    required this.args,
+    required this.itemPositionsListener,
+    required this.itemScrollController});
 
   @override
   State<VersesList> createState() => _VersesListState();
@@ -65,7 +71,9 @@ class _VersesListState extends State<VersesList> {
   }
 
   Widget versesList(List<String> arList, List<String> enList) {
-    return ListView.separated(
+    return ScrollablePositionedList.separated(
+      itemScrollController: widget.itemScrollController,
+      itemPositionsListener: widget.itemPositionsListener,
       itemCount:
           (arList.length == enList.length) || localeProvider.isArabicChosen()
               ? arList.length + 1
@@ -135,14 +143,14 @@ class _VersesListState extends State<VersesList> {
                                           height: surahScreenProvider
                                               .fontSizeOfSurahVerses,
                                           child: FittedBox(
-                                            child: Text("$verseNumber",
-                                                style: theme
-                                                    .textTheme.bodyMedium!
-                                                    .copyWith(
-                                                        fontSize:
-                                                            surahScreenProvider
-                                                                    .fontSizeOfSurahVerses -
-                                                                10)),
+                                            child: Text(
+                                              "$verseNumber",
+                                              style: theme.textTheme.bodyMedium!
+                                                  .copyWith(
+                                                  fontSize: surahScreenProvider
+                                                      .fontSizeOfSurahVerses -
+                                                      10),
+                                            ),
                                           ),
                                         )
                                       ],
@@ -209,8 +217,10 @@ class _VersesListState extends State<VersesList> {
     String? cachedSurah = await TextFileCaching.getCachedText(surahKey);
 
     if (cachedSurah != null) {
+      print("surah was cached -----------");
       surahVerses = cachedSurah.split('\n');
     } else {
+      print("surah was NOT cached XXXXXXXXXX");
       String surah = await GzipDecompressor.loadCompressedInBackground(
           AssetsPaths.getArSurahTextFile(widget.args.surahIndex + 1));
       await TextFileCaching.cacheText(surahKey, surah.trim());
