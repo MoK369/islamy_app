@@ -22,11 +22,12 @@ plugins {
     id "org.jetbrains.kotlin.android" version "2.1.0" apply false
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    //repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
-        maven { url "https://storage.googleapis.com/download.flutter.io" } // ✅ Flutter's Maven repo
+        maven { url "https://storage.googleapis.com/download.flutter.io" } // Flutter's Maven repo
+        maven { url "https://download.shorebird.dev" } // ✅ Shorebird's Maven repo
     }
 }
 

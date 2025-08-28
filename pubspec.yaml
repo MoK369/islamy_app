@@ -16,12 +16,13 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.4.2+4
+version: 2.5.2+4
   # minor feature:
   # text caching and control the size of it
   # go to full screen mode in surah screen
   # go to marked verse, pdf page, surah or hadeeth
   # make a custom error widget to show instead of the gray error screen in release mode
+  # add shorebird to enable the update on the air
   # fix:
   # fix the radio plays again after change of internet connection
 # fix use just_audio_background instead of directory using audio_service
@@ -53,7 +54,6 @@ dependencies:
   humanizer: ^3.0.0
   dio: ^5.9.0
   just_audio: ^0.10.4
-  audio_service: ^0.18.18
   injectable: ^2.5.1
   get_it: ^8.2.0
 
@@ -116,6 +116,7 @@ flutter:
     - assets/doas/doas_text/
     - assets/doas/doas_pdf/
     - assets/animation/
+    - shorebird.yaml
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

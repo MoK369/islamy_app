@@ -72,8 +72,8 @@ class _TextPageState extends State<TextPage> {
                         },
                         icon: const Icon(
                           Icons.flag,
-                          size: 50,
-                        ),
+                                size: 45,
+                              ),
                       )
                           : const SizedBox(width: 50),
                       Expanded(
@@ -96,7 +96,7 @@ class _TextPageState extends State<TextPage> {
                         },
                         icon: const Icon(
                           Icons.format_size,
-                          size: 50,
+                          size: 45,
                         ),
                       )
                     ],
