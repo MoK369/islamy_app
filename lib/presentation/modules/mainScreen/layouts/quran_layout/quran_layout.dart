@@ -23,7 +23,7 @@ class _QuranLayoutState extends State<QuranLayout> {
 
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
-  ItemPositionsListener.create();
+      ItemPositionsListener.create();
 
   void runFilter(String enteredKeyWord) {
     List<String> results = [];
@@ -48,133 +48,125 @@ class _QuranLayoutState extends State<QuranLayout> {
     localeProvider = LocaleProvider.get(context);
     theme = Theme.of(context);
     foundUser ??= mainScreenProvider.getSurasListEnglishOrArabic();
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        FocusManager.instance.primaryFocus!.unfocus();
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Image.asset(
+              AssetsPaths.quranHeaderIcon,
+              height: size.height * 0.19,
+            ),
+            if (mainScreenProvider.markedSurahIndex.isNotEmpty)
+              Positioned(
+                left: localeProvider.isArabicChosen() ? null : 0,
+                right: localeProvider.isArabicChosen() ? 0 : null,
+                child: Transform.flip(
+                  flipX: localeProvider.isArabicChosen(),
+                  child: IconButton(
+                      onPressed: () async {
+                        await itemScrollController.scrollTo(
+                            index:
+                                int.parse(mainScreenProvider.markedSurahIndex),
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeInOut);
+                      },
+                      icon: const Icon(Icons.flag)),
+                ),
+              )
+          ],
+        ),
+        SearchTextField(
+          onChange: (value) {
+            runFilter(value);
+          },
+        ),
+        Expanded(
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              SizedBox(
-                width: size.width * 0.3,
+              const Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //Expanded(child: VerticalDivider()),
+                ],
               ),
-              Image.asset(
-                AssetsPaths.quranHeaderIcon,
-                height: size.height * 0.19,
-              ),
-              const Spacer(),
-              if (mainScreenProvider.markedSurahIndex.isNotEmpty)
-                IconButton(
-                    onPressed: () async {
-                      await itemScrollController.scrollTo(
-                          index: int.parse(mainScreenProvider.markedSurahIndex),
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.easeInOut);
+              Column(
+                children: [
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Center(
+                              child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: SizedBox(
+                          height: size.height * 0.05,
+                          child: FittedBox(
+                            child: Text(
+                                Locales.getTranslations(context).numberOfVerses,
+                                style: theme.textTheme.titleMedium!
+                                    .copyWith(fontWeight: FontWeight.w300)),
+                          ),
+                        ),
+                      ))),
+                      Transform.scale(
+                          scaleY: 1.4, child: const VerticalDivider()),
+                      Expanded(
+                          child: Center(
+                              child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: SizedBox(
+                          height: size.height * 0.05,
+                          child: FittedBox(
+                            child: Text(
+                              Locales.getTranslations(context).nameOfSura,
+                              style: theme.textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ))),
+                    ],
+                  ),
+                  const Divider(
+                    height: 0,
+                  ),
+                  ListOfSuras(
+                    itemScrollController: itemScrollController,
+                    itemPositionsListener: itemPositionsListener,
+                    foundUser: foundUser!,
+                    onClick: (index) async {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      if (!context.mounted) return;
+                      Navigator.pushNamed(context, SurahScreen.routeName,
+                          arguments: SendSurahInfo(
+                              surahIndex: mainScreenProvider
+                                  .getSurasListEnglishOrArabic()
+                                  .indexOf(foundUser![index]),
+                              surahName: foundUser![index]));
+                      Future.delayed(
+                        const Duration(seconds: 1),
+                        () {
+                          clearSearchResults();
+                        },
+                      );
                     },
-                    icon: const Icon(Icons.flag)),
+                  ),
+                ],
+              ),
             ],
           ),
-          SearchTextField(
-            onChange: (value) {
-              runFilter(value);
-            },
-          ),
-          Expanded(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                const Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    //Expanded(child: VerticalDivider()),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5),
-                                  child: SizedBox(
-                                    height: size.height * 0.05,
-                                    child: FittedBox(
-                                      child: Text(
-                                          Locales
-                                              .getTranslations(context)
-                                              .numberOfVerses,
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w300)),
-                                    ),
-                                  ),
-                                ))),
-                        Transform.scale(
-                            scaleY: 1.4, child: const VerticalDivider()),
-                        Expanded(
-                            child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5),
-                                  child: SizedBox(
-                                    height: size.height * 0.05,
-                                    child: FittedBox(
-                                      child: Text(
-                                        Locales
-                                            .getTranslations(context)
-                                            .nameOfSura,
-                                        style: theme.textTheme.titleMedium!
-                                            .copyWith(
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ))),
-                      ],
-                    ),
-                    const Divider(
-                      height: 0,
-                    ),
-                    ListOfSuras(
-                      itemScrollController: itemScrollController,
-                      itemPositionsListener: itemPositionsListener,
-                      foundUser: foundUser!,
-                      onClick: (index) async {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        if (!context.mounted) return;
-                        Navigator.pushNamed(context, SurahScreen.routeName,
-                            arguments: SendSurahInfo(
-                                surahIndex: mainScreenProvider
-                                    .getSurasListEnglishOrArabic()
-                                    .indexOf(foundUser![index]),
-                                surahName: foundUser![index]));
-                        Future.delayed(
-                          const Duration(seconds: 1),
-                          () {
-                            clearSearchResults();
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

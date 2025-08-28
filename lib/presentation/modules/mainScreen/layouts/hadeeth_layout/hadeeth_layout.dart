@@ -22,7 +22,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
   List<HadethData> ahadeeth = [];
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
-  ItemPositionsListener.create();
+      ItemPositionsListener.create();
 
   @override
   Widget build(BuildContext context) {
@@ -35,32 +35,41 @@ class _HadeethLayoutState extends State<HadeethLayout> {
     theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
+        Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: [
-            SizedBox(
-              width: size.width * 0.18,
-            ),
             Image.asset(
               AssetsPaths.hadithHeaderImage,
               height: size.height * 0.2,
             ),
-            const Spacer(),
-            if (mainScreenProvider.markedHadeethIndex.isNotEmpty)
-              IconButton(
-                  onPressed: () async {
-                    await itemScrollController.scrollTo(
-                        index: int.parse(mainScreenProvider.markedHadeethIndex),
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.easeInOut);
-                  },
-                  icon: const Icon(Icons.flag))
+            if (mainScreenProvider.markedSurahIndex.isNotEmpty)
+              Positioned(
+                left: localeProvider.isArabicChosen() ? null : 0,
+                right: localeProvider.isArabicChosen() ? 0 : null,
+                child: Transform.flip(
+                  flipX: localeProvider.isArabicChosen(),
+                  child: IconButton(
+                      onPressed: () async {
+                        await itemScrollController.scrollTo(
+                            index:
+                                int.parse(mainScreenProvider.markedSurahIndex),
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeInOut);
+                      },
+                      icon: const Icon(Icons.flag)),
+                ),
+              )
           ],
         ),
         const Divider(),
-        Text(
-          Locales.getTranslations(context).ahadeeth,
-          style: theme.textTheme.titleMedium,
+        Center(
+          child: Text(
+            Locales.getTranslations(context).ahadeeth,
+            style: theme.textTheme.titleMedium,
+          ),
         ),
         const Divider(),
         Expanded(
@@ -70,8 +79,8 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                     color: theme.indicatorColor,
                   ))
                 : ScrollablePositionedList.builder(
-              itemScrollController: itemScrollController,
-              itemPositionsListener: itemPositionsListener,
+                    itemScrollController: itemScrollController,
+                    itemPositionsListener: itemPositionsListener,
                     itemCount: ahadeeth.length + 1,
                     itemBuilder: (context, currentHadeethIndex) {
                       return currentHadeethIndex == ahadeeth.length
@@ -125,7 +134,9 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                                   .hadeethTitle
                                               : ("${(currentHadeethIndex + 1).toOrdinalWords()} hadith")
                                                   .toTitleCase(),
-                                          style: theme.textTheme.bodyMedium,
+                                          style: theme.textTheme.bodyMedium!
+                                              .copyWith(
+                                                  fontSize: size.width * 0.045),
                                         ),
                                       )),
                                 ),

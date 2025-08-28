@@ -3,9 +3,6 @@ abstract class AssetsPaths {
   static const String _bodyOfSebha = "assets/icons/body_of_sebha.webp";
   static const String _hadeethIcon = "assets/icons/hadeeth_icon.webp";
   static const String _headOfSebha = "assets/icons/head_of_sebha.webp";
-  static const String _iconNext = "assets/icons/icon_next.webp";
-  static const String _iconPlay = "assets/icons/icon_play.webp";
-  static const String _iconPrevious = "assets/icons/icon_previous.webp";
   static const String _launcherIcon = "assets/icons/launcher_icon.webp";
   static const String _quranHeaderIcon = "assets/icons/quran_header_icon.webp";
   static const String _quranIcon = "assets/icons/quran_icon.webp";
@@ -78,12 +75,6 @@ abstract class AssetsPaths {
   static String get quranHeaderIcon => _quranHeaderIcon;
 
   static String get launcherIcon => _launcherIcon;
-
-  static String get iconPrevious => _iconPrevious;
-
-  static String get iconPlay => _iconPlay;
-
-  static String get iconNext => _iconNext;
 
   static String get headOfSebha => _headOfSebha;
 

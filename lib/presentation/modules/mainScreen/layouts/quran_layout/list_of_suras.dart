@@ -11,11 +11,12 @@ class ListOfSuras extends StatelessWidget {
 
   final void Function(int) onClick;
 
-  const ListOfSuras({super.key,
-    required this.foundUser,
-    required this.onClick,
-    required this.itemScrollController,
-    required this.itemPositionsListener});
+  const ListOfSuras(
+      {super.key,
+      required this.foundUser,
+      required this.onClick,
+      required this.itemScrollController,
+      required this.itemPositionsListener});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,10 @@ class ListOfSuras extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     numberOfAyas,
-                                    style: theme.textTheme.bodyMedium,
+                                    style: theme.textTheme.bodyMedium!.copyWith(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.045),
                                   ),
                                 ),
                               ),
@@ -105,7 +109,9 @@ class ListOfSuras extends StatelessWidget {
                           child: FittedBox(
                             child: Text(
                               foundUser[indexOfFoundUserList],
-                              style: theme.textTheme.bodyMedium,
+                              style: theme.textTheme.bodyMedium!.copyWith(
+                                  fontSize: MediaQuery.of(context).size.width *
+                                      0.045),
                             ),
                           ),
                         ))),

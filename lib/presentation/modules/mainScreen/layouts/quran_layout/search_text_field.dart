@@ -17,6 +17,9 @@ class SearchTextField extends StatelessWidget {
         cursorColor: theme.indicatorColor,
         controller: mainScreenProvider.searchFieldController,
         style: theme.textTheme.bodyMedium,
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         decoration: InputDecoration(
           hintText: Locales.getTranslations(context).search,
           suffixIcon: const Icon(

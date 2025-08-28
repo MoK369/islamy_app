@@ -100,7 +100,8 @@ class _RadioLayoutState extends State<RadioLayout> {
                             overflow: TextOverflow.ellipsis,
                             radioViewModel.currentRadioChannel?.name ??
                                 "No Name",
-                            style: theme.textTheme.titleMedium,
+                            style: theme.textTheme.titleMedium!
+                                .copyWith(fontSize: size.width * 0.045),
                           ),
                         ),
                       ),
@@ -116,8 +117,8 @@ class _RadioLayoutState extends State<RadioLayout> {
                                 onTap: () async {
                                   await radioViewModel.skipToPrevious();
                                 },
-                                child: ImageIcon(
-                                  AssetImage(AssetsPaths.iconPrevious),
+                                child: Icon(
+                                  Icons.skip_previous,
                                   size: size.width * 0.1,
                                 ),
                               ),
@@ -141,8 +142,8 @@ class _RadioLayoutState extends State<RadioLayout> {
                                   onTap: () async {
                                     await radioViewModel.skipToNext();
                                   },
-                                  child: ImageIcon(
-                                    AssetImage(AssetsPaths.iconNext),
+                                  child: Icon(
+                                    Icons.skip_next,
                                     size: size.width * 0.1,
                                   ))
                             ],

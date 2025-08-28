@@ -63,7 +63,8 @@ class _SebhaLayoutState extends State<SebhaLayout> {
         Center(
             child: Text(Locales.getTranslations(context).numberOfPraises,
                 textDirection: TextDirection.rtl,
-                style: theme.textTheme.titleMedium)),
+                style: theme.textTheme.titleMedium!
+                    .copyWith(fontSize: size.width * 0.045))),
         SizedBox(
           height: size.height * 0.005,
         ),
@@ -80,7 +81,8 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                 child: Center(
                   child: Text(
                     '$numberOfTasbeehat',
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(fontSize: size.width * 0.045),
                   ),
                 ),
               ),
@@ -94,7 +96,11 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                 onPressed: () {
                   onSebhaClick();
                 },
-                child: Text(kindOfTesbeeh),
+                child: Text(
+                  kindOfTesbeeh,
+                  style: theme.textTheme.bodyMedium!.copyWith(
+                      color: Colors.white, fontSize: size.width * 0.045),
+                ),
               ),
             ),
           ],
