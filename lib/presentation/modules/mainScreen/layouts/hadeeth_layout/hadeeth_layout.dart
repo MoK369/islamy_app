@@ -45,7 +45,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
               AssetsPaths.hadithHeaderImage,
               height: size.height * 0.2,
             ),
-            if (mainScreenProvider.markedSurahIndex.isNotEmpty)
+            if (mainScreenProvider.markedHadeethIndex.isNotEmpty)
               Positioned(
                 left: localeProvider.isArabicChosen() ? null : 0,
                 right: localeProvider.isArabicChosen() ? 0 : null,
