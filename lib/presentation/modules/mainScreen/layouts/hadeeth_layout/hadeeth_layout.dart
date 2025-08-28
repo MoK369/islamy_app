@@ -55,7 +55,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                       onPressed: () async {
                         await itemScrollController.scrollTo(
                             index:
-                                int.parse(mainScreenProvider.markedSurahIndex),
+                            int.parse(mainScreenProvider.markedHadeethIndex),
                             duration: const Duration(seconds: 1),
                             curve: Curves.easeInOut);
                       },

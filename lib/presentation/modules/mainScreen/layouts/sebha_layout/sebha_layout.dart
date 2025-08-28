@@ -99,7 +99,10 @@ class _SebhaLayoutState extends State<SebhaLayout> {
                 child: Text(
                   kindOfTesbeeh,
                   style: theme.textTheme.bodyMedium!.copyWith(
-                      color: Colors.white, fontSize: size.width * 0.045),
+                      color: (theme.elevatedButtonTheme.style!.foregroundColor!
+                      as WidgetStatePropertyAll<Color?>)
+                          .value,
+                      fontSize: size.width * 0.045),
                 ),
               ),
             ),

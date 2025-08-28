@@ -101,7 +101,7 @@ class _RadioLayoutState extends State<RadioLayout> {
                             radioViewModel.currentRadioChannel?.name ??
                                 "No Name",
                             style: theme.textTheme.titleMedium!
-                                .copyWith(fontSize: size.width * 0.045),
+                                .copyWith(fontSize: size.width * 0.06),
                           ),
                         ),
                       ),
