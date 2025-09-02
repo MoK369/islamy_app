@@ -1,0 +1,1 @@
+/media/Volume4/StudioProjects/islamy_app/build/app/intermediates/cxx/RelWithDebInfo/v18v4b59/obj/x86

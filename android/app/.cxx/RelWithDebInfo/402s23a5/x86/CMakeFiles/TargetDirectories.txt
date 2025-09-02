@@ -1,0 +1,2 @@
+/home/elmohannd/mnt/5874C9AB5B3DFCDF/StudioProjects/islamy_app/android/app/.cxx/RelWithDebInfo/402s23a5/x86/CMakeFiles/edit_cache.dir
+/home/elmohannd/mnt/5874C9AB5B3DFCDF/StudioProjects/islamy_app/android/app/.cxx/RelWithDebInfo/402s23a5/x86/CMakeFiles/rebuild_cache.dir
