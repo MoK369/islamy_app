@@ -12,20 +12,20 @@ class Themes {
       indicatorColor: lightPrimaryColor,
       progressIndicatorTheme:
           const ProgressIndicatorThemeData(color: lightPrimaryColor),
-      iconTheme: const IconThemeData(color: lightPrimaryColor),
+      iconTheme: const IconThemeData(color: lightPrimaryColor, size: 30),
       sliderTheme: SliderThemeData(
-        trackHeight: 20,
+        trackHeight: 15,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
-        activeTrackColor: lightPrimaryColor.withOpacity(0.7),
-        inactiveTrackColor: Colors.grey.withOpacity(0.5),
+        activeTrackColor: lightPrimaryColor.withAlpha(100),
+        inactiveTrackColor: Colors.grey.withAlpha(125),
         thumbColor: lightPrimaryColor,
-        valueIndicatorColor: lightPrimaryColor,
+        valueIndicatorColor: lightPrimaryColor.withAlpha(125),
         valueIndicatorTextStyle:
-            const TextStyle(color: Colors.white, fontSize: 30),
-        tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 1.3),
+        const TextStyle(color: Colors.white, fontSize: 20),
+        tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 0.8),
         activeTickMarkColor: Colors.black,
-        inactiveTickMarkColor: lightPrimaryColor,
+        inactiveTickMarkColor: lightPrimaryColor.withAlpha(140),
       ),
       bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: Colors.white,
@@ -44,13 +44,13 @@ class Themes {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       textTheme: TextTheme(
         titleMedium: const TextStyle(
-            fontSize: 30,
+            fontSize: 25,
             color: lightSecondaryColor,
             fontFamily: DefinedFontFamilies.elMessiri,
             fontWeight: FontWeight.w700),
         bodyMedium: TextStyle(
             color: Colors.black,
-            fontSize: 30,
+            fontSize: 20,
             fontWeight: FontWeight.normal,
             fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
         // for displaying suras and ahadeeth:
@@ -63,7 +63,7 @@ class Themes {
         elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
-            fontSize: 30,
+            fontSize: 25,
             color: lightSecondaryColor,
             fontFamily: DefinedFontFamilies.elMessiri,
             fontWeight: FontWeight.w700),
@@ -72,7 +72,7 @@ class Themes {
         contentPadding: const EdgeInsets.all(6),
         hintStyle: TextStyle(
             color: Colors.black,
-            fontSize: 30,
+            fontSize: 25,
             fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
         suffixIconColor: lightPrimaryColor,
         enabledBorder: const OutlineInputBorder(
@@ -84,7 +84,7 @@ class Themes {
           style: ButtonStyle(
               foregroundColor: const WidgetStatePropertyAll(Colors.white),
               textStyle: WidgetStatePropertyAll(
-                  GoogleFonts.ibmPlexSansArabic(fontSize: 30)),
+                  GoogleFonts.ibmPlexSansArabic(fontSize: 20)),
               backgroundColor: const WidgetStatePropertyAll(lightPrimaryColor),
               shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100))),
@@ -111,7 +111,7 @@ class Themes {
           backgroundColor: Colors.white,
           contentTextStyle: TextStyle(
               color: lightPrimaryColor,
-              fontSize: 25,
+              fontSize: 20,
               fontWeight: FontWeight.bold)));
 
   //-------------------------------------------------
@@ -123,17 +123,17 @@ class Themes {
       indicatorColor: darkPrimaryColor,
       progressIndicatorTheme:
           const ProgressIndicatorThemeData(color: darkPrimaryColor),
-      iconTheme: const IconThemeData(color: darkPrimaryColor, size: 45),
+      iconTheme: const IconThemeData(color: darkPrimaryColor, size: 30),
       sliderTheme: SliderThemeData(
         trackHeight: 20,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
-        activeTrackColor: darkPrimaryColor.withOpacity(0.7),
-        inactiveTrackColor: Colors.grey.withOpacity(0.5),
+        activeTrackColor: darkPrimaryColor.withAlpha(178),
+        inactiveTrackColor: Colors.grey..withAlpha(125),
         thumbColor: darkPrimaryColor,
         valueIndicatorColor: lightPrimaryColor,
         valueIndicatorTextStyle:
-            const TextStyle(color: Colors.white, fontSize: 30),
+            const TextStyle(color: Colors.white, fontSize: 25),
         activeTickMarkColor: Colors.black,
         inactiveTickMarkColor: Colors.white,
         tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 1.3),
@@ -155,13 +155,13 @@ class Themes {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       textTheme: TextTheme(
           titleMedium: const TextStyle(
-              fontSize: 30,
+              fontSize: 25,
               color: Colors.white,
               fontFamily: DefinedFontFamilies.elMessiri,
               fontWeight: FontWeight.w700),
           bodyMedium: TextStyle(
               color: Colors.white,
-              fontSize: 30,
+              fontSize: 20,
               fontWeight: FontWeight.normal,
               fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
           // for displaying suras and ahadeeth:
@@ -173,7 +173,7 @@ class Themes {
         elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
-            fontSize: 30,
+            fontSize: 25,
             color: Colors.white,
             fontFamily: DefinedFontFamilies.elMessiri,
             fontWeight: FontWeight.w700),
@@ -182,7 +182,7 @@ class Themes {
         contentPadding: const EdgeInsets.all(6),
         hintStyle: TextStyle(
             color: Colors.white,
-            fontSize: 30,
+            fontSize: 25,
             fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
         suffixIconColor: darkPrimaryColor,
         enabledBorder: const OutlineInputBorder(
@@ -194,7 +194,7 @@ class Themes {
           style: ButtonStyle(
               foregroundColor: const WidgetStatePropertyAll(Colors.black),
               textStyle: WidgetStatePropertyAll(
-                  GoogleFonts.ibmPlexSansArabic(fontSize: 30)),
+                  GoogleFonts.ibmPlexSansArabic(fontSize: 20)),
               backgroundColor: const WidgetStatePropertyAll(darkPrimaryColor),
               shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100))),
@@ -221,6 +221,6 @@ class Themes {
           backgroundColor: darkPrimaryColor,
           contentTextStyle: TextStyle(
               color: darkSecondaryColor,
-              fontSize: 25,
+              fontSize: 20,
               fontWeight: FontWeight.bold)));
 }

@@ -2,6 +2,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
 
 class CustomBottomBar extends StatelessWidget {
@@ -23,25 +24,23 @@ class CustomBottomBar extends StatelessWidget {
         backgroundColor: const Color(0xFFd4d2d2),
         items: [
           CurvedNavigationBarItem(
-              child: ImageIcon(const AssetImage('assets/icons/sebha_icon.png'),
+              child: ImageIcon(AssetImage(AssetsPaths.sebhaIcon),
                   size: 40, color: colorOfItem(theme, mainScreenProvider, 0)),
-              label: Locales.getTranslations(context).settingsLayout,
+              label: Locales.getTranslations(context).sebhaLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 0)),
           CurvedNavigationBarItem(
-              child: ImageIcon(const AssetImage('assets/icons/radio_icon.png'),
+              child: ImageIcon(AssetImage(AssetsPaths.radioIcon),
                   size: 40, color: colorOfItem(theme, mainScreenProvider, 1)),
               label: Locales.getTranslations(context).radioLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 1)),
           CurvedNavigationBarItem(
-              child: ImageIcon(const AssetImage('assets/icons/quran_icon.png'),
+              child: ImageIcon(AssetImage(AssetsPaths.quranIcon),
                   size: 40, color: colorOfItem(theme, mainScreenProvider, 2)),
               label: Locales.getTranslations(context).quranLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 2)),
           CurvedNavigationBarItem(
-              child: ImageIcon(
-                  const AssetImage('assets/icons/hadeeth_icon.png'),
-                  size: 40,
-                  color: colorOfItem(theme, mainScreenProvider, 3)),
+              child: ImageIcon(AssetImage(AssetsPaths.hadeethIcon),
+                  size: 40, color: colorOfItem(theme, mainScreenProvider, 3)),
               label: Locales.getTranslations(context).hadeethLayout,
               labelStyle: styleOfLabel(theme, mainScreenProvider, 3)),
           CurvedNavigationBarItem(

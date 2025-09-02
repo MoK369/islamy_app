@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:provider/provider.dart';
 
 class BgContainer extends StatelessWidget {
@@ -14,8 +15,8 @@ class BgContainer extends StatelessWidget {
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(themeProvider.isDarkEnabled()
-                  ? 'assets/images/bg_dark.png'
-                  : 'assets/images/bg.png'),
+                  ? AssetsPaths.bgDarkImage
+                  : AssetsPaths.bgImage),
               fit: BoxFit.fill)),
       child: child,
     );

@@ -1,47 +1,50 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:islamy_app/di.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
+import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 
 class ApiErrorMessage {
   static String getErrorMessage(
       {ServerError? serverError, CodeError? codeError}) {
+    AppLocalizations appLocalizations = getIt.get<AppLocalizations>();
     if (serverError != null) {
       return serverError.message;
     } else if (codeError != null) {
       var exception = codeError.exception;
       switch (exception) {
         case SocketException():
-          return "No Internet connection 😑";
+          return appLocalizations.noInternetConnection;
         case HttpException():
-          return "Couldn't find the source 😱";
+          return appLocalizations.couldNotFindSource;
         case FormatException():
-          return "Bad response format 👎";
+          return appLocalizations.badResponse;
         case DioException():
           switch (exception.type) {
             case DioExceptionType.connectionTimeout:
-              return "Connection timeout with server ⌛";
+              return appLocalizations.connectionTimeout;
             case DioExceptionType.sendTimeout:
-              return "Send timeout in connection with server ⏱";
+              return appLocalizations.sendTimeout;
             case DioExceptionType.receiveTimeout:
-              return "Receive timeout in connection with server ⏰";
+              return appLocalizations.receiveTimeout;
             case DioExceptionType.badCertificate:
-              return "The certificate provided by the server is not valid 📑";
+              return appLocalizations.badCertificate;
             case DioExceptionType.badResponse:
-              return "Bad response format 👎";
+              return appLocalizations.badResponse;
             case DioExceptionType.cancel:
-              return "Request to server was cancelled ✖";
+              return appLocalizations.requestCanceled;
             case DioExceptionType.connectionError:
-              return "No Internet connection 😑";
+              return appLocalizations.noInternetConnection;
             case DioExceptionType.unknown:
-              return "Something Went Wrong 🤔";
+              return appLocalizations.somethingWentWrong;
           }
 
         default:
-          return "Something Went Wrong 🤔";
+          return appLocalizations.somethingWentWrong;
       }
     } else {
-      return "Something Went Wrong 🤔";
+      return appLocalizations.somethingWentWrong;
     }
   }
 }

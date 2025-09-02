@@ -75,20 +75,18 @@ class SettingsLayout extends StatelessWidget {
                     style: theme.textTheme.titleMedium,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
                         textAlign: TextAlign.center,
                         Locales.getTranslations(context).enableNavigationBar,
                         style: theme.textTheme.titleMedium,
                       ),
-                    ),
-                    Expanded(
-                      child: Transform.scale(
-                        scale: 1.5,
+                      Transform.scale(
+                        scale: 1.1,
                         alignment: localeProvider.isArabicChosen()
                             ? const Alignment(1, 0)
                             : const Alignment(-1, 0),
@@ -100,11 +98,8 @@ class SettingsLayout extends StatelessWidget {
                           },
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               ],
             ),

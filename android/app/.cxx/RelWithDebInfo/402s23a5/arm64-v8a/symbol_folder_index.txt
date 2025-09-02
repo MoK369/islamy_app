@@ -1,0 +1,1 @@
+/home/elmohannd/mnt/5874C9AB5B3DFCDF/StudioProjects/islamy_app/build/app/intermediates/cxx/RelWithDebInfo/402s23a5/obj/arm64-v8a

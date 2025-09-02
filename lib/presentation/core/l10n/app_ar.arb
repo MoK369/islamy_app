@@ -1,4 +1,13 @@
 {
+  "noInternetConnection": "لا يوجد اتصال بالإنترنت \uD83D\uDE11",
+  "couldNotFindSource": "تعذر العثور على المصدر \uD83D\uDE31",
+  "badResponse": "تنسيق الاستجابة غير صالح \uD83D\uDC4E",
+  "connectionTimeout": "انتهت مهلة الاتصال بالخادم ⌛",
+  "sendTimeout": "انتهت مهلة الإرسال في الاتصال بالخادم ⏱",
+  "receiveTimeout": "انتهت مهلة الاستلام في الاتصال بالخادم ⏰",
+  "badCertificate": "شهادة الخادم غير صالحة \uD83D\uDCD1",
+  "requestCanceled": "تم إلغاء الطلب إلى الخادم ✖",
+  "somethingWentWrong": "حدث خطأ ما \uD83E\uDD14",
   "islami": "إسلامي",
   "quranLayout": "القرآن",
   "search": "بحث",
@@ -20,5 +29,16 @@
   "holyQuranRadio": "راديو القرآن الكريم",
   "sebhaLayout": "سبحة",
   "numberOfPraises": "عدد التسبيحات",
-  "pressAgain": "اضغط مرة أخرى للخروج"
+  "pressAgain": "اضغط مرة أخرى للخروج",
+  "tryAgain": "حاول مجدداً",
+  "updateAvailable": "تحديث متوفر",
+  "newVersionMessage": "إصدار جديد {version} متاح.",
+  "update": "تحديث",
+  "later": "لاحقًا",
+  "errorInitializingAudioSources": "خطأ في تهيئة مصادر الصوت: ",
+  "errorReplayingAudio": "خطأ في إعادة تشغيل الصوت: ",
+  "audioSessionNotActive": "جلسة الصوت غير مفعّلة",
+  "errorMovingToNextChannel": "خطأ في الانتقال إلى القناة التالية: ",
+  "errorMovingToPreviousChannel": "خطأ في الانتقال إلى القناة السابقة: ",
+  "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا"
 }

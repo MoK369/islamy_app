@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:humanizer/humanizer.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
+import 'package:islamy_app/presentation/core/utils/text_file_caching/text_file_caching.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import '../../../../core/utils/gzip_decompressor/gzip_decompressor.dart';
 
 class HadeethLayout extends StatefulWidget {
   const HadeethLayout({super.key});
@@ -16,6 +20,9 @@ class HadeethLayout extends StatefulWidget {
 class _HadeethLayoutState extends State<HadeethLayout> {
   late ThemeData theme;
   List<HadethData> ahadeeth = [];
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +35,41 @@ class _HadeethLayoutState extends State<HadeethLayout> {
     theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Image.asset(
-          'assets/images/hadith_header.png',
-          height: size.height * 0.2,
+        Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Image.asset(
+              AssetsPaths.hadithHeaderImage,
+              height: size.height * 0.2,
+            ),
+            if (mainScreenProvider.markedHadeethIndex.isNotEmpty)
+              Positioned(
+                left: localeProvider.isArabicChosen() ? null : 0,
+                right: localeProvider.isArabicChosen() ? 0 : null,
+                child: Transform.flip(
+                  flipX: localeProvider.isArabicChosen(),
+                  child: IconButton(
+                      onPressed: () async {
+                        await itemScrollController.scrollTo(
+                            index:
+                            int.parse(mainScreenProvider.markedHadeethIndex),
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeInOut);
+                      },
+                      icon: const Icon(Icons.flag)),
+                ),
+              )
+          ],
         ),
         const Divider(),
-        Text(
-          Locales.getTranslations(context).ahadeeth,
-          style: theme.textTheme.titleMedium,
+        Center(
+          child: Text(
+            Locales.getTranslations(context).ahadeeth,
+            style: theme.textTheme.titleMedium,
+          ),
         ),
         const Divider(),
         Expanded(
@@ -45,57 +78,70 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                     child: CircularProgressIndicator(
                     color: theme.indicatorColor,
                   ))
-                : ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: ahadeeth.length,
+                : ScrollablePositionedList.builder(
+                    itemScrollController: itemScrollController,
+                    itemPositionsListener: itemPositionsListener,
+                    itemCount: ahadeeth.length + 1,
                     itemBuilder: (context, currentHadeethIndex) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Visibility(
-                            visible: mainScreenProvider.markedHadeethIndex ==
-                                '$currentHadeethIndex',
-                            child: const Icon(
-                              Icons.bookmark,
-                              size: 30,
-                            ),
-                          ),
-                          Expanded(
-                            child: TextButton(
-                                onLongPress: () {
-                                  if (mainScreenProvider.markedHadeethIndex ==
-                                      '') {
-                                    mainScreenProvider.changeMarkedHadeeth(
-                                        "$currentHadeethIndex");
-                                  } else if (mainScreenProvider
-                                          .markedHadeethIndex ==
-                                      '$currentHadeethIndex') {
-                                    mainScreenProvider.changeMarkedHadeeth('');
-                                  } else {
-                                    mainScreenProvider
-                                        .showAlertAboutHadeethMarking(context,
-                                            theme, "$currentHadeethIndex");
-                                  }
-                                },
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, HadeethScreen.routeName,
-                                      arguments: ahadeeth[currentHadeethIndex]);
-                                },
-                                child: FittedBox(
-                                  child: Text(
-                                    localeProvider.isArabicChosen()
-                                        ? ahadeeth[currentHadeethIndex]
-                                            .hadeethTitle
-                                        : ("${(currentHadeethIndex + 1).toOrdinalWords()} hadith")
-                                            .toTitleCase(),
-                                    style: theme.textTheme.bodyMedium!
-                                        .copyWith(fontSize: 35),
+                      return currentHadeethIndex == ahadeeth.length
+                          ? const SizedBox(
+                              height: 40,
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Visibility(
+                                  visible:
+                                      mainScreenProvider.markedHadeethIndex ==
+                                          '$currentHadeethIndex',
+                                  child: const Icon(
+                                    Icons.bookmark,
+                                    size: 30,
                                   ),
-                                )),
-                          ),
-                        ],
-                      );
+                                ),
+                                Expanded(
+                                  child: TextButton(
+                                      onLongPress: () {
+                                        if (mainScreenProvider
+                                                .markedHadeethIndex ==
+                                            '') {
+                                          mainScreenProvider
+                                              .changeMarkedHadeeth(
+                                                  "$currentHadeethIndex");
+                                        } else if (mainScreenProvider
+                                                .markedHadeethIndex ==
+                                            '$currentHadeethIndex') {
+                                          mainScreenProvider
+                                              .changeMarkedHadeeth('');
+                                        } else {
+                                          mainScreenProvider
+                                              .showAlertAboutHadeethMarking(
+                                                  context,
+                                                  theme,
+                                                  "$currentHadeethIndex");
+                                        }
+                                      },
+                                      onPressed: () async {
+                                        Navigator.pushNamed(
+                                            context, HadeethScreen.routeName,
+                                            arguments:
+                                                ahadeeth[currentHadeethIndex]);
+                                      },
+                                      child: FittedBox(
+                                        child: Text(
+                                          localeProvider.isArabicChosen()
+                                              ? ahadeeth[currentHadeethIndex]
+                                                  .hadeethTitle
+                                              : ("${(currentHadeethIndex + 1).toOrdinalWords()} hadith")
+                                                  .toTitleCase(),
+                                          style: theme.textTheme.bodyMedium!
+                                              .copyWith(
+                                                  fontSize: size.width * 0.045),
+                                        ),
+                                      )),
+                                ),
+                              ],
+                            );
                     },
                   ))
       ],
@@ -103,9 +149,20 @@ class _HadeethLayoutState extends State<HadeethLayout> {
   }
 
   void readHadeeth() async {
-    String hadeeths =
-        await rootBundle.loadString('assets/hadeeths/ahadeth.txt');
-    List<String> eachHadeethList = hadeeths.trim().split('#');
+    String ahadeethKey = AssetsPaths.ahadeethTextFile
+        .split('/')
+        .last
+        .replaceAll(RegExp(r'.gz'), '');
+    String? cachedAhadeeth = await TextFileCaching.getCachedText(ahadeethKey);
+    List<String> eachHadeethList = [];
+    if (cachedAhadeeth != null) {
+      eachHadeethList = cachedAhadeeth.split('#');
+    } else {
+      String hadeeths = await GzipDecompressor.loadCompressedInBackground(
+          AssetsPaths.ahadeethTextFile);
+      await TextFileCaching.cacheText(ahadeethKey, hadeeths.trim());
+      eachHadeethList = hadeeths.trim().split('#');
+    }
     setState(() {
       for (int i = 0; i < eachHadeethList.length; i++) {
         List<String> singleHadeeth = eachHadeethList[i].trim().split('\n');

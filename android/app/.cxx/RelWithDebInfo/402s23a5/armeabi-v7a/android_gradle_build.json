@@ -1,0 +1,28 @@
+{
+  "buildFiles": [
+    "/home/elmohannd/.config/shorebird/bin/cache/flutter/fb8d194ceb0794310387baff34d657edad7219b8/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/elmohannd/mnt/5874C9AB5B3DFCDF/Android/Sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/home/elmohannd/mnt/5874C9AB5B3DFCDF/StudioProjects/islamy_app/android/app/.cxx/RelWithDebInfo/402s23a5/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/elmohannd/mnt/5874C9AB5B3DFCDF/Android/Sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/home/elmohannd/mnt/5874C9AB5B3DFCDF/StudioProjects/islamy_app/android/app/.cxx/RelWithDebInfo/402s23a5/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {},
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/home/elmohannd/mnt/5874C9AB5B3DFCDF/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/home/elmohannd/mnt/5874C9AB5B3DFCDF/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": []
+}

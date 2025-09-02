@@ -23,26 +23,47 @@ class CustAlertDialog {
             style: theme.textTheme.bodyMedium,
           ),
           actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: (constraints.maxWidth / 2) - 5,
+                        child: ElevatedButton(
+                          onPressed: okButtonFunction,
+                          style: const ButtonStyle(
+                              padding: WidgetStatePropertyAll(
+                                  EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 2))),
+                          child: Text(
+                            Locales.getTranslations(context).ok,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: (constraints.maxWidth / 2) - 5,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: const ButtonStyle(
+                              backgroundColor:
+                                  WidgetStatePropertyAll(Colors.red),
+                              padding: WidgetStatePropertyAll(
+                                  EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 2))),
+                          child: Text(Locales.getTranslations(context).cancel,
+                              style: const TextStyle(fontSize: 20)),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
-              style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.red),
-                  padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(horizontal: 35, vertical: 2))),
-              child: Text(Locales.getTranslations(context).cancel,
-                  style: const TextStyle(fontSize: 35)),
-            ),
-            ElevatedButton(
-              onPressed: okButtonFunction,
-              style: const ButtonStyle(
-                  padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(horizontal: 35, vertical: 2))),
-              child: Text(
-                Locales.getTranslations(context).ok,
-                style: const TextStyle(fontSize: 35),
-              ),
             ),
             //Spacer()
           ],

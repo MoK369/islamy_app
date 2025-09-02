@@ -231,7 +231,7 @@ class Suras {
     '4',
     '5',
     '6',
-    ""
+    "",
   ];
   static const List<String> englishQuranSurahs = [
     "Al-Fatiha",
