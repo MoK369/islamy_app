@@ -9,7 +9,6 @@ class Themes {
 
   static ThemeData lightTheme = ThemeData(
       scaffoldBackgroundColor: Colors.transparent,
-      indicatorColor: lightPrimaryColor,
       progressIndicatorTheme:
           const ProgressIndicatorThemeData(color: lightPrimaryColor),
       iconTheme: const IconThemeData(color: lightPrimaryColor, size: 30),
@@ -22,8 +21,8 @@ class Themes {
         thumbColor: lightPrimaryColor,
         valueIndicatorColor: lightPrimaryColor.withAlpha(125),
         valueIndicatorTextStyle:
-        const TextStyle(color: Colors.white, fontSize: 20),
-        tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 0.8),
+          const TextStyle(color: Colors.white, fontSize: 20),
+      tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 0.8),
         activeTickMarkColor: Colors.black,
         inactiveTickMarkColor: lightPrimaryColor.withAlpha(140),
       ),
@@ -32,14 +31,14 @@ class Themes {
           showDragHandle: true,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-      cardTheme: CardTheme(
-          clipBehavior: Clip.hardEdge,
+    cardTheme: CardThemeData(
+        clipBehavior: Clip.hardEdge,
           color: Colors.white,
           surfaceTintColor: null,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-      dialogTheme: DialogTheme(
-          backgroundColor: Colors.white,
+    dialogTheme: DialogThemeData(
+        backgroundColor: Colors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       textTheme: TextTheme(
@@ -59,8 +58,8 @@ class Themes {
       ),
       appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(color: lightPrimaryColor),
-        color: Colors.transparent,
-        elevation: 0,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
             fontSize: 25,
@@ -112,7 +111,8 @@ class Themes {
           contentTextStyle: TextStyle(
               color: lightPrimaryColor,
               fontSize: 20,
-              fontWeight: FontWeight.bold)));
+            fontWeight: FontWeight.bold)),
+  );
 
   //-------------------------------------------------
   // Dark Theme
@@ -120,7 +120,6 @@ class Themes {
   static const Color darkSecondaryColor = Color(0xFF141A2E);
   static ThemeData darkTheme = ThemeData(
       scaffoldBackgroundColor: Colors.transparent,
-      indicatorColor: darkPrimaryColor,
       progressIndicatorTheme:
           const ProgressIndicatorThemeData(color: darkPrimaryColor),
       iconTheme: const IconThemeData(color: darkPrimaryColor, size: 30),
@@ -143,14 +142,14 @@ class Themes {
           showDragHandle: true,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-      cardTheme: CardTheme(
-          clipBehavior: Clip.hardEdge,
+    cardTheme: CardThemeData(
+        clipBehavior: Clip.hardEdge,
           color: darkSecondaryColor,
           surfaceTintColor: null,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-      dialogTheme: DialogTheme(
-          backgroundColor: darkSecondaryColor,
+    dialogTheme: DialogThemeData(
+        backgroundColor: darkSecondaryColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       textTheme: TextTheme(
@@ -169,8 +168,8 @@ class Themes {
               color: Colors.white, fontWeight: FontWeight.w400, fontSize: 40)),
       appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(color: darkPrimaryColor),
-        color: Colors.transparent,
-        elevation: 0,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
             fontSize: 25,
@@ -222,5 +221,6 @@ class Themes {
           contentTextStyle: TextStyle(
               color: darkSecondaryColor,
               fontSize: 20,
-              fontWeight: FontWeight.bold)));
+            fontWeight: FontWeight.bold)),
+  );
 }

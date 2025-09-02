@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -131,7 +132,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorMovingToNextChannel => 'خطأ في الانتقال إلى القناة التالية: ';
 
   @override
-  String get errorMovingToPreviousChannel => 'خطأ في الانتقال إلى القناة السابقة: ';
+  String get errorMovingToPreviousChannel =>
+      'خطأ في الانتقال إلى القناة السابقة: ';
 
   @override
   String get errorOccurred => 'حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا';

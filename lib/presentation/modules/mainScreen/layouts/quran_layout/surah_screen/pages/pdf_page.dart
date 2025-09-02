@@ -83,11 +83,9 @@ class _PDFPageState extends State<PDFPage> {
               builders: PdfViewBuilders<DefaultBuilderOptions>(
                 options: const DefaultBuilderOptions(),
                 documentLoaderBuilder: (_) => Center(
-                    child:
-                        CircularProgressIndicator(color: theme.indicatorColor)),
+                    child: CircularProgressIndicator()),
                 pageLoaderBuilder: (_) => Center(
-                    child:
-                        CircularProgressIndicator(color: theme.indicatorColor)),
+                    child: CircularProgressIndicator()),
               ),
               onPageChanged: (page) {
                 if (page < startPage) {

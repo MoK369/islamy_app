@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -27,7 +28,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receiveTimeout => 'Receive timeout in connection with server ⏰';
 
   @override
-  String get badCertificate => 'The certificate provided by the server is not valid 📑';
+  String get badCertificate =>
+      'The certificate provided by the server is not valid 📑';
 
   @override
   String get requestCanceled => 'Request to server was cancelled ✖';
@@ -119,7 +121,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get later => 'later';
 
   @override
-  String get errorInitializingAudioSources => 'Error initializing audio sources: ';
+  String get errorInitializingAudioSources =>
+      'Error initializing audio sources: ';
 
   @override
   String get errorReplayingAudio => 'Error replaying audio: ';
@@ -131,7 +134,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorMovingToNextChannel => 'Error Moving to next channel: ';
 
   @override
-  String get errorMovingToPreviousChannel => 'Error Moving to previous channel: ';
+  String get errorMovingToPreviousChannel =>
+      'Error Moving to previous channel: ';
 
   @override
   String get errorOccurred => 'An error occurred. Please try again later';
