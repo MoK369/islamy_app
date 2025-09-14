@@ -8,15 +8,15 @@ class LoadingState<T> extends BaseViewState<T> {
   LoadingState({this.message});
 }
 
+class SuccessState<T> extends BaseViewState<T> {
+  T data;
+
+  SuccessState({required this.data});
+}
+
 class ErrorState<T> extends BaseViewState<T> {
   ServerError? serverError;
   CodeError? codeError;
 
   ErrorState({this.serverError, this.codeError});
-}
-
-class SuccessState<T> extends BaseViewState<T> {
-  T data;
-
-  SuccessState({required this.data});
 }

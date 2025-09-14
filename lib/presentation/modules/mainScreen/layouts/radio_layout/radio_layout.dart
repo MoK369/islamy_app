@@ -53,36 +53,7 @@ class _RadioLayoutState extends State<RadioLayout> {
               case LoadingState<List<RadioChannel>>():
                 return const Expanded(
                     flex: 2, child: Center(child: CircularProgressIndicator()));
-              case ErrorState<List<RadioChannel>>():
-                return Expanded(
-                    flex: 2,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                                ApiErrorMessage.getErrorMessage(
-                                    serverError: viewModelResult.serverError,
-                                    codeError: viewModelResult.codeError),
-                                style: theme.textTheme.titleMedium),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  radioViewModel.getQuranRadioChannels(
-                                      localeProvider.isArabicChosen()
-                                          ? "ar"
-                                          : "eng");
-                                },
-                                child: Text(
-                                    Locales.getTranslations(context).tryAgain))
-                          ],
-                        ),
-                      ),
-                    ));
+
               case SuccessState<List<RadioChannel>>():
                 return Expanded(
                   flex: 2,
@@ -153,6 +124,36 @@ class _RadioLayoutState extends State<RadioLayout> {
                     ],
                   ),
                 );
+              case ErrorState<List<RadioChannel>>():
+                return Expanded(
+                    flex: 2,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                ApiErrorMessage.getErrorMessage(
+                                    serverError: viewModelResult.serverError,
+                                    codeError: viewModelResult.codeError),
+                                style: theme.textTheme.titleMedium),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  radioViewModel.getQuranRadioChannels(
+                                      localeProvider.isArabicChosen()
+                                          ? "ar"
+                                          : "eng");
+                                },
+                                child: Text(
+                                    Locales.getTranslations(context).tryAgain))
+                          ],
+                        ),
+                      ),
+                    ));
             }
           },
         )
