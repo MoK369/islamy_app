@@ -74,22 +74,20 @@ class _SurahScreenState extends State<SurahScreen> {
                             .getTranslations(context)
                             .islami),
                         bottom: TabBar(
-                            indicatorColor: theme.indicatorColor,
-                            indicatorSize: TabBarIndicatorSize.tab,
                             tabs: [
                               Tab(
                                 icon: Icon(
                                   Icons.text_format,
                                   size: 40,
-                                  color: theme.indicatorColor,
-                                ),
+                                    color: theme.progressIndicatorTheme.color,
+                                  ),
                               ),
                               Tab(
                                 icon: Icon(
                                   Icons.picture_as_pdf,
                                   size: 40,
-                                  color: theme.indicatorColor,
-                                ),
+                                    color: theme.progressIndicatorTheme.color,
+                                  ),
                               ),
                             ]),
                       )

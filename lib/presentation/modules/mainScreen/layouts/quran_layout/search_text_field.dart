@@ -14,7 +14,7 @@ class SearchTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
       child: TextField(
-        cursorColor: theme.indicatorColor,
+        cursorColor: theme.progressIndicatorTheme.color,
         controller: mainScreenProvider.searchFieldController,
         style: theme.textTheme.bodyMedium,
         onTapOutside: (event) {

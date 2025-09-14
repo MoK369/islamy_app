@@ -28,14 +28,14 @@ class MainScreenProvider extends ChangeNotifier {
     return Provider.of<MainScreenProvider>(context);
   }
 
-  getMainScreenData() {
+  void getMainScreenData() {
     isBottomBarEnabled = sharedPreferences.getBool(barEnablementKey) ?? true;
     markedHadeethIndex = sharedPreferences.getString(markedHadeethKey) ?? '';
     markedSurahIndex = sharedPreferences.getString(markedSurahKey) ?? '';
     notifyListeners();
   }
 
-  saveBarEnablement(bool newValue) {
+  void saveBarEnablement(bool newValue) {
     sharedPreferences.setBool(barEnablementKey, newValue);
   }
 

@@ -63,7 +63,7 @@ class _VersesListState extends State<VersesList> {
         child: surahVerses.isEmpty && eachDoaLine.isEmpty
             ? Center(
                 child: CircularProgressIndicator(
-                  color: theme.indicatorColor,
+                  color: theme.progressIndicatorTheme.color,
                 ),
               )
             : widget.args.surahIndex == 114

@@ -21,7 +21,7 @@ class Themes {
         thumbColor: lightPrimaryColor,
         valueIndicatorColor: lightPrimaryColor.withAlpha(125),
         valueIndicatorTextStyle:
-          const TextStyle(color: Colors.white, fontSize: 20),
+            const TextStyle(color: Colors.white, fontSize: 20),
       tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 0.8),
         activeTickMarkColor: Colors.black,
         inactiveTickMarkColor: lightPrimaryColor.withAlpha(140),
@@ -31,13 +31,13 @@ class Themes {
           showDragHandle: true,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-    cardTheme: CardThemeData(
+      cardTheme: CardThemeData(
         clipBehavior: Clip.hardEdge,
           color: Colors.white,
           surfaceTintColor: null,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-    dialogTheme: DialogThemeData(
+      dialogTheme: DialogThemeData(
         backgroundColor: Colors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
@@ -58,7 +58,7 @@ class Themes {
       ),
       appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(color: lightPrimaryColor),
-      backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
       elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
@@ -111,116 +111,142 @@ class Themes {
           contentTextStyle: TextStyle(
               color: lightPrimaryColor,
               fontSize: 20,
-            fontWeight: FontWeight.bold)),
-  );
+              fontWeight: FontWeight.bold)),
+      tabBarTheme: TabBarThemeData(
+        indicatorColor: lightPrimaryColor,
+        dividerColor: lightPrimaryColor,
+        indicatorSize: TabBarIndicatorSize.tab,
+      ),
+      switchTheme: SwitchThemeData(
+        overlayColor: WidgetStatePropertyAll(lightPrimaryColor),
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) {
+            if (states.contains(WidgetState.selected)) {
+              return lightPrimaryColor;
+            }
+            return null;
+          },
+        ),
+      ));
 
   //-------------------------------------------------
   // Dark Theme
   static const Color darkPrimaryColor = Color(0xFFFACC1D);
   static const Color darkSecondaryColor = Color(0xFF141A2E);
   static ThemeData darkTheme = ThemeData(
-      scaffoldBackgroundColor: Colors.transparent,
-      progressIndicatorTheme:
-          const ProgressIndicatorThemeData(color: darkPrimaryColor),
-      iconTheme: const IconThemeData(color: darkPrimaryColor, size: 30),
-      sliderTheme: SliderThemeData(
-        trackHeight: 20,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
-        overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
-        activeTrackColor: darkPrimaryColor.withAlpha(178),
-        inactiveTrackColor: Colors.grey..withAlpha(125),
-        thumbColor: darkPrimaryColor,
-        valueIndicatorColor: lightPrimaryColor,
-        valueIndicatorTextStyle:
-            const TextStyle(color: Colors.white, fontSize: 25),
-        activeTickMarkColor: Colors.black,
-        inactiveTickMarkColor: Colors.white,
-        tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 1.3),
-      ),
-      bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor: darkSecondaryColor,
-          showDragHandle: true,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+    scaffoldBackgroundColor: Colors.transparent,
+    progressIndicatorTheme:
+        const ProgressIndicatorThemeData(color: darkPrimaryColor),
+    iconTheme: const IconThemeData(color: darkPrimaryColor, size: 30),
+    sliderTheme: SliderThemeData(
+      trackHeight: 20,
+      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
+      overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
+      activeTrackColor: darkPrimaryColor.withAlpha(178),
+      inactiveTrackColor: Colors.grey..withAlpha(125),
+      thumbColor: darkPrimaryColor,
+      valueIndicatorColor: lightPrimaryColor,
+      valueIndicatorTextStyle:
+          const TextStyle(color: Colors.white, fontSize: 25),
+      activeTickMarkColor: Colors.black,
+      inactiveTickMarkColor: Colors.white,
+      tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 1.3),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: darkSecondaryColor,
+        showDragHandle: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
     cardTheme: CardThemeData(
         clipBehavior: Clip.hardEdge,
-          color: darkSecondaryColor,
-          surfaceTintColor: null,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+        color: darkSecondaryColor,
+        surfaceTintColor: null,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
     dialogTheme: DialogThemeData(
         backgroundColor: darkSecondaryColor,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-      textTheme: TextTheme(
-          titleMedium: const TextStyle(
-              fontSize: 25,
-              color: Colors.white,
-              fontFamily: DefinedFontFamilies.elMessiri,
-              fontWeight: FontWeight.w700),
-          bodyMedium: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.normal,
-              fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-          // for displaying suras and ahadeeth:
-          displayLarge: GoogleFonts.notoKufiArabic(
-              color: Colors.white, fontWeight: FontWeight.w400, fontSize: 40)),
-      appBarTheme: const AppBarTheme(
-        iconTheme: IconThemeData(color: darkPrimaryColor),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-        centerTitle: true,
-        titleTextStyle: TextStyle(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+    textTheme: TextTheme(
+        titleMedium: const TextStyle(
             fontSize: 25,
             color: Colors.white,
             fontFamily: DefinedFontFamilies.elMessiri,
             fontWeight: FontWeight.w700),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.all(6),
-        hintStyle: TextStyle(
+        bodyMedium: TextStyle(
             color: Colors.white,
-            fontSize: 25,
+            fontSize: 20,
+            fontWeight: FontWeight.normal,
             fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
-        suffixIconColor: darkPrimaryColor,
-        enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: darkPrimaryColor)),
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: Colors.blue)),
+        // for displaying suras and ahadeeth:
+        displayLarge: GoogleFonts.notoKufiArabic(
+            color: Colors.white, fontWeight: FontWeight.w400, fontSize: 40)),
+    appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(color: darkPrimaryColor),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+          fontSize: 25,
+          color: Colors.white,
+          fontFamily: DefinedFontFamilies.elMessiri,
+          fontWeight: FontWeight.w700),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      contentPadding: const EdgeInsets.all(6),
+      hintStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 25,
+          fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily),
+      suffixIconColor: darkPrimaryColor,
+      enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 2, color: darkPrimaryColor)),
+      focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 2, color: Colors.blue)),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            foregroundColor: const WidgetStatePropertyAll(Colors.black),
+            textStyle: WidgetStatePropertyAll(
+                GoogleFonts.ibmPlexSansArabic(fontSize: 20)),
+            backgroundColor: const WidgetStatePropertyAll(darkPrimaryColor),
+            shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
+                borderRadius: BorderRadius.circular(100))),
+            side: const WidgetStatePropertyAll(BorderSide.none))),
+    buttonTheme: const ButtonThemeData(
+      padding: EdgeInsets.all(10),
+      shape: ContinuousRectangleBorder(
+          side: BorderSide(color: darkPrimaryColor, width: 3)),
+    ),
+    dividerTheme: const DividerThemeData(color: darkPrimaryColor, thickness: 3),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: darkPrimaryColor,
+      selectedLabelStyle: TextStyle(
+          fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily,
+          fontSize: 18,
+          color: darkPrimaryColor),
+      unselectedLabelStyle:
+          const TextStyle(fontSize: 0, color: darkSecondaryColor),
+      unselectedItemColor: Colors.white,
+      backgroundColor: darkSecondaryColor,
+    ),
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: darkPrimaryColor,
+      contentTextStyle: TextStyle(
+          color: darkSecondaryColor, fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+    tabBarTheme: TabBarThemeData(
+      indicatorColor: darkPrimaryColor,
+      dividerColor: darkPrimaryColor,
+      indicatorSize: TabBarIndicatorSize.tab,
+    ),
+    switchTheme: SwitchThemeData(
+      overlayColor: WidgetStatePropertyAll(darkPrimaryColor),
+      trackColor: WidgetStateProperty.resolveWith(
+        (states) {
+          if (states.contains(WidgetState.selected)) {
+            return darkPrimaryColor;
+          }
+          return null;
+        },
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-              foregroundColor: const WidgetStatePropertyAll(Colors.black),
-              textStyle: WidgetStatePropertyAll(
-                  GoogleFonts.ibmPlexSansArabic(fontSize: 20)),
-              backgroundColor: const WidgetStatePropertyAll(darkPrimaryColor),
-              shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.circular(100))),
-              side: const WidgetStatePropertyAll(BorderSide.none))),
-      buttonTheme: const ButtonThemeData(
-        padding: EdgeInsets.all(10),
-        shape: ContinuousRectangleBorder(
-            side: BorderSide(color: darkPrimaryColor, width: 3)),
-      ),
-      dividerTheme:
-          const DividerThemeData(color: darkPrimaryColor, thickness: 3),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        selectedItemColor: darkPrimaryColor,
-        selectedLabelStyle: TextStyle(
-            fontFamily: GoogleFonts.ibmPlexSansArabic().fontFamily,
-            fontSize: 18,
-            color: darkPrimaryColor),
-        unselectedLabelStyle:
-            const TextStyle(fontSize: 0, color: darkSecondaryColor),
-        unselectedItemColor: Colors.white,
-        backgroundColor: darkSecondaryColor,
-      ),
-      snackBarTheme: const SnackBarThemeData(
-          backgroundColor: darkPrimaryColor,
-          contentTextStyle: TextStyle(
-              color: darkSecondaryColor,
-              fontSize: 20,
-            fontWeight: FontWeight.bold)),
+    ),
   );
 }

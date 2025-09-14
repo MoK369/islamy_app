@@ -18,7 +18,7 @@ class ThemeProvider extends ChangeNotifier {
     return Provider.of<ThemeProvider>(context);
   }
 
-  getThemeData() {
+  void getThemeData() {
     String savedTheme =
         sharedPreferences.getString(themeKey) ?? 'ThemeMode.light';
     currentTheme =
