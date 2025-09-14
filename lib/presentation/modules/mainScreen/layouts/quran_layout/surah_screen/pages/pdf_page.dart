@@ -83,11 +83,9 @@ class _PDFPageState extends State<PDFPage> {
               builders: PdfViewBuilders<DefaultBuilderOptions>(
                 options: const DefaultBuilderOptions(),
                 documentLoaderBuilder: (_) => Center(
-                    child:
-                        CircularProgressIndicator(color: theme.indicatorColor)),
+                    child: CircularProgressIndicator()),
                 pageLoaderBuilder: (_) => Center(
-                    child:
-                        CircularProgressIndicator(color: theme.indicatorColor)),
+                    child: CircularProgressIndicator()),
               ),
               onPageChanged: (page) {
                 if (page < startPage) {
@@ -120,7 +118,7 @@ class _PDFPageState extends State<PDFPage> {
                 child: Icon(
                   Icons.bookmark,
                   size: size.longestSide * 0.1,
-                  color: theme.indicatorColor.withAlpha(125),
+                  color: theme.progressIndicatorTheme.color?.withAlpha(125),
                 )),
           ),
           Positioned(

@@ -22,8 +22,8 @@ class ChangeVersesSizeWidget extends StatelessWidget {
               child: Card(
                 elevation: 10,
                 shape: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: theme.indicatorColor, width: 2),
+                    borderSide: BorderSide(
+                        color: theme.progressIndicatorTheme.color!, width: 2),
                     borderRadius: BorderRadius.circular(25)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

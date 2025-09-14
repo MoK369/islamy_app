@@ -68,14 +68,14 @@ class BottomSheetLayout extends StatelessWidget {
       children: [
         Text(
           text,
-          style:
-              theme.textTheme.bodyMedium!.copyWith(color: theme.indicatorColor),
+          style: theme.textTheme.bodyMedium!
+              .copyWith(color: theme.progressIndicatorTheme.color),
         ),
         Visibility(
             visible: true,
             child: Icon(
               Icons.check,
-              color: theme.indicatorColor,
+              color: theme.progressIndicatorTheme.color,
               size: 35,
             ))
       ],

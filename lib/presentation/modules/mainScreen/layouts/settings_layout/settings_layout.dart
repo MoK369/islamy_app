@@ -91,7 +91,6 @@ class SettingsLayout extends StatelessWidget {
                             ? const Alignment(1, 0)
                             : const Alignment(-1, 0),
                         child: Switch(
-                          activeColor: theme.indicatorColor,
                           value: mainScreenProvider.isBottomBarEnabled,
                           onChanged: (value) {
                             mainScreenProvider.changeBarEnablement(value);

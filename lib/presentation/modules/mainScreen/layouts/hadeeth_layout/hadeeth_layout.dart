@@ -54,8 +54,8 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                   child: IconButton(
                       onPressed: () async {
                         await itemScrollController.scrollTo(
-                            index:
-                            int.parse(mainScreenProvider.markedHadeethIndex),
+                            index: int.parse(
+                                mainScreenProvider.markedHadeethIndex),
                             duration: const Duration(seconds: 1),
                             curve: Curves.easeInOut);
                       },
@@ -74,10 +74,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
         const Divider(),
         Expanded(
             child: ahadeeth.isEmpty
-                ? Center(
-                    child: CircularProgressIndicator(
-                    color: theme.indicatorColor,
-                  ))
+                ? Center(child: CircularProgressIndicator())
                 : ScrollablePositionedList.builder(
                     itemScrollController: itemScrollController,
                     itemPositionsListener: itemPositionsListener,
