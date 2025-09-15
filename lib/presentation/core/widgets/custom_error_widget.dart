@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:islamy_app/domain/api_result/api_result.dart';
+import 'package:islamy_app/presentation/core/api_error_message/api_error_message.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
-import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
-import 'package:lottie/lottie.dart';
 
 class CustomErrorWidget extends StatelessWidget {
-  const CustomErrorWidget({super.key});
+  final ServerError? serverError;
+  final CodeError? codeError;
+  final bool showTryAgainButton;
+  final VoidCallback? onTryAgainClick;
+
+  const CustomErrorWidget(
+      {super.key,
+      this.serverError,
+      this.codeError,
+      this.showTryAgainButton = false,
+      this.onTryAgainClick});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    Size size = MediaQuery.of(context).size;
     return Center(
-      child: FittedBox(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-          child: Column(
-            children: [
-              SizedBox(
-                  width: size.width * 0.4,
-                  height: size.height * 0.2,
-                  child: Transform.scale(
-                    scale: 1.2,
-                    child: Lottie.asset(
-                      AssetsPaths.errorOccurredAnimation,
-                    ),
-                  )),
-              const SizedBox(
-                height: 16,
-              ),
-              Text(Locales.getTranslations(context).errorOccurred,
-                  style: theme.textTheme.bodyMedium)
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+                ApiErrorMessage.getErrorMessage(
+                    serverError: serverError, codeError: codeError),
+                style: theme.textTheme.titleMedium),
+            const SizedBox(
+              height: 4,
+            ),
+            if (showTryAgainButton)
+              ElevatedButton(
+                  onPressed: onTryAgainClick,
+                  child: Text(Locales.getTranslations(context).tryAgain))
+          ],
         ),
       ),
     );

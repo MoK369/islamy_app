@@ -2,6 +2,8 @@ import 'package:islamy_app/domain/api_result/api_result.dart';
 
 sealed class BaseViewState<T> {}
 
+class IdleState<T> extends BaseViewState<T> {}
+
 class LoadingState<T> extends BaseViewState<T> {
   String? message;
 

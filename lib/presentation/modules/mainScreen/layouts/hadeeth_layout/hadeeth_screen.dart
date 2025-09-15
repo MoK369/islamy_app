@@ -3,11 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:islamy_app/di.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/view_models/hadeeth_layout_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/widgets/change_verses_size_widget.dart';
 import 'package:provider/provider.dart';
-
-import 'hadeeth_layout.dart';
 
 class HadeethScreen extends StatefulWidget {
   static const String routeName = 'HadeethScreen';

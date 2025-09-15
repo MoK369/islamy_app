@@ -5,6 +5,8 @@ import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
+import 'package:islamy_app/presentation/core/widgets/custom_error_widget.dart';
+import 'package:islamy_app/presentation/core/widgets/custom_loading_widget.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/view_models/hadeeth_layout_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
@@ -86,7 +88,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                 var result = viewModel.readAhadeethState;
                 switch (result) {
                   case LoadingState<List<HadethData>>():
-                    return Center(child: CircularProgressIndicator());
+                    return const CustomLoadingWidget();
                   case SuccessState<List<HadethData>>():
                     var ahadeeth = result.data;
                     return ScrollablePositionedList.builder(
@@ -157,6 +159,14 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                       },
                     );
                   case ErrorState<List<HadethData>>():
+                    return CustomErrorWidget(
+                      serverError: result.serverError,
+                      codeError: result.codeError,
+                      showTryAgainButton: true,
+                      onTryAgainClick: () {
+                        hadeethLayoutViewModel.readAhadeeth();
+                      },
+                    );
                 }
               },
             ),

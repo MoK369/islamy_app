@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/data/models/quran_radio_model.dart';
-import 'package:islamy_app/presentation/core/api_error_message/api_error_message.dart';
-import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
+import 'package:islamy_app/presentation/core/widgets/custom_error_widget.dart';
+import 'package:islamy_app/presentation/core/widgets/custom_loading_widget.dart';
 import 'package:islamy_app/presentation/core/widgets/playing_loading_icon.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
@@ -51,8 +51,7 @@ class _RadioLayoutState extends State<RadioLayout> {
             var viewModelResult = radioViewModel.quranRadioChannelsState;
             switch (viewModelResult) {
               case LoadingState<List<RadioChannel>>():
-                return const Expanded(
-                    flex: 2, child: Center(child: CircularProgressIndicator()));
+                return const Expanded(flex: 2, child: CustomLoadingWidget());
 
               case SuccessState<List<RadioChannel>>():
                 return Expanded(
@@ -127,32 +126,14 @@ class _RadioLayoutState extends State<RadioLayout> {
               case ErrorState<List<RadioChannel>>():
                 return Expanded(
                     flex: 2,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                                ApiErrorMessage.getErrorMessage(
-                                    serverError: viewModelResult.serverError,
-                                    codeError: viewModelResult.codeError),
-                                style: theme.textTheme.titleMedium),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  radioViewModel.getQuranRadioChannels(
-                                      localeProvider.isArabicChosen()
-                                          ? "ar"
-                                          : "eng");
-                                },
-                                child: Text(
-                                    Locales.getTranslations(context).tryAgain))
-                          ],
-                        ),
-                      ),
+                    child: CustomErrorWidget(
+                      codeError: viewModelResult.codeError,
+                      serverError: viewModelResult.serverError,
+                      showTryAgainButton: true,
+                      onTryAgainClick: () {
+                        radioViewModel.getQuranRadioChannels(
+                            localeProvider.isArabicChosen() ? "ar" : "eng");
+                      },
                     ));
             }
           },

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import 'package:islamy_app/presentation/core/app_version_checker/app_version_che
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
-import 'package:islamy_app/presentation/core/widgets/custom_error_widget.dart';
+import 'package:islamy_app/presentation/core/widgets/error_widget_gray_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
@@ -105,7 +106,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         ErrorWidget.builder = (errorDetails) {
           debugPrint("errorDetails $errorDetails");
-          return const CustomErrorWidget();
+          return const ErrorWidgetReplacingGrayScreen();
         };
         return Overlay(
           initialEntries: [
