@@ -7,7 +7,7 @@ plugins {
 
 // Load keystore properties from android/key.properties
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = file("android/key.properties")
+def keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
@@ -37,7 +37,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile = file(keystorePropertiesFile.parent + "/" + keystoreProperties['storeFile'])
+            storeFile = file(keystoreProperties['storeFile'])
             storePassword = keystoreProperties['storePassword']
             keyAlias = keystoreProperties['keyAlias']
             keyPassword = keystoreProperties['keyPassword']

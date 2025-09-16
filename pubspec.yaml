@@ -16,13 +16,16 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.5.2+4
+version: 2.6.4+5
   # feature:
   # text caching and control the size of it
   # go to full screen mode in surah screen
   # go to marked verse, pdf page, surah or hadeeth
   # make a custom error widget to show instead of the gray error screen in release mode
   # add shorebird to enable the update on the air
+  # upgrade Flutter SDK and Android NDK Version
+  # make the api calls happens in isolate
+  # close the banner widget when navigating to another screen and showing it when returning back
   # fix:
   # fix the radio plays again after change of internet connection
 # fix use just_audio_background instead of directory using audio_service
