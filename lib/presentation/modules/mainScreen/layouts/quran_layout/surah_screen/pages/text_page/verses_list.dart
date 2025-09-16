@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
@@ -46,30 +45,6 @@ class _VersesListState extends State<VersesList> {
 
   @override
   Widget build(BuildContext context) {
-    //if (widget.args.surahIndex == 114 && eachDoaLine.isEmpty) {
-    //readArDoa();
-    // if (!localeProvider.isArabicChosen()) {
-    //readEnDoa();
-    //}
-    //} else if (widget.args.surahIndex != 114 && surahVerses.isEmpty) {
-    //surahTextPageViewModel.readSurah(surahIndex: widget.args.surahIndex);
-    // if (!localeProvider.isArabicChosen()) {
-    //   readEnSurah();
-    // }
-    //}
-    // return ChangeNotifierProvider(
-    //   create: (context) => surahTextPageViewModel,
-    //   child: Expanded(
-    //       child: surahVerses.isEmpty && eachDoaLine.isEmpty
-    //           ? Center(
-    //               child: CircularProgressIndicator(
-    //                 color: theme.progressIndicatorTheme.color,
-    //               ),
-    //             )
-    //           : widget.args.surahIndex == 114
-    //               ? versesList(eachDoaLine, eachEnDoaLine)
-    //               : versesList(surahVerses, enSurahVerses)),
-    // );
     return ScrollablePositionedList.separated(
       itemScrollController: widget.itemScrollController,
       itemPositionsListener: widget.itemPositionsListener,
@@ -213,11 +188,5 @@ class _VersesListState extends State<VersesList> {
               );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    rootBundle.clear();
   }
 }

@@ -21,7 +21,7 @@ class StartIoAdProvider extends ChangeNotifier {
   //   startAppSdk.setTestAdsEnabled(kReleaseMode ? false : true);
   // }
 
-  Future<void> showBannerAd() async {
+  Future<void> showBannerAdAndListenForConnection() async {
     showBannerListener = InternetConnection()
         .onStatusChange
         .listen((InternetStatus status) async {
@@ -29,22 +29,34 @@ class StartIoAdProvider extends ChangeNotifier {
         case InternetStatus.connected:
           debugPrint("The internet is now connected");
           debugPrint("inside listener of Banner ========== ");
-          await startAppSdk
-              .loadBannerAd(StartAppBannerType.BANNER)
-              .then((bannerAd) {
-            startAppBannerAd = bannerAd;
-            notifyListeners();
-          }).onError<StartAppException>((ex, stackTrace) {
-            debugPrint("Error loading Banner ad: ${ex.message}");
-          }).onError((error, stackTrace) {
-            debugPrint("Error loading Banner ad: $error");
-          });
+          await _loadBannerAd();
           break;
         case InternetStatus.disconnected:
           debugPrint("The internet is now disconnected");
           break;
       }
     });
+  }
+
+  Future<void> showBannerAdOnly() {
+    debugPrint("inside showBanner only ===========");
+    return _loadBannerAd();
+  }
+
+  Future<void> _loadBannerAd() {
+    return startAppSdk.loadBannerAd(StartAppBannerType.BANNER).then((bannerAd) {
+      startAppBannerAd = bannerAd;
+      notifyListeners();
+    }).onError<StartAppException>((ex, stackTrace) {
+      debugPrint("Error loading Banner ad: ${ex.message}");
+    }).onError((error, stackTrace) {
+      debugPrint("Error loading Banner ad: $error");
+    });
+  }
+
+  Future<void> hideBannerAd() async {
+    startAppBannerAd = null;
+    notifyListeners();
   }
 
   Future<void> showInterstitialAd() async {

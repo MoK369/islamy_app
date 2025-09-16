@@ -17,10 +17,9 @@ class LocaleProvider extends ChangeNotifier {
     oldLocale = currentLocale;
   }
 
-  static LocaleProvider get(BuildContext context) {
-    return Provider.of<LocaleProvider>(context);
+  static LocaleProvider get(BuildContext context, {bool listen = true}) {
+    return Provider.of<LocaleProvider>(context, listen: listen);
   }
-
 
   void saveLocal(String localeToSave) {
     sharedPreferences.setString(LocaleConstants.localeKey, localeToSave);

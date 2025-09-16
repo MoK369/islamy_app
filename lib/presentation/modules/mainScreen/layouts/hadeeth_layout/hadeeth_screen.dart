@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamy_app/di.dart';
+import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/view_models/hadeeth_layout_view_model.dart';
@@ -9,9 +10,9 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/
 import 'package:provider/provider.dart';
 
 class HadeethScreen extends StatefulWidget {
-  static const String routeName = 'HadeethScreen';
+  final HadethData hadethData;
 
-  const HadeethScreen({super.key});
+  const HadeethScreen({super.key, required this.hadethData});
 
   @override
   State<HadeethScreen> createState() => _HadeethScreenState();
@@ -29,13 +30,11 @@ class _HadeethScreenState extends State<HadeethScreen> {
     ]);
   }
 
-
   SurahScreenProvider surahScreenProvider = getIt.get<SurahScreenProvider>();
   ValueNotifier<bool> showBottomWidgetNotifier = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
-    HadethData args = ModalRoute.of(context)!.settings.arguments as HadethData;
     ThemeData theme = Theme.of(context);
     return ChangeNotifierProvider(
       create: (context) => surahScreenProvider,
@@ -53,6 +52,9 @@ class _HadeethScreenState extends State<HadeethScreen> {
                         centerTitle: true,
                         leading: IconButton(
                           onPressed: () {
+                            Provider.of<StartIoAdProvider>(context,
+                                    listen: false)
+                                .showBannerAdOnly();
                             Navigator.pop(context);
                           },
                           icon: const Icon(
@@ -88,7 +90,7 @@ class _HadeethScreenState extends State<HadeethScreen> {
                                     child: Text(
                                       textAlign: TextAlign.center,
                                       textScaler: const TextScaler.linear(1.0),
-                                      args.hadeethTitle,
+                                      widget.hadethData.hadeethTitle,
                                       style: theme.textTheme.titleMedium!
                                           .copyWith(
                                               fontSize: surahScreenProvider
@@ -116,7 +118,7 @@ class _HadeethScreenState extends State<HadeethScreen> {
                               Expanded(
                                 child: SingleChildScrollView(
                                   child: SelectableText(
-                                    args.hadeethBody,
+                                    widget.hadethData.hadeethBody,
                                     textDirection: TextDirection.rtl,
                                     style: theme.textTheme.displayLarge!
                                         .copyWith(

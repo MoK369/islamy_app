@@ -18,8 +18,6 @@ import 'package:provider/provider.dart';
 import 'package:startapp_sdk/startapp.dart';
 
 class MainScreen extends StatefulWidget {
-  static const String routeName = "MainScreen";
-
   const MainScreen({super.key});
 
   @override
@@ -51,7 +49,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     Provider.of<StartIoAdProvider>(globalNavigatorKey.currentContext!)
         .showInterstitialAd();
     Provider.of<StartIoAdProvider>(globalNavigatorKey.currentContext!)
-        .showBannerAd();
+        .showBannerAdAndListenForConnection();
   }
 
   @override

@@ -10,11 +10,10 @@ import 'package:islamy_app/presentation/core/app_version_checker/app_version_che
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/providers/theme_provider.dart';
+import 'package:islamy_app/presentation/core/routes/defined_routes.dart';
+import 'package:islamy_app/presentation/core/routes/route_methods.dart';
 import 'package:islamy_app/presentation/core/widgets/error_widget_gray_screen.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/radio_view_model.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/main_screen.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 
@@ -98,11 +97,13 @@ class _MyAppState extends State<MyApp> {
       darkTheme: Themes.darkTheme,
       themeMode: themeProvider.currentTheme,
       navigatorKey: globalNavigatorKey,
-      routes: {
-        MainScreen.routeName: (context) => const MainScreen(),
-        SurahScreen.routeName: (context) => const SurahScreen(),
-        HadeethScreen.routeName: (context) => const HadeethScreen(),
-      },
+      onGenerateRoute: RouteMethods.onGenerateRoute,
+      initialRoute: DefinedRoutes.mainScreen,
+      // routes: {
+      //   MainScreen.routeName: (context) => const MainScreen(),
+      //   SurahScreen.routeName: (context) => const SurahScreen(),
+      //   HadeethScreen.routeName: (context) => const HadeethScreen(),
+      // },
       builder: (context, child) {
         ErrorWidget.builder = (errorDetails) {
           debugPrint("errorDetails $errorDetails");
@@ -118,7 +119,6 @@ class _MyAppState extends State<MyApp> {
           ],
         );
       },
-      initialRoute: MainScreen.routeName,
     );
   }
 }

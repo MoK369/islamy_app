@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamy_app/di.dart';
+import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
@@ -11,9 +12,9 @@ import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/
 import 'package:provider/provider.dart';
 
 class SurahScreen extends StatefulWidget {
-  static const String routeName = "SurahScreen";
+  final SendSurahInfo surahInfo;
 
-  const SurahScreen({super.key});
+  const SurahScreen({super.key, required this.surahInfo});
 
   @override
   State<SurahScreen> createState() => _SurahScreenState();
@@ -21,7 +22,6 @@ class SurahScreen extends StatefulWidget {
 
 class _SurahScreenState extends State<SurahScreen> {
   List<String> surahVerses = [];
-  late SendSurahInfo args;
   late ThemeData theme;
   List<TextSpan> spans = [];
   SurahScreenProvider surahScreenProvider = getIt.get<SurahScreenProvider>();
@@ -41,7 +41,7 @@ class _SurahScreenState extends State<SurahScreen> {
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments as SendSurahInfo;
+    //args = ModalRoute.of(context)!.settings.arguments as SendSurahInfo;
     theme = Theme.of(context);
     surahScreenProvider.getLocaleProvider(LocaleProvider.get(context));
     return ChangeNotifierProvider(
@@ -64,7 +64,10 @@ class _SurahScreenState extends State<SurahScreen> {
                           ? AppBar(
                         leading: IconButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                                    Provider.of<StartIoAdProvider>(context,
+                                            listen: false)
+                                        .showBannerAdOnly();
+                                    Navigator.pop(context);
                             },
                             icon: const Icon(
                               size: 40,
@@ -95,9 +98,11 @@ class _SurahScreenState extends State<SurahScreen> {
                       body: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
-                          const TextPage(),
+                          TextPage(
+                            surahInfo: widget.surahInfo,
+                          ),
                           PDFPage(
-                            args: args,
+                            args: widget.surahInfo,
                           ),
                         ],
                       ),

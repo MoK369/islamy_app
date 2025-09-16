@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/routes/defined_routes.dart';
 import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/list_of_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/search_text_field.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/surah_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class QuranLayout extends StatefulWidget {
@@ -146,13 +148,17 @@ class _QuranLayoutState extends State<QuranLayout> {
                     foundUser: foundUser!,
                     onClick: (index) async {
                       FocusManager.instance.primaryFocus?.unfocus();
+                      var startIoAdProvider = Provider.of<StartIoAdProvider>(
+                          context,
+                          listen: false);
                       if (!context.mounted) return;
-                      Navigator.pushNamed(context, SurahScreen.routeName,
+                      Navigator.of(context).pushNamed(DefinedRoutes.surahScreen,
                           arguments: SendSurahInfo(
                               surahIndex: mainScreenProvider
                                   .getSurasListEnglishOrArabic()
                                   .indexOf(foundUser![index]),
                               surahName: foundUser![index]));
+                      startIoAdProvider.hideBannerAd();
                       Future.delayed(
                         const Duration(seconds: 1),
                         () {

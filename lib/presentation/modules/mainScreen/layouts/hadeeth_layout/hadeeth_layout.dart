@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:humanizer/humanizer.dart';
 import 'package:islamy_app/di.dart';
+import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/routes/defined_routes.dart';
 import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
 import 'package:islamy_app/presentation/core/widgets/custom_error_widget.dart';
 import 'package:islamy_app/presentation/core/widgets/custom_loading_widget.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/hadeeth_screen.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/hadeeth_layout/view_models/hadeeth_layout_view_model.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
 import 'package:provider/provider.dart';
@@ -87,6 +88,7 @@ class _HadeethLayoutState extends State<HadeethLayout> {
               builder: (context, viewModel, child) {
                 var result = viewModel.readAhadeethState;
                 switch (result) {
+                  case IdleState<List<HadethData>>():
                   case LoadingState<List<HadethData>>():
                     return const CustomLoadingWidget();
                   case SuccessState<List<HadethData>>():
@@ -135,10 +137,14 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                           }
                                         },
                                         onPressed: () async {
-                                          Navigator.pushNamed(
-                                              context, HadeethScreen.routeName,
+                                          Navigator.of(context).pushNamed(
+                                              DefinedRoutes.hadeethScreen,
                                               arguments: ahadeeth[
                                                   currentHadeethIndex]);
+                                          Provider.of<StartIoAdProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .hideBannerAd();
                                         },
                                         child: FittedBox(
                                           child: Text(

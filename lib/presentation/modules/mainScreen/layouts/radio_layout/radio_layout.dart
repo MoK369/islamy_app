@@ -50,6 +50,7 @@ class _RadioLayoutState extends State<RadioLayout> {
           builder: (context, radioViewModel, child) {
             var viewModelResult = radioViewModel.quranRadioChannelsState;
             switch (viewModelResult) {
+              case IdleState<List<RadioChannel>>():
               case LoadingState<List<RadioChannel>>():
                 return const Expanded(flex: 2, child: CustomLoadingWidget());
 

@@ -19,14 +19,4 @@ abstract class TextFileCaching {
         maxEntries: 30 // Limit to 50 items
         );
   }
-
-// static Future<String?> getCachedText(String textKey) {
-//   final Cache<String> fileCache = getIt.get<Cache<String>>();
-//   return fileCache.get(textKey);
-// }
-
-// static Future<void> cacheText(String textKey, String text) {
-//   final Cache<String> fileCache = getIt.get<Cache<String>>();
-//   return fileCache.put(textKey, text);
-// }
 }

@@ -12,17 +12,18 @@ class SurahTextPageViewModel extends ChangeNotifier {
 
   SurahTextPageViewModel(this._cachingFile);
 
-  BaseViewState<List<List<String>>> surahVerses = IdleState();
+  BaseViewState<List<List<String>>> surahVersesState = IdleState();
+  BaseViewState<List<List<String>>> doaState = IdleState();
 
   void readSurah({required int surahIndex, bool loadEnSurahToo = false}) async {
     try {
-      surahVerses = LoadingState();
+      surahVersesState = LoadingState();
       notifyListeners();
       List<String> arSurahVersesList = [];
       List<String> enSurahVersesList = [];
       var [arSurahKey, enSurahKey] = <String>[
         AssetsPaths.getArSurahTextFile(surahIndex + 1),
-        if (loadEnSurahToo) AssetsPaths.getEnSurahTextFile(surahIndex + 1)
+        loadEnSurahToo ? AssetsPaths.getEnSurahTextFile(surahIndex + 1) : ""
       ].map((e) => e.split("/").last.replaceAll(RegExp(r'.gz'), '')).toList();
       String? cachedArSurah = await _cachingFile.get(arSurahKey);
       String? cachedEnSurah =
@@ -35,11 +36,11 @@ class SurahTextPageViewModel extends ChangeNotifier {
         var [arSurah, enSurah] = await Future.wait([
           GzipDecompressor.loadCompressedInBackground(
               AssetsPaths.getArSurahTextFile(surahIndex + 1)),
-          if (loadEnSurahToo)
-            GzipDecompressor.loadCompressedInBackground(
-                AssetsPaths.getEnSurahTextFile(surahIndex + 1))
+          loadEnSurahToo
+              ? GzipDecompressor.loadCompressedInBackground(
+                  AssetsPaths.getEnSurahTextFile(surahIndex + 1))
+              : Future.value("")
         ]);
-        print("enSurah: $enSurah");
         await _cachingFile.put(arSurahKey, arSurah.trim());
         if (loadEnSurahToo) await _cachingFile.put(enSurahKey, enSurah.trim());
         arSurahVersesList = arSurah.trim().split('\n');
@@ -49,87 +50,72 @@ class SurahTextPageViewModel extends ChangeNotifier {
       if (loadEnSurahToo) {
         enSurahVersesList = enSurahVersesList.map((e) => e = e.trim()).toList();
       }
-      surahVerses = SuccessState(
-          data: [arSurahVersesList, if (loadEnSurahToo) enSurahVersesList]);
+      surahVersesState =
+          SuccessState(data: [arSurahVersesList, enSurahVersesList]);
     } catch (e) {
-      surahVerses =
+      debugPrint(e.toString());
+      surahVersesState =
           ErrorState(codeError: CodeError(exception: Exception(e.toString())));
     } finally {
       notifyListeners();
     }
   }
 
-// void readEnSurah() async {
-//   String enSurahKey =
-//       AssetsPaths.getEnSurahTextFile(widget.args.surahIndex + 1)
-//           .split('/')
-//           .last
-//           .replaceAll(RegExp(r'.gz'), '');
-//   String? cachedSurah = await TextFileCaching.getCachedText(enSurahKey);
-//
-//   if (cachedSurah != null) {
-//     enSurahVerses = cachedSurah.split('\n');
-//   } else {
-//     String enSurah = await GzipDecompressor.loadCompressedInBackground(
-//         AssetsPaths.getEnSurahTextFile(widget.args.surahIndex + 1));
-//     await TextFileCaching.cacheText(enSurahKey, enSurah.trim());
-//     enSurahVerses = enSurah.trim().split('\n');
-//   }
-//
-//   setState(() {
-//     enSurahVerses = enSurahVerses.map((e) => e = e.trim()).toList();
-//   });
-// }
+  void readDoa({bool loadEnDoaToo = false}) async {
+    try {
+      doaState = LoadingState();
+      notifyListeners();
+      List<String> eachArDoaLine = [];
+      List<String> eachEnDoaLine = [];
+      var [arDoaKey, enDoaKey] = [
+        AssetsPaths.arDoaCompletingTheQuran,
+        loadEnDoaToo ? AssetsPaths.enDoaCompletingTheQuran : ""
+      ]
+          .map(
+            (e) => e.split('/').last.replaceAll(RegExp(r'.gz'), ''),
+          )
+          .toList();
 
-// void readArDoa() async {
-//   String doaKey = AssetsPaths.arDoaCompletingTheQuran
-//       .split('/')
-//       .last
-//       .replaceAll(RegExp(r'.gz'), '');
-//
-//   String? cachedDoa = await TextFileCaching.getCachedText(doaKey);
-//
-//   if (cachedDoa != null) {
-//     eachDoaLine = cachedDoa.split("۞");
-//   } else {
-//     String doa = await GzipDecompressor.loadCompressedInBackground(
-//         AssetsPaths.arDoaCompletingTheQuran);
-//     await TextFileCaching.cacheText(doaKey, doa.trim());
-//     eachDoaLine = doa.trim().split("۞");
-//   }
-//
-//   setState(() {
-//     eachDoaLine = eachDoaLine.map(
-//       (e) {
-//         return e = e.trim();
-//       },
-//     ).toList();
-//   });
-// }
-//
-// void readEnDoa() async {
-//   String enDoaKey = AssetsPaths.enDoaCompletingTheQuran
-//       .split('/')
-//       .last
-//       .replaceAll(RegExp(r'.gz'), '');
-//
-//   String? cachedDoa = await TextFileCaching.getCachedText(enDoaKey);
-//
-//   if (cachedDoa != null) {
-//     eachEnDoaLine = cachedDoa.split("۞");
-//   } else {
-//     String doa = await GzipDecompressor.loadCompressedInBackground(
-//         AssetsPaths.enDoaCompletingTheQuran);
-//     await TextFileCaching.cacheText(enDoaKey, doa);
-//     eachEnDoaLine = doa.trim().split("۞");
-//   }
-//
-//   setState(() {
-//     eachEnDoaLine = eachEnDoaLine.map(
-//       (e) {
-//         return e = e.trim();
-//       },
-//     ).toList();
-//   });
-// }
+      String? cachedArDoa = await _cachingFile.get(arDoaKey);
+      String? cachedEnDoa =
+          loadEnDoaToo ? await _cachingFile.get(enDoaKey) : null;
+
+      if (cachedArDoa != null && (cachedEnDoa != null || !loadEnDoaToo)) {
+        eachArDoaLine = cachedArDoa.split("۞");
+        eachEnDoaLine = loadEnDoaToo ? cachedEnDoa!.split("۞") : [];
+      } else {
+        var [arDoa, enDoa] = await Future.wait([
+          GzipDecompressor.loadCompressedInBackground(
+              AssetsPaths.arDoaCompletingTheQuran),
+          loadEnDoaToo
+              ? GzipDecompressor.loadCompressedInBackground(
+                  AssetsPaths.enDoaCompletingTheQuran)
+              : Future.value("")
+        ]);
+        await _cachingFile.put(arDoaKey, arDoa.trim());
+        if (loadEnDoaToo) await _cachingFile.put(enDoaKey, enDoa.trim());
+        eachArDoaLine = arDoa.trim().split("۞");
+        if (loadEnDoaToo) eachEnDoaLine = enDoa.trim().split("۞");
+      }
+      eachArDoaLine = eachArDoaLine.map(
+        (e) {
+          return e = e.trim();
+        },
+      ).toList();
+      if (loadEnDoaToo) {
+        eachEnDoaLine = eachEnDoaLine.map(
+          (e) {
+            return e = e.trim();
+          },
+        ).toList();
+      }
+      doaState = SuccessState(data: [eachArDoaLine, eachEnDoaLine]);
+    } catch (e) {
+      debugPrint(e.toString());
+      doaState =
+          ErrorState(codeError: CodeError(exception: Exception(e.toString())));
+    } finally {
+      notifyListeners();
+    }
+  }
 }
