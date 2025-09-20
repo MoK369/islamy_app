@@ -1,4 +1,6 @@
-class QuranRadioModel {
+import 'package:equatable/equatable.dart';
+
+class QuranRadioModel extends Equatable {
   List<RadioChannel>? radios;
 
   QuranRadioModel({
@@ -14,16 +16,11 @@ class QuranRadioModel {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    if (radios != null) {
-      map['radios'] = radios?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
+  @override
+  List<Object?> get props => [radios];
 }
 
-class RadioChannel {
+class RadioChannel extends Equatable {
   num? id;
   String? name;
   String? url;
@@ -40,11 +37,6 @@ class RadioChannel {
     url = json['url'];
   }
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['name'] = name;
-    map['url'] = url;
-    return map;
-  }
+  @override
+  List<Object?> get props => [id, name, url];
 }

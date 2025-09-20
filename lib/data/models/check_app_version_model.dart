@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 /// latest_version : "2.0.0"
 /// update_url : "https://aptoide.com/your-app-page"
-class CheckAppVersionModel {
+class CheckAppVersionModel extends Equatable {
   CheckAppVersionModel({
     this.latestVersion,
     this.updateUrl,
@@ -14,10 +16,6 @@ class CheckAppVersionModel {
   String? latestVersion;
   String? updateUrl;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['latest_version'] = latestVersion;
-    map['update_url'] = updateUrl;
-    return map;
-  }
+  @override
+  List<Object?> get props => [latestVersion, updateUrl];
 }
