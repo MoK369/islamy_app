@@ -143,7 +143,7 @@ class _TextPageState extends State<TextPage> {
                           switch (result) {
                             case IdleState<List<List<String>>>():
                             case LoadingState<List<List<String>>>():
-                              return CustomLoadingWidget();
+                              return const CustomLoadingWidget();
                             case SuccessState<List<List<String>>>():
                               return VersesList(
                                 arList: result.data.first,

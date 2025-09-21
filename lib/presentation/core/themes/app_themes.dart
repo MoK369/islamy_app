@@ -112,13 +112,13 @@ class Themes {
               color: lightPrimaryColor,
               fontSize: 20,
               fontWeight: FontWeight.bold)),
-      tabBarTheme: TabBarThemeData(
+      tabBarTheme: const TabBarThemeData(
         indicatorColor: lightPrimaryColor,
         dividerColor: lightPrimaryColor,
         indicatorSize: TabBarIndicatorSize.tab,
       ),
       switchTheme: SwitchThemeData(
-        overlayColor: WidgetStatePropertyAll(lightPrimaryColor),
+        overlayColor: const WidgetStatePropertyAll(lightPrimaryColor),
         trackColor: WidgetStateProperty.resolveWith(
           (states) {
             if (states.contains(WidgetState.selected)) {
@@ -232,13 +232,13 @@ class Themes {
       contentTextStyle: TextStyle(
           color: darkSecondaryColor, fontSize: 20, fontWeight: FontWeight.bold),
     ),
-    tabBarTheme: TabBarThemeData(
+    tabBarTheme: const TabBarThemeData(
       indicatorColor: darkPrimaryColor,
       dividerColor: darkPrimaryColor,
       indicatorSize: TabBarIndicatorSize.tab,
     ),
     switchTheme: SwitchThemeData(
-      overlayColor: WidgetStatePropertyAll(darkPrimaryColor),
+      overlayColor: const WidgetStatePropertyAll(darkPrimaryColor),
       trackColor: WidgetStateProperty.resolveWith(
         (states) {
           if (states.contains(WidgetState.selected)) {
