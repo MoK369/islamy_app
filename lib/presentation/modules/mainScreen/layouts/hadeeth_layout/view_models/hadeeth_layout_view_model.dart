@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
@@ -14,7 +16,8 @@ class HadeethLayoutViewModel extends ChangeNotifier {
   BaseViewState<List<HadethData>> readAhadeethState =
       LoadingState<List<HadethData>>();
 
-  void readAhadeeth() async {
+  Future<void> readAhadeeth() async {
+    Completer<void> readingDoneCompleter = Completer();
     try {
       readAhadeethState = LoadingState<List<HadethData>>();
       notifyListeners();
@@ -44,11 +47,14 @@ class HadeethLayoutViewModel extends ChangeNotifier {
         readAhadeethState = SuccessState<List<HadethData>>(data: ahadeeth);
       }
     } catch (e) {
+      print("=======${e.toString()}=======");
       readAhadeethState = ErrorState<List<HadethData>>(
           codeError: CodeError(exception: Exception(e.toString())));
     } finally {
       notifyListeners();
+      readingDoneCompleter.complete();
     }
+    return await readingDoneCompleter.future;
   }
 }
 
