@@ -29,7 +29,8 @@ void main() {
             url: "https://backup.qurango.net/radio/ahmad_alajmy")
       ],
     );
-    late QuranRadioChannelsRemoteDataSource quranRadioChannelsRemoteDataSource;
+    late MockQuranRadioChannelsRemoteDataSource
+        quranRadioChannelsRemoteDataSource;
     late QuranRadioChannelsRepository quranRadioChannelsRepository;
     setUpAll(
       () {

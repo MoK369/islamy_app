@@ -48,8 +48,10 @@ class HadeethLayoutViewModel extends ChangeNotifier {
       }
     } catch (e) {
       print("=======${e.toString()}=======");
-      readAhadeethState = ErrorState<List<HadethData>>(
-          codeError: CodeError(exception: Exception(e.toString())));
+      readAhadeethState = e is Exception
+          ? ErrorState<List<HadethData>>(codeError: CodeError(exception: e))
+          : ErrorState<List<HadethData>>(
+              codeError: CodeError(exception: Exception(e.toString())));
     } finally {
       notifyListeners();
       readingDoneCompleter.complete();

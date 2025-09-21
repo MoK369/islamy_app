@@ -29,7 +29,7 @@ void main() {
             url: "https://backup.qurango.net/radio/ahmad_alajmy")
       ],
     );
-    late ApiManager apiManager;
+    late MockApiManager apiManager;
     late QuranRadioChannelsRemoteDataSource quranRadioChannelsRemoteDataSource;
     setUpAll(
       () {

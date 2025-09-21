@@ -18,7 +18,7 @@ void main() {
       late CheckAppVersionModel checkAppVersionModel = CheckAppVersionModel(
           latestVersion: "2.0.0",
           updateUrl: "https://uptodown.com/your-app-page");
-      late ApiManager apiManager;
+      late MockApiManager apiManager;
       late AppVersionCheckRepo appVersionCheckRepo;
       setUpAll(
         () {
