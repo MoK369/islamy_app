@@ -63,7 +63,11 @@ void main() {
           },
         );
         await hadeethLayoutViewModel.readAhadeeth();
-
+        // assert
+        verify(stringCaching.get(argThat(isA<String>()))).called(1);
+        verify(stringCaching.put(
+                argThat(isA<String>()), argThat(isA<String>())))
+            .called(1);
         expect(states.length, 2);
         expect(states.first, isA<LoadingState<List<HadethData>>>());
         expect(states.last, isA<SuccessState<List<HadethData>>>());
@@ -85,6 +89,9 @@ void main() {
         );
         await hadeethLayoutViewModel.readAhadeeth();
 
+        // assert
+        verify(stringCaching.get(argThat(isA<String>()))).called(1);
+        verifyNever(stringCaching.get(argThat(isA<String>())));
         expect(states.length, 2);
         expect(states.first, isA<LoadingState<List<HadethData>>>());
         expect(states.last, isA<SuccessState<List<HadethData>>>());

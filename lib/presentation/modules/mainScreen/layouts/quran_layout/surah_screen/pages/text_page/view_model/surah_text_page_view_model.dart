@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
@@ -15,7 +17,9 @@ class SurahTextPageViewModel extends ChangeNotifier {
   BaseViewState<List<List<String>>> surahVersesState = IdleState();
   BaseViewState<List<List<String>>> doaState = IdleState();
 
-  void readSurah({required int surahIndex, bool loadEnSurahToo = false}) async {
+  Future<void> readSurah(
+      {required int surahIndex, bool loadEnSurahToo = false}) async {
+    Completer<void> finishReadingSurahCompleter = Completer();
     try {
       surahVersesState = LoadingState();
       notifyListeners();
@@ -53,12 +57,16 @@ class SurahTextPageViewModel extends ChangeNotifier {
       surahVersesState =
           SuccessState(data: [arSurahVersesList, enSurahVersesList]);
     } catch (e) {
-      debugPrint(e.toString());
-      surahVersesState =
-          ErrorState(codeError: CodeError(exception: Exception(e.toString())));
+      debugPrint("=======${e.toString()}========");
+      surahVersesState = e is Exception
+          ? ErrorState(codeError: CodeError(exception: e))
+          : ErrorState(
+              codeError: CodeError(exception: Exception(e.toString())));
     } finally {
       notifyListeners();
+      finishReadingSurahCompleter.complete();
     }
+    return finishReadingSurahCompleter.future;
   }
 
   void readDoa({bool loadEnDoaToo = false}) async {

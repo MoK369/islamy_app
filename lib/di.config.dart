@@ -61,19 +61,19 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    final sharedPreferencesProvider = _$SharedPreferencesProvider();
     final textFileCaching = _$TextFileCaching();
+    final sharedPreferencesProvider = _$SharedPreferencesProvider();
     final getSavedLocale = _$GetSavedLocale();
     final appLocalizationsProvider = _$AppLocalizationsProvider();
-    gh.factory<_i680.StartIoAdProvider>(() => _i680.StartIoAdProvider());
-    await gh.factoryAsync<_i460.SharedPreferences>(
-      () => sharedPreferencesProvider.provide(),
-      preResolve: true,
-    );
     await gh.factoryAsync<_i265.Cache<String>>(
       () => textFileCaching.createFileCache(),
       preResolve: true,
     );
+    await gh.factoryAsync<_i460.SharedPreferences>(
+      () => sharedPreferencesProvider.provide(),
+      preResolve: true,
+    );
+    gh.factory<_i680.StartIoAdProvider>(() => _i680.StartIoAdProvider());
     gh.singleton<_i265.ApiManager>(() => _i265.ApiManager());
     gh.factory<_i797.ThemeProvider>(
         () => _i797.ThemeProvider(gh<_i460.SharedPreferences>()));
@@ -113,9 +113,9 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$SharedPreferencesProvider extends _i301.SharedPreferencesProvider {}
-
 class _$TextFileCaching extends _i163.TextFileCaching {}
+
+class _$SharedPreferencesProvider extends _i301.SharedPreferencesProvider {}
 
 class _$GetSavedLocale extends _i472.GetSavedLocale {}
 
