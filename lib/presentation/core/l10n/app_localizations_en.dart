@@ -139,4 +139,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorOccurred => 'An error occurred. Please try again later';
+
+  @override
+  String get errorLoadingSavedData => 'error loading saved data';
+
+  @override
+  String get errorSavingFontSize => 'error saving font size value';
+
+  @override
+  String get errorSavingNewMarkedVerse => 'error saving new marked verse';
+
+  @override
+  String get errorSavingNewMarkedPDFPage => 'error saving new marked PDF Page';
+
+  @override
+  String get errorChangingAppBarVisibility =>
+      'error changing the AppBar Visibility';
+
+  @override
+  String get errorShowingAlertVersesMarkingDialog =>
+      'error showing alert verses marking dialog';
+
+  @override
+  String get errorShowingAlertPDFPageMarkingDialog =>
+      'error showing alert PDF Page marking dialog';
 }

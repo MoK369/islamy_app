@@ -40,5 +40,12 @@
   "audioSessionNotActive": "جلسة الصوت غير مفعّلة",
   "errorMovingToNextChannel": "خطأ في الانتقال إلى القناة التالية: ",
   "errorMovingToPreviousChannel": "خطأ في الانتقال إلى القناة السابقة: ",
-  "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا"
+  "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا",
+  "errorLoadingSavedData": "خطأ في تحميل البيانات المحفوظة",
+  "errorSavingFontSize": "خطأ في حفظ قيمة حجم الخط",
+  "errorSavingNewMarkedVerse": "خطأ في حفظ الآية المحددة الجديدة",
+  "errorSavingNewMarkedPDFPage": "خطأ في حفظ صفحة PDF المحددة الجديدة",
+  "errorChangingAppBarVisibility": "خطأ في تغيير ظهور شريط التطبيق",
+  "errorShowingAlertVersesMarkingDialog": "خطأ في عرض نافذة تنبيه تحديد الآيات",
+  "errorShowingAlertPDFPageMarkingDialog": "خطأ في عرض نافذة تنبيه تحديد صفحة PDF"
 }

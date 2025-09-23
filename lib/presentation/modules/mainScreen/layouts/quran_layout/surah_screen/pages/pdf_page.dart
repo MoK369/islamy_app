@@ -65,7 +65,7 @@ class _PDFPageState extends State<PDFPage> {
                 surahScreenProvider.changeMarkedSurahPDFPage(currentSurahID);
               } else {
                 surahScreenProvider.showAlertAboutMarkedSurahPDFPage(
-                    context, theme, currentSurahID);
+                    theme, currentSurahID);
               }
             },
             child: PdfView(

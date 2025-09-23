@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:islamy_app/di.dart';
 import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
-import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/widgets/background_container.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_layout.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/pages/pdf_page.dart';
@@ -43,7 +42,6 @@ class _SurahScreenState extends State<SurahScreen> {
   Widget build(BuildContext context) {
     //args = ModalRoute.of(context)!.settings.arguments as SendSurahInfo;
     theme = Theme.of(context);
-    surahScreenProvider.getLocaleProvider(LocaleProvider.get(context));
     return ChangeNotifierProvider(
       create: (context) => surahScreenProvider,
       child: Selector<SurahScreenProvider, bool>(

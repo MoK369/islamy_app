@@ -137,4 +137,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorOccurred => 'حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا';
+
+  @override
+  String get errorLoadingSavedData => 'خطأ في تحميل البيانات المحفوظة';
+
+  @override
+  String get errorSavingFontSize => 'خطأ في حفظ قيمة حجم الخط';
+
+  @override
+  String get errorSavingNewMarkedVerse => 'خطأ في حفظ الآية المحددة الجديدة';
+
+  @override
+  String get errorSavingNewMarkedPDFPage =>
+      'خطأ في حفظ صفحة PDF المحددة الجديدة';
+
+  @override
+  String get errorChangingAppBarVisibility => 'خطأ في تغيير ظهور شريط التطبيق';
+
+  @override
+  String get errorShowingAlertVersesMarkingDialog =>
+      'خطأ في عرض نافذة تنبيه تحديد الآيات';
+
+  @override
+  String get errorShowingAlertPDFPageMarkingDialog =>
+      'خطأ في عرض نافذة تنبيه تحديد صفحة PDF';
 }

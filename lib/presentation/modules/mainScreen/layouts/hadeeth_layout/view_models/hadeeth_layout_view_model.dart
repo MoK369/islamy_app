@@ -47,7 +47,7 @@ class HadeethLayoutViewModel extends ChangeNotifier {
         readAhadeethState = SuccessState<List<HadethData>>(data: ahadeeth);
       }
     } catch (e) {
-      print("=======${e.toString()}=======");
+      debugPrint("=======${e.toString()}=======");
       readAhadeethState = e is Exception
           ? ErrorState<List<HadethData>>(codeError: CodeError(exception: e))
           : ErrorState<List<HadethData>>(

@@ -349,6 +349,48 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا'**
   String get errorOccurred;
+
+  /// No description provided for @errorLoadingSavedData.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في تحميل البيانات المحفوظة'**
+  String get errorLoadingSavedData;
+
+  /// No description provided for @errorSavingFontSize.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في حفظ قيمة حجم الخط'**
+  String get errorSavingFontSize;
+
+  /// No description provided for @errorSavingNewMarkedVerse.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في حفظ الآية المحددة الجديدة'**
+  String get errorSavingNewMarkedVerse;
+
+  /// No description provided for @errorSavingNewMarkedPDFPage.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في حفظ صفحة PDF المحددة الجديدة'**
+  String get errorSavingNewMarkedPDFPage;
+
+  /// No description provided for @errorChangingAppBarVisibility.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في تغيير ظهور شريط التطبيق'**
+  String get errorChangingAppBarVisibility;
+
+  /// No description provided for @errorShowingAlertVersesMarkingDialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في عرض نافذة تنبيه تحديد الآيات'**
+  String get errorShowingAlertVersesMarkingDialog;
+
+  /// No description provided for @errorShowingAlertPDFPageMarkingDialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في عرض نافذة تنبيه تحديد صفحة PDF'**
+  String get errorShowingAlertPDFPageMarkingDialog;
 }
 
 class _AppLocalizationsDelegate

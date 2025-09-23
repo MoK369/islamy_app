@@ -40,5 +40,13 @@
   "audioSessionNotActive": "Audio Session isn't Active",
   "errorMovingToNextChannel": "Error Moving to next channel: ",
   "errorMovingToPreviousChannel": "Error Moving to previous channel: ",
-  "errorOccurred": "An error occurred. Please try again later"
+  "errorOccurred": "An error occurred. Please try again later",
+  "errorLoadingSavedData": "error loading saved data",
+  "errorSavingFontSize": "error saving font size value",
+  "errorSavingNewMarkedVerse": "error saving new marked verse",
+  "errorSavingNewMarkedPDFPage": "error saving new marked PDF Page",
+  "errorChangingAppBarVisibility": "error changing the AppBar Visibility",
+  "errorShowingAlertVersesMarkingDialog": "error showing alert verses marking dialog",
+  "errorShowingAlertPDFPageMarkingDialog": "error showing alert PDF Page marking dialog"
+
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 
-class CustAlertDialog {
+class CustomAlertDialog {
   static void showBookMarkAlertDialog(BuildContext context,
       {required ThemeData theme,
       required String message,

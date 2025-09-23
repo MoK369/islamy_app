@@ -62,7 +62,7 @@ class MainScreenProvider extends ChangeNotifier {
 
   void showAlertAboutHadeethMarking(
       BuildContext context, ThemeData theme, String hadeethToMarkIndex) {
-    CustAlertDialog.showBookMarkAlertDialog(
+    CustomAlertDialog.showBookMarkAlertDialog(
       context,
       theme: theme,
       message: _localeProvider.isArabicChosen()
@@ -99,7 +99,7 @@ class MainScreenProvider extends ChangeNotifier {
 
   void showAlertAboutSurasMarking(
       BuildContext context, ThemeData theme, String surahToMarkIndex) {
-    CustAlertDialog.showBookMarkAlertDialog(context,
+    CustomAlertDialog.showBookMarkAlertDialog(context,
         theme: theme,
         message: _getAlertMessageAboutSurasMarking(), okButtonFunction: () {
       changeMarkedSurah(surahToMarkIndex);

@@ -69,7 +69,8 @@ class SurahTextPageViewModel extends ChangeNotifier {
     return finishReadingSurahCompleter.future;
   }
 
-  void readDoa({bool loadEnDoaToo = false}) async {
+  Future<void> readDoa({bool loadEnDoaToo = false}) async {
+    Completer<void> readDoaCompleter = Completer();
     try {
       doaState = LoadingState();
       notifyListeners();
@@ -119,11 +120,15 @@ class SurahTextPageViewModel extends ChangeNotifier {
       }
       doaState = SuccessState(data: [eachArDoaLine, eachEnDoaLine]);
     } catch (e) {
-      debugPrint(e.toString());
-      doaState =
-          ErrorState(codeError: CodeError(exception: Exception(e.toString())));
+      debugPrint("====${e.toString()}====");
+      doaState = e is Exception
+          ? ErrorState(codeError: CodeError(exception: e))
+          : ErrorState(
+              codeError: CodeError(exception: Exception(e.toString())));
     } finally {
       notifyListeners();
+      readDoaCompleter.complete();
     }
+    return readDoaCompleter.future;
   }
 }

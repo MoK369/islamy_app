@@ -77,8 +77,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i265.ApiManager>(() => _i265.ApiManager());
     gh.factory<_i797.ThemeProvider>(
         () => _i797.ThemeProvider(gh<_i460.SharedPreferences>()));
-    gh.factory<_i70.SurahScreenProvider>(
-        () => _i70.SurahScreenProvider(gh<_i460.SharedPreferences>()));
     gh.factory<_i545.MainScreenProvider>(
         () => _i545.MainScreenProvider(gh<_i460.SharedPreferences>()));
     gh.factory<String>(
@@ -109,6 +107,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i647.RadioViewModel>(
         () => _i647.RadioViewModel(gh<_i602.QuranRadioChannelsRepository>()));
+    gh.factory<_i70.SurahScreenProvider>(() => _i70.SurahScreenProvider(
+          gh<_i460.SharedPreferences>(),
+          gh<_i125.LocaleProvider>(),
+        ));
     return this;
   }
 }
