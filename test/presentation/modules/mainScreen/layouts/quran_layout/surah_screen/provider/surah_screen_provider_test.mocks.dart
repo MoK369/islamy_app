@@ -7,9 +7,12 @@ import 'dart:async' as _i4;
 import 'dart:ui' as _i7;
 
 import 'package:flutter/material.dart' as _i8;
+import 'package:flutter/services.dart' as _i10;
 import 'package:fluttertoast/fluttertoast.dart' as _i3;
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart'
     as _i5;
+import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart'
+    as _i9;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
 import 'package:shared_preferences/shared_preferences.dart' as _i2;
@@ -457,4 +460,21 @@ class MockFToast extends _i1.Mock implements _i3.FToast {
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [SystemUiModeHandler].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSystemUiModeHandler extends _i1.Mock
+    implements _i9.SystemUiModeHandler {
+  @override
+  _i4.Future<void> setEnabledSystemUIMode(_i10.SystemUiMode? mode) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setEnabledSystemUIMode,
+          [mode],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

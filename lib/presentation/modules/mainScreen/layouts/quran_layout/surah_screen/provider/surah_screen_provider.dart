@@ -6,6 +6,7 @@ import 'package:islamy_app/main.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/utils/handlers/execute_handler.dart';
+import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/custom_widgets/custom_alert_dialog.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,8 +15,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SurahScreenProvider extends ChangeNotifier {
   SharedPreferences sharedPreferences;
   final LocaleProvider _localeProvider;
+  final SystemUiModeHandler _systemUiModeHandler;
 
-  SurahScreenProvider(this.sharedPreferences, this._localeProvider) {
+  SurahScreenProvider(
+      this.sharedPreferences, this._localeProvider, this._systemUiModeHandler) {
     getSurahScreenData();
   }
 
@@ -50,8 +53,8 @@ class SurahScreenProvider extends ChangeNotifier {
     }, errorMessage: getIt.get<AppLocalizations>().errorSavingFontSize);
   }
 
-  void changeMarkedVerse(String index) {
-    executeHandler(() async {
+  Future<void> changeMarkedVerse(String index) async {
+    await executeHandler(() async {
       markedVerseIndex = index;
       notifyListeners();
       // Saving Info
@@ -59,8 +62,8 @@ class SurahScreenProvider extends ChangeNotifier {
     }, errorMessage: getIt.get<AppLocalizations>().errorSavingNewMarkedVerse);
   }
 
-  void changeMarkedSurahPDFPage(String index) {
-    executeHandler(() async {
+  Future<void> changeMarkedSurahPDFPage(String index) async {
+    await executeHandler(() async {
       markedSurahPDFPageIndex = index;
       notifyListeners();
       // Saving Info
@@ -68,13 +71,15 @@ class SurahScreenProvider extends ChangeNotifier {
     }, errorMessage: getIt.get<AppLocalizations>().errorSavingNewMarkedPDFPage);
   }
 
-  void changeSurahOrHadeethScreenAppBarStatus(bool newValue) async {
+  Future<void> changeSurahOrHadeethScreenAppBarStatus(bool newValue) async {
     await executeHandler(() async {
       isSurahOrHadeethScreenAppBarVisible = newValue;
       if (isSurahOrHadeethScreenAppBarVisible) {
-        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+        await _systemUiModeHandler
+            .setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       } else {
-        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+        await _systemUiModeHandler
+            .setEnabledSystemUIMode(SystemUiMode.immersive);
       }
       notifyListeners();
     },
