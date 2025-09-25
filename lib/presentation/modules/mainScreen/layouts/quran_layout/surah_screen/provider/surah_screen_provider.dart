@@ -5,9 +5,9 @@ import 'package:islamy_app/di.dart';
 import 'package:islamy_app/main.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/utils/dialog_service/dialog_service.dart';
 import 'package:islamy_app/presentation/core/utils/handlers/execute_handler.dart';
 import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/custom_widgets/custom_alert_dialog.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,9 +16,10 @@ class SurahScreenProvider extends ChangeNotifier {
   SharedPreferences sharedPreferences;
   final LocaleProvider _localeProvider;
   final SystemUiModeHandler _systemUiModeHandler;
+  final DialogService _dialogService;
 
-  SurahScreenProvider(
-      this.sharedPreferences, this._localeProvider, this._systemUiModeHandler) {
+  SurahScreenProvider(this.sharedPreferences, this._localeProvider,
+      this._systemUiModeHandler, this._dialogService) {
     getSurahScreenData();
   }
 
@@ -87,20 +88,18 @@ class SurahScreenProvider extends ChangeNotifier {
             getIt.get<AppLocalizations>().errorChangingAppBarVisibility);
   }
 
-  void showAlertAboutVersesMarking(ThemeData theme, String verseToMarkIndex) {
-    executeHandler(() {
+  Future<void> showAlertAboutVersesMarking(String verseToMarkIndex) async {
+    await executeHandler(() async {
       List<String> verseMarkInfo = markedVerseIndex.split(' ');
       int surahIndexOfMarkedVerse = int.parse(verseMarkInfo[0]);
       int numberOfMarkedVerseInSurah = int.parse(verseMarkInfo[1]);
-      CustomAlertDialog.showBookMarkAlertDialog(
-          globalNavigatorKey.currentContext!,
-          theme: theme,
+      await _dialogService.showBookMarkAlertDialog(
           message: _getAlertMessageAboutVersesMarking(
               numberOfMarkedVerseInSurah, surahIndexOfMarkedVerse),
           okButtonFunction: () {
-        changeMarkedVerse(verseToMarkIndex);
-        globalNavigatorKey.currentState!.pop();
-      });
+            changeMarkedVerse(verseToMarkIndex);
+            globalNavigatorKey.currentState?.pop();
+          });
     },
         errorMessage:
             getIt.get<AppLocalizations>().errorShowingAlertVersesMarkingDialog);
@@ -115,23 +114,20 @@ class SurahScreenProvider extends ChangeNotifier {
     }
   }
 
-  void showAlertAboutMarkedSurahPDFPage(ThemeData theme,
-      String pageToMarkIndex) {
-    executeHandler(() {
+  Future<void> showAlertAboutMarkedSurahPDFPage(String pageToMarkIndex) async {
+    await executeHandler(() async {
       List<String> pageMarkInfo = markedSurahPDFPageIndex.split(' ');
-      String surahIndexOfMarkedPage = pageMarkInfo[0],
-          indexOfMarkedPage = pageMarkInfo[1];
+      int surahIndexOfMarkedPage = int.parse(pageMarkInfo[0]),
+          indexOfMarkedPage = int.parse(pageMarkInfo[1]);
 
-      CustomAlertDialog.showBookMarkAlertDialog(
-          globalNavigatorKey.currentContext!,
-          theme: theme,
+      await _dialogService.showBookMarkAlertDialog(
           message: _localeProvider.isArabicChosen()
-              ? "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها في سورة ${Suras.arabicAuranSuras[int.parse(surahIndexOfMarkedPage)]}صفحة رقم $indexOfMarkedPage "
-              : 'If you perceed, you\'re going to lose the old bookmark made in ${Suras.englishQuranSurahs[int.parse(surahIndexOfMarkedPage)]} surah page number $indexOfMarkedPage',
+              ? "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها في سورة ${Suras.arabicAuranSuras[surahIndexOfMarkedPage]}صفحة رقم $indexOfMarkedPage "
+              : 'If you proceed, you\'re going to lose the old bookmark made in ${Suras.englishQuranSurahs[surahIndexOfMarkedPage]} surah page number $indexOfMarkedPage',
           okButtonFunction: () {
-        changeMarkedSurahPDFPage(pageToMarkIndex);
-        globalNavigatorKey.currentState!.pop();
-      });
+            changeMarkedSurahPDFPage(pageToMarkIndex);
+            globalNavigatorKey.currentState?.pop();
+          });
     },
         errorMessage: getIt
             .get<AppLocalizations>()

@@ -1,13 +1,14 @@
-import 'dart:ui';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:islamy_app/di.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/core/utils/dialog_service/dialog_service.dart';
 import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart';
 import 'package:islamy_app/presentation/core/widgets/toast_widget.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -19,7 +20,8 @@ import 'surah_screen_provider_test.mocks.dart';
   MockSpec<SharedPreferences>(),
   MockSpec<LocaleProvider>(),
   MockSpec<FToast>(),
-  MockSpec<SystemUiModeHandler>()
+  MockSpec<SystemUiModeHandler>(),
+  MockSpec<DialogService>()
 ])
 void main() {
   group(
@@ -31,11 +33,13 @@ void main() {
       late AppLocalizations appLocalizations;
       late MockFToast mockFToast;
       late MockSystemUiModeHandler mockSystemUiModeHandler;
+      late MockDialogService mockDialogService;
       final Exception sharedPreferencesException =
           Exception("error getting or saving a value using sharedPreferences");
       setUpAll(
         () async {
           mockSystemUiModeHandler = MockSystemUiModeHandler();
+          mockDialogService = MockDialogService();
 
           mockFToast = MockFToast();
           getIt.registerLazySingleton<FToast>(
@@ -53,10 +57,27 @@ void main() {
         () async {
           sharedPreferences = MockSharedPreferences();
           localeProvider = MockLocaleProvider();
-          surahScreenProvider = SurahScreenProvider(
-              sharedPreferences, localeProvider, mockSystemUiModeHandler);
+          surahScreenProvider = SurahScreenProvider(sharedPreferences,
+              localeProvider, mockSystemUiModeHandler, mockDialogService);
         },
       );
+
+      VerificationResult verifyShowToastFunction(
+          String appLocalizationErrorMessage) {
+        return verify(mockFToast.showToast(
+            fadeDuration: anyNamed("fadeDuration"),
+            gravity: anyNamed("gravity"),
+            ignorePointer: anyNamed("ignorePointer"),
+            isDismissible: anyNamed("isDismissible"),
+            positionedToastBuilder: anyNamed("positionedToastBuilder"),
+            toastDuration: anyNamed("toastDuration"),
+            child: argThat(
+                predicate<ToastWidget>(
+                  (widget) => widget.text == appLocalizationErrorMessage,
+                ),
+                named: "child")));
+      }
+
       group(
         "Testing getSurahScreenData() method",
         () {
@@ -116,21 +137,7 @@ void main() {
               expect(surahScreenProvider.markedVerseIndex, "0 2");
               expect(surahScreenProvider.markedSurahPDFPageIndex, "");
 
-              verify(mockFToast.showToast(
-                      fadeDuration: anyNamed("fadeDuration"),
-                      gravity: anyNamed("gravity"),
-                      ignorePointer: anyNamed("ignorePointer"),
-                      isDismissible: anyNamed("isDismissible"),
-                      positionedToastBuilder:
-                          anyNamed("positionedToastBuilder"),
-                      toastDuration: anyNamed("toastDuration"),
-                      child: argThat(
-                          predicate<ToastWidget>(
-                            (widget) =>
-                                widget.text ==
-                                appLocalizations.errorLoadingSavedData,
-                          ),
-                          named: "child")))
+              verifyShowToastFunction(appLocalizations.errorLoadingSavedData)
                   .called(1);
             },
           );
@@ -195,21 +202,7 @@ void main() {
                           equals(SurahScreenProvider.fontSizeOfSurahVersesKey)),
                       argThat(equals(fontSize))))
                   .called(1);
-              verify(mockFToast.showToast(
-                      fadeDuration: anyNamed("fadeDuration"),
-                      gravity: anyNamed("gravity"),
-                      ignorePointer: anyNamed("ignorePointer"),
-                      isDismissible: anyNamed("isDismissible"),
-                      positionedToastBuilder:
-                          anyNamed("positionedToastBuilder"),
-                      toastDuration: anyNamed("toastDuration"),
-                      child: argThat(
-                          predicate<ToastWidget>(
-                            (widget) =>
-                                widget.text ==
-                                appLocalizations.errorSavingFontSize,
-                          ),
-                          named: "child")))
+              verifyShowToastFunction(appLocalizations.errorSavingFontSize)
                   .called(1);
             },
           );
@@ -270,21 +263,8 @@ void main() {
                       argThat(equals(SurahScreenProvider.markedVerseKey)),
                       argThat(equals(newVerseIndex))))
                   .called(1);
-              verify(mockFToast.showToast(
-                      fadeDuration: anyNamed("fadeDuration"),
-                      gravity: anyNamed("gravity"),
-                      ignorePointer: anyNamed("ignorePointer"),
-                      isDismissible: anyNamed("isDismissible"),
-                      positionedToastBuilder:
-                          anyNamed("positionedToastBuilder"),
-                      toastDuration: anyNamed("toastDuration"),
-                      child: argThat(
-                          predicate<ToastWidget>(
-                            (widget) =>
-                                widget.text ==
-                                appLocalizations.errorSavingNewMarkedVerse,
-                          ),
-                          named: "child")))
+              verifyShowToastFunction(
+                      appLocalizations.errorSavingNewMarkedVerse)
                   .called(1);
             },
           );
@@ -353,21 +333,8 @@ void main() {
                           equals(SurahScreenProvider.markedSurahPDFPageKey)),
                       argThat(equals(newPdfPageIndex))))
                   .called(1);
-              verify(mockFToast.showToast(
-                      fadeDuration: anyNamed("fadeDuration"),
-                      gravity: anyNamed("gravity"),
-                      ignorePointer: anyNamed("ignorePointer"),
-                      isDismissible: anyNamed("isDismissible"),
-                      positionedToastBuilder:
-                          anyNamed("positionedToastBuilder"),
-                      toastDuration: anyNamed("toastDuration"),
-                      child: argThat(
-                          predicate<ToastWidget>(
-                            (widget) =>
-                                widget.text ==
-                                appLocalizations.errorSavingNewMarkedPDFPage,
-                          ),
-                          named: "child")))
+              verifyShowToastFunction(
+                      appLocalizations.errorSavingNewMarkedPDFPage)
                   .called(1);
             },
           );
@@ -448,22 +415,267 @@ void main() {
               verify(mockSystemUiModeHandler.setEnabledSystemUIMode(
                       argThat(equals(SystemUiMode.immersive))))
                   .called(1);
-              verify(mockFToast.showToast(
-                      fadeDuration: anyNamed("fadeDuration"),
-                      gravity: anyNamed("gravity"),
-                      ignorePointer: anyNamed("ignorePointer"),
-                      isDismissible: anyNamed("isDismissible"),
-                      positionedToastBuilder:
-                          anyNamed("positionedToastBuilder"),
-                      toastDuration: anyNamed("toastDuration"),
-                      child: argThat(
-                          predicate<ToastWidget>(
-                            (widget) =>
-                                widget.text ==
-                                appLocalizations.errorChangingAppBarVisibility,
-                          ),
-                          named: "child")))
+              verifyShowToastFunction(
+                      appLocalizations.errorChangingAppBarVisibility)
                   .called(1);
+            },
+          );
+        },
+      );
+      group(
+        "Testing showAlertAboutVersesMarking() method",
+        () {
+          test(
+            "testing the showAlertAboutVersesMarking() method if it would successfully show the alert dialog with Arabic alert message and change the marked verse when user clicks on ok button",
+            () async {
+              // arrange
+              const String newVerseIndex = "1 2";
+              surahScreenProvider.markedVerseIndex = "0 2";
+              final List<String> indexes =
+                  surahScreenProvider.markedVerseIndex.split(" ");
+              final int surahIndexOfMarkedVerse = int.parse(indexes[0]);
+              final int numberOfMarkedVerseInSurah = int.parse(indexes[1]);
+              late VoidCallback onOkFunctionCapture;
+              final String arAlertMessage =
+                  "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها في ${(surahIndexOfMarkedVerse == 114) ? "${Suras.arabicAuranSuras[surahIndexOfMarkedVerse]} الفقرة رقم $numberOfMarkedVerseInSurah" : " سورة ${Suras.arabicAuranSuras[surahIndexOfMarkedVerse]} الآية رقم $numberOfMarkedVerseInSurah"}";
+              when(localeProvider.isArabicChosen()).thenReturn(true);
+              when(mockDialogService.showBookMarkAlertDialog(
+                      message: anyNamed("message"),
+                      okButtonFunction: anyNamed("okButtonFunction")))
+                  .thenAnswer(
+                (Invocation realInvocation) {
+                  onOkFunctionCapture = realInvocation
+                      .namedArguments[const Symbol("okButtonFunction")];
+                  return Future.value();
+                },
+              );
+              WidgetsFlutterBinding.ensureInitialized();
+
+              // act
+              int notifyCounts = 0;
+              surahScreenProvider.addListener(
+                () {
+                  notifyCounts++;
+                },
+              );
+              await surahScreenProvider
+                  .showAlertAboutVersesMarking(newVerseIndex);
+              // assert
+              verify(mockDialogService.showBookMarkAlertDialog(
+                      message: arAlertMessage,
+                      okButtonFunction: anyNamed("okButtonFunction")))
+                  .called(1);
+
+              expect(notifyCounts, 0);
+
+              /// When user clicks on Ok Button: ==================
+              // arrange
+              when(sharedPreferences.setString(
+                      argThat(equals(SurahScreenProvider.markedVerseKey)),
+                      argThat(equals(newVerseIndex))))
+                  .thenAnswer(
+                (realInvocation) => Future.value(true),
+              );
+
+              // act
+              onOkFunctionCapture();
+              // assert
+              verify(sharedPreferences.setString(
+                      argThat(equals(SurahScreenProvider.markedVerseKey)),
+                      argThat(equals(newVerseIndex))))
+                  .called(1);
+              expect(notifyCounts, 1);
+              expect(surahScreenProvider.markedVerseIndex, newVerseIndex);
+            },
+          );
+          test(
+            "testing the showAlertAboutVersesMarking() method if it would successfully show the alert dialog with English alert message",
+            () async {
+              // arrange
+              const String newVerseIndex = "1 2";
+              surahScreenProvider.markedVerseIndex = "0 2";
+              final List<String> indexes =
+                  surahScreenProvider.markedVerseIndex.split(" ");
+              final int surahIndexOfMarkedVerse = int.parse(indexes[0]);
+              final int numberOfMarkedVerseInSurah = int.parse(indexes[1]);
+              final String enAlertMessage =
+                  "If you proceed, you're going to lose the old bookmark made in ${(surahIndexOfMarkedVerse == 114) ? "${Suras.englishQuranSurahs[surahIndexOfMarkedVerse]} the paragraph number $numberOfMarkedVerseInSurah" : "${Suras.englishQuranSurahs[surahIndexOfMarkedVerse]} surah the verse number $numberOfMarkedVerseInSurah"}";
+              when(localeProvider.isArabicChosen()).thenReturn(false);
+              WidgetsFlutterBinding.ensureInitialized();
+
+              // act
+              int notifyCounts = 0;
+              surahScreenProvider.addListener(
+                () {
+                  notifyCounts++;
+                },
+              );
+              await surahScreenProvider
+                  .showAlertAboutVersesMarking(newVerseIndex);
+              // assert
+              verify(mockDialogService.showBookMarkAlertDialog(
+                      message: enAlertMessage,
+                      okButtonFunction: anyNamed("okButtonFunction")))
+                  .called(1);
+
+              expect(notifyCounts, 0);
+            },
+          );
+          test(
+            "testing the showAlertAboutVersesMarking() method, if a failure happens when showing the alert dialog",
+            () async {
+              // arrange
+              const String newVerseIndex = "1 2";
+              //surahScreenProvider.markedVerseIndex = "0 2";
+
+              when(localeProvider.isArabicChosen()).thenReturn(false);
+              WidgetsFlutterBinding.ensureInitialized();
+
+              // act
+              int notifyCounts = 0;
+              surahScreenProvider.addListener(
+                () {
+                  notifyCounts++;
+                },
+              );
+              await surahScreenProvider
+                  .showAlertAboutVersesMarking(newVerseIndex);
+              // assert
+              verifyShowToastFunction(
+                      appLocalizations.errorShowingAlertVersesMarkingDialog)
+                  .called(1);
+
+              expect(notifyCounts, 0);
+            },
+          );
+        },
+      );
+      group(
+        "Testing showAlertAboutMarkedSurahPDFPage() method",
+        () {
+          test(
+            "testing the showAlertAboutMarkedSurahPDFPage() method if it would successfully show the alert dialog with Arabic alert message and change the marked verse when user clicks on ok button",
+            () async {
+              // arrange
+              const String newPDFPageIndex = "1 2";
+              surahScreenProvider.markedSurahPDFPageIndex = "0 1";
+              final List<String> indexes =
+                  surahScreenProvider.markedSurahPDFPageIndex.split(" ");
+              final int surahIndexOfMarkedPage = int.parse(indexes[0]);
+              final int indexOfMarkedPage = int.parse(indexes[1]);
+              late VoidCallback onOkFunctionCapture;
+              final String arAlertMessage =
+                  "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها في سورة ${Suras.arabicAuranSuras[surahIndexOfMarkedPage]}صفحة رقم $indexOfMarkedPage ";
+              when(localeProvider.isArabicChosen()).thenReturn(true);
+              when(mockDialogService.showBookMarkAlertDialog(
+                      message: anyNamed("message"),
+                      okButtonFunction: anyNamed("okButtonFunction")))
+                  .thenAnswer(
+                (Invocation realInvocation) {
+                  onOkFunctionCapture = realInvocation
+                      .namedArguments[const Symbol("okButtonFunction")];
+                  return Future.value();
+                },
+              );
+              WidgetsFlutterBinding.ensureInitialized();
+
+              // act
+              int notifyCounts = 0;
+              surahScreenProvider.addListener(
+                () {
+                  notifyCounts++;
+                },
+              );
+              await surahScreenProvider
+                  .showAlertAboutMarkedSurahPDFPage(newPDFPageIndex);
+              // assert
+              verify(mockDialogService.showBookMarkAlertDialog(
+                      message: arAlertMessage,
+                      okButtonFunction: anyNamed("okButtonFunction")))
+                  .called(1);
+
+              expect(notifyCounts, 0);
+
+              /// When user clicks on Ok Button: ==================
+              // arrange
+              when(sharedPreferences.setString(
+                      argThat(
+                          equals(SurahScreenProvider.markedSurahPDFPageKey)),
+                      argThat(equals(newPDFPageIndex))))
+                  .thenAnswer(
+                (realInvocation) => Future.value(true),
+              );
+
+              // act
+              onOkFunctionCapture();
+              // assert
+              verify(sharedPreferences.setString(
+                      argThat(
+                          equals(SurahScreenProvider.markedSurahPDFPageKey)),
+                      argThat(equals(newPDFPageIndex))))
+                  .called(1);
+              expect(notifyCounts, 1);
+              expect(
+                  surahScreenProvider.markedSurahPDFPageIndex, newPDFPageIndex);
+            },
+          );
+          test(
+            "testing the showAlertAboutMarkedSurahPDFPage() method if it would successfully show the alert dialog with English alert message",
+            () async {
+              // arrange
+              const String newPDFPageIndex = "1 2";
+              surahScreenProvider.markedSurahPDFPageIndex = "0 1";
+              final List<String> indexes =
+                  surahScreenProvider.markedSurahPDFPageIndex.split(" ");
+              final int surahIndexOfMarkedPage = int.parse(indexes[0]);
+              final int indexOfMarkedPage = int.parse(indexes[1]);
+              final String enAlertMessage =
+                  'If you proceed, you\'re going to lose the old bookmark made in ${Suras.englishQuranSurahs[surahIndexOfMarkedPage]} surah page number $indexOfMarkedPage';
+              when(localeProvider.isArabicChosen()).thenReturn(false);
+              WidgetsFlutterBinding.ensureInitialized();
+
+              // act
+              int notifyCounts = 0;
+              surahScreenProvider.addListener(
+                () {
+                  notifyCounts++;
+                },
+              );
+              await surahScreenProvider
+                  .showAlertAboutMarkedSurahPDFPage(newPDFPageIndex);
+              // assert
+              verify(mockDialogService.showBookMarkAlertDialog(
+                      message: enAlertMessage,
+                      okButtonFunction: anyNamed("okButtonFunction")))
+                  .called(1);
+
+              expect(notifyCounts, 0);
+            },
+          );
+          test(
+            "testing the showAlertAboutMarkedSurahPDFPage() method, if a failure happens when showing the alert dialog",
+            () async {
+              // arrange
+              const String newPDFPageIndex = "1 2";
+              //surahScreenProvider.markedVerseIndex = "0 2";
+              when(localeProvider.isArabicChosen()).thenReturn(false);
+              WidgetsFlutterBinding.ensureInitialized();
+
+              // act
+              int notifyCounts = 0;
+              surahScreenProvider.addListener(
+                () {
+                  notifyCounts++;
+                },
+              );
+              await surahScreenProvider
+                  .showAlertAboutMarkedSurahPDFPage(newPDFPageIndex);
+              // assert
+              verifyShowToastFunction(
+                      appLocalizations.errorShowingAlertPDFPageMarkingDialog)
+                  .called(1);
+
+              expect(notifyCounts, 0);
             },
           );
         },

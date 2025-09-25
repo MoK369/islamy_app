@@ -34,6 +34,9 @@ import 'presentation/core/providers/locale_provider.dart' as _i125;
 import 'presentation/core/providers/theme_provider.dart' as _i797;
 import 'presentation/core/utils/app_localizations/app_localizations_provider.dart'
     as _i211;
+import 'presentation/core/utils/dialog_service/default_dialog_service.dart'
+    as _i747;
+import 'presentation/core/utils/dialog_service/dialog_service.dart' as _i934;
 import 'presentation/core/utils/handlers/system_ui_handler/default_system_ui_mode_handler.dart'
     as _i652;
 import 'presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart'
@@ -79,12 +82,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i680.StartIoAdProvider>(() => _i680.StartIoAdProvider());
     gh.singleton<_i265.ApiManager>(() => _i265.ApiManager());
+    gh.factory<_i934.DialogService>(() => _i747.DefaultDialogService());
     gh.factory<_i552.SystemUiModeHandler>(
         () => _i652.DefaultSystemUiModeHandler());
+    gh.factory<_i545.MainScreenProvider>(() => _i545.MainScreenProvider(
+          gh<_i460.SharedPreferences>(),
+          gh<_i934.DialogService>(),
+        ));
     gh.factory<_i797.ThemeProvider>(
         () => _i797.ThemeProvider(gh<_i460.SharedPreferences>()));
-    gh.factory<_i545.MainScreenProvider>(
-        () => _i545.MainScreenProvider(gh<_i460.SharedPreferences>()));
     gh.factory<String>(
       () => getSavedLocale.getSavedLocale(gh<_i460.SharedPreferences>()),
       instanceName: 'getSavedLocale',
@@ -115,6 +121,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i460.SharedPreferences>(),
           gh<_i125.LocaleProvider>(),
           gh<_i552.SystemUiModeHandler>(),
+          gh<_i934.DialogService>(),
         ));
     gh.singleton<_i647.RadioViewModel>(
         () => _i647.RadioViewModel(gh<_i602.QuranRadioChannelsRepository>()));

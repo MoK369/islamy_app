@@ -11,6 +11,8 @@ import 'package:flutter/services.dart' as _i10;
 import 'package:fluttertoast/fluttertoast.dart' as _i3;
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart'
     as _i5;
+import 'package:islamy_app/presentation/core/utils/dialog_service/dialog_service.dart'
+    as _i11;
 import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart'
     as _i9;
 import 'package:mockito/mockito.dart' as _i1;
@@ -473,6 +475,29 @@ class MockSystemUiModeHandler extends _i1.Mock
         Invocation.method(
           #setEnabledSystemUIMode,
           [mode],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+}
+
+/// A class which mocks [DialogService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDialogService extends _i1.Mock implements _i11.DialogService {
+  @override
+  _i4.Future<void> showBookMarkAlertDialog({
+    required String? message,
+    required void Function()? okButtonFunction,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #showBookMarkAlertDialog,
+          [],
+          {
+            #message: message,
+            #okButtonFunction: okButtonFunction,
+          },
         ),
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),

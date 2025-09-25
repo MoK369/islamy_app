@@ -153,7 +153,7 @@ class _VersesListState extends State<VersesList> {
                                     ? surahScreenProvider.changeMarkedVerse('')
                                     : surahScreenProvider
                                         .showAlertAboutVersesMarking(
-                                            theme, currentVerseIndex);
+                                            currentVerseIndex);
                           },
                         ),
                       )

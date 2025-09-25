@@ -131,8 +131,6 @@ class _HadeethLayoutState extends State<HadeethLayout> {
                                           } else {
                                             mainScreenProvider
                                                 .showAlertAboutHadeethMarking(
-                                                    context,
-                                                    theme,
                                                     "$currentHadeethIndex");
                                           }
                                         },

@@ -64,8 +64,8 @@ class _PDFPageState extends State<PDFPage> {
               } else if (surahScreenProvider.markedSurahPDFPageIndex == '') {
                 surahScreenProvider.changeMarkedSurahPDFPage(currentSurahID);
               } else {
-                surahScreenProvider.showAlertAboutMarkedSurahPDFPage(
-                    theme, currentSurahID);
+                surahScreenProvider
+                    .showAlertAboutMarkedSurahPDFPage(currentSurahID);
               }
             },
             child: PdfView(

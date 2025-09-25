@@ -50,8 +50,6 @@ class ListOfSuras extends StatelessWidget {
                                 mainScreenProvider.markedSurahIndex
                             ? mainScreenProvider.changeMarkedSurah('')
                             : mainScreenProvider.showAlertAboutSurasMarking(
-                                context,
-                                theme,
                                 currentSurahIndex(
                                     localeProvider, indexOfFoundUserList));
                   },

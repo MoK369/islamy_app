@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:islamy_app/main.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/custom_widgets/custom_alert_dialog.dart';
+import 'package:islamy_app/presentation/core/utils/dialog_service/dialog_service.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,8 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 @injectable
 class MainScreenProvider extends ChangeNotifier {
   static const barEnablementKey = 'barEnablement';
+
   /// initialize localeProvider before getting Suras List.
   late LocaleProvider _localeProvider;
+  final DialogService _dialogService;
 
   void getLocaleProvider(LocaleProvider localeProvider) {
     _localeProvider = localeProvider;
@@ -20,7 +23,7 @@ class MainScreenProvider extends ChangeNotifier {
   int bottomBarCurrentIndex = 2;
   bool isBottomBarEnabled = true;
 
-  MainScreenProvider(this.sharedPreferences) {
+  MainScreenProvider(this.sharedPreferences, this._dialogService) {
     getMainScreenData();
   }
 
@@ -60,17 +63,14 @@ class MainScreenProvider extends ChangeNotifier {
     sharedPreferences.setString(markedHadeethKey, hadeethIndex);
   }
 
-  void showAlertAboutHadeethMarking(
-      BuildContext context, ThemeData theme, String hadeethToMarkIndex) {
-    CustomAlertDialog.showBookMarkAlertDialog(
-      context,
-      theme: theme,
+  void showAlertAboutHadeethMarking(String hadeethToMarkIndex) {
+    _dialogService.showBookMarkAlertDialog(
       message: _localeProvider.isArabicChosen()
           ? "إذا تابعت، سوف تفقد العلامة المرجعية القديمة التي تم وضعها على الحديث رقم ${int.parse(markedHadeethIndex) + 1}"
           : 'If you perceed, you\'re going to lose the old bookmark made on hadeeth number ${int.parse(markedHadeethIndex) + 1}',
       okButtonFunction: () {
         changeMarkedHadeeth(hadeethToMarkIndex);
-        Navigator.pop(context);
+        globalNavigatorKey.currentState!.pop();
       },
     );
   }
@@ -97,14 +97,13 @@ class MainScreenProvider extends ChangeNotifier {
     sharedPreferences.setString(markedSurahKey, index);
   }
 
-  void showAlertAboutSurasMarking(
-      BuildContext context, ThemeData theme, String surahToMarkIndex) {
-    CustomAlertDialog.showBookMarkAlertDialog(context,
-        theme: theme,
-        message: _getAlertMessageAboutSurasMarking(), okButtonFunction: () {
-      changeMarkedSurah(surahToMarkIndex);
-      Navigator.pop(context);
-    });
+  void showAlertAboutSurasMarking(String surahToMarkIndex) {
+    _dialogService.showBookMarkAlertDialog(
+        message: _getAlertMessageAboutSurasMarking(),
+        okButtonFunction: () {
+          changeMarkedSurah(surahToMarkIndex);
+          globalNavigatorKey.currentState!.pop();
+        });
   }
 
   String _getAlertMessageAboutSurasMarking() {
@@ -114,7 +113,6 @@ class MainScreenProvider extends ChangeNotifier {
       return "If you perceed, you're going to lose the old bookmark made on ${(int.parse(markedSurahIndex) == 114) ? Suras.englishQuranSurahs[int.parse(markedSurahIndex)] : "${Suras.englishQuranSurahs[int.parse(markedSurahIndex)]} surah"}";
     }
   }
-
 
 //----------------------------------------------------------------------
 }
