@@ -11,6 +11,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:just_audio/just_audio.dart' as _i501;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:stash/stash_api.dart' as _i265;
 
@@ -34,6 +35,8 @@ import 'presentation/core/providers/locale_provider.dart' as _i125;
 import 'presentation/core/providers/theme_provider.dart' as _i797;
 import 'presentation/core/utils/app_localizations/app_localizations_provider.dart'
     as _i211;
+import 'presentation/core/utils/audio_player_provider/audio_player_provider.dart'
+    as _i266;
 import 'presentation/core/utils/dialog_service/default_dialog_service.dart'
     as _i747;
 import 'presentation/core/utils/dialog_service/dialog_service.dart' as _i934;
@@ -70,6 +73,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final textFileCaching = _$TextFileCaching();
     final sharedPreferencesProvider = _$SharedPreferencesProvider();
+    final audioPlayerProvider = _$AudioPlayerProvider();
     final getSavedLocale = _$GetSavedLocale();
     final appLocalizationsProvider = _$AppLocalizationsProvider();
     await gh.factoryAsync<_i265.Cache<String>>(
@@ -81,6 +85,7 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.factory<_i680.StartIoAdProvider>(() => _i680.StartIoAdProvider());
+    gh.factory<_i501.AudioPlayer>(() => audioPlayerProvider.provider());
     gh.singleton<_i265.ApiManager>(() => _i265.ApiManager());
     gh.factory<_i934.DialogService>(() => _i747.DefaultDialogService());
     gh.factory<_i552.SystemUiModeHandler>(
@@ -123,8 +128,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i552.SystemUiModeHandler>(),
           gh<_i934.DialogService>(),
         ));
-    gh.singleton<_i647.RadioViewModel>(
-        () => _i647.RadioViewModel(gh<_i602.QuranRadioChannelsRepository>()));
+    gh.singleton<_i647.RadioViewModel>(() => _i647.RadioViewModel(
+          gh<_i602.QuranRadioChannelsRepository>(),
+          gh<_i501.AudioPlayer>(),
+        ));
     return this;
   }
 }
@@ -132,6 +139,8 @@ extension GetItInjectableX on _i174.GetIt {
 class _$TextFileCaching extends _i163.TextFileCaching {}
 
 class _$SharedPreferencesProvider extends _i301.SharedPreferencesProvider {}
+
+class _$AudioPlayerProvider extends _i266.AudioPlayerProvider {}
 
 class _$GetSavedLocale extends _i472.GetSavedLocale {}
 

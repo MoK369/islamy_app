@@ -10,6 +10,7 @@ import 'package:islamy_app/domain/repositories/quran_radio_channels/quran_radio_
 import 'package:islamy_app/main.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
+import 'package:islamy_app/presentation/core/utils/handlers/execute_handler.dart';
 import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/cairo_quran_radio.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
@@ -18,10 +19,10 @@ import 'package:just_audio_background/just_audio_background.dart';
 
 @singleton
 class RadioViewModel extends ChangeNotifier {
-  final audioPlayer = AudioPlayer();
+  final AudioPlayer audioPlayer;
   final QuranRadioChannelsRepository quranRadioChannelsRepo;
   @factoryMethod
-  RadioViewModel(this.quranRadioChannelsRepo) {
+  RadioViewModel(this.quranRadioChannelsRepo, this.audioPlayer) {
     _initPlayerStateStream();
     _initIndexStream();
   }
@@ -66,15 +67,13 @@ class RadioViewModel extends ChangeNotifier {
 
   List<AudioSource> audioSources = [];
   Future<void> initAllAudioSources() async {
-    try {
+    await executeHandler(() async {
       audioSources = await _concatenateAudioSources();
       await audioPlayer.setShuffleModeEnabled(false);
       currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
-    } catch (e) {
-      Toasts.showErrorToast(
-          getIt.get<AppLocalizations>().errorInitializingAudioSources +
-              e.toString());
-    }
+    },
+        errorMessage:
+            getIt.get<AppLocalizations>().errorInitializingAudioSources);
   }
 
   Future<List<AudioSource>> _concatenateAudioSources() async {
