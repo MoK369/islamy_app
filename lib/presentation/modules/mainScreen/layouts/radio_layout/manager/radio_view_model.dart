@@ -43,12 +43,14 @@ class RadioViewModel extends ChangeNotifier {
         await quranRadioChannelsRepo.getQuranRadioChannels(languageCode);
     switch (quranRadioApiResult) {
       case Success<List<RadioChannel>>():
-        quranRadioApiResult.data.insert(
-            0,
-            RadioChannel(
-                id: CairoQuranRadio.id,
-                name: CairoQuranRadio.title(languageCode),
-                url: CairoQuranRadio.urlStr));
+        if (quranRadioApiResult.data.isNotEmpty) {
+          quranRadioApiResult.data.insert(
+              0,
+              RadioChannel(
+                  id: CairoQuranRadio.id,
+                  name: CairoQuranRadio.title(languageCode),
+                  url: CairoQuranRadio.urlStr));
+        }
         quranRadioChannelsState = SuccessState(data: quranRadioApiResult.data);
         _radioChannels = quranRadioApiResult.data;
         if (_radioChannels.isNotEmpty) {

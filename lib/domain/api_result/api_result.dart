@@ -7,7 +7,7 @@ class Success<T> extends ApiResult<T> {
 
   @override
   bool operator ==(Object other) {
-    return other is Success && data == other.data;
+    return other is Success<T> && data == other.data;
   }
 }
 
@@ -19,7 +19,7 @@ class ServerError<T> extends ApiResult<T> {
 
   @override
   bool operator ==(Object other) {
-    return other is ServerError &&
+    return other is ServerError<T> &&
         code == other.code &&
         message == other.message;
   }
@@ -32,6 +32,6 @@ class CodeError<T> extends ApiResult<T> {
 
   @override
   bool operator ==(Object other) {
-    return other is CodeError && exception == exception;
+    return other is CodeError<T> && exception == exception;
   }
 }

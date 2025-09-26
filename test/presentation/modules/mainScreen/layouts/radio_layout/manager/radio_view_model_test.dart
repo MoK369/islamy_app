@@ -25,7 +25,7 @@ void main() {
       late MockAudioPlayer mockAudioPlayer;
       late MockQuranRadioChannelsRepository quranRadioChannelsRepository;
       late AppLocalizations appLocalizations;
-      final QuranRadioModel quranRadioModel = QuranRadioModel(
+      QuranRadioModel quranRadioModel = QuranRadioModel(
         radios: [
           RadioChannel(
               id: 1,
@@ -48,7 +48,6 @@ void main() {
 
       setUpAll(
         () async {
-          quranRadioChannelsRepository = MockQuranRadioChannelsRepository();
           appLocalizations =
               await AppLocalizations.delegate.load(const Locale("ar"));
           getIt.registerLazySingleton(
@@ -58,6 +57,7 @@ void main() {
       );
       setUp(
         () {
+          quranRadioChannelsRepository = MockQuranRadioChannelsRepository();
           mockAudioPlayer = MockAudioPlayer();
           radioViewModel =
               RadioViewModel(quranRadioChannelsRepository, mockAudioPlayer);
@@ -73,7 +73,7 @@ void main() {
             List<BaseViewState<List<RadioChannel>>> getChannelsStates = [];
             const String languageCode = "ar";
             provideDummy<ApiResult<List<RadioChannel>>>(
-                Success(data: quranRadioModel.radios!));
+                Success(data: [...quranRadioModel.radios!]));
 
             // act
             radioViewModel.addListener(
@@ -85,6 +85,122 @@ void main() {
 
             // assert
             verify(mockAudioPlayer.playerStateStream).called(1);
+            verify(mockAudioPlayer.currentIndexStream).called(1);
+            verify(mockAudioPlayer
+                    .setShuffleModeEnabled(argThat(equals(false))))
+                .called(1);
+            expect(getChannelsStates.length, 2);
+            expect(getChannelsStates.first,
+                isA<LoadingState<List<RadioChannel>>>());
+            expect(getChannelsStates.last,
+                isA<SuccessState<List<RadioChannel>>>());
+            final List<RadioChannel> newRadioChannelList = [
+              ...quranRadioModel.radios!
+            ]..insert(0, cairoRadioChannel(languageCode));
+            expect(
+                (getChannelsStates.last as SuccessState<List<RadioChannel>>)
+                    .data,
+                newRadioChannelList);
+            expect(radioViewModel.mediaItems.length, 4);
+            expect(radioViewModel.audioSources.length, 4);
+            expect(radioViewModel.currentRadioChannel, newRadioChannelList[0]);
+          });
+          test(
+              "Testing getQuranRadioChannels() method, if it would successfully get the Arabic Quran Radio Channels but doesn't initialize the audio sources because the radio channels list is empty ",
+              () async {
+            // arrange
+            List<BaseViewState<List<RadioChannel>>> getChannelsStates = [];
+            const String languageCode = "ar";
+            provideDummy<ApiResult<List<RadioChannel>>>(Success(data: []));
+
+            // act
+            radioViewModel.addListener(
+              () {
+                getChannelsStates.add(radioViewModel.quranRadioChannelsState);
+              },
+            );
+            await radioViewModel.getQuranRadioChannels(languageCode);
+
+            // assert
+            verify(mockAudioPlayer.playerStateStream).called(1);
+            verify(mockAudioPlayer.currentIndexStream).called(1);
+            verifyNever(
+                mockAudioPlayer.setShuffleModeEnabled(argThat(equals(false))));
+            expect(getChannelsStates.length, 2);
+            expect(getChannelsStates.first,
+                isA<LoadingState<List<RadioChannel>>>());
+            expect(getChannelsStates.last,
+                isA<SuccessState<List<RadioChannel>>>());
+            expect(
+                (getChannelsStates.last as SuccessState<List<RadioChannel>>)
+                    .data,
+                []);
+            expect(radioViewModel.mediaItems.length, 0);
+            expect(radioViewModel.audioSources.length, 0);
+            expect(radioViewModel.currentRadioChannel, isNull);
+          });
+          test(
+              "Testing getQuranRadioChannels() method, if it would get the Quran Radio Channels but a code error happens with the call",
+              () async {
+            // arrange
+            final ServerError<List<RadioChannel>> serverError =
+                ServerError(message: "Bad Request", code: 400);
+            List<BaseViewState<List<RadioChannel>>> getChannelsStates = [];
+            const String languageCode = "ar";
+            provideDummy<ApiResult<List<RadioChannel>>>(serverError);
+
+            // act
+            radioViewModel.addListener(
+              () {
+                getChannelsStates.add(radioViewModel.quranRadioChannelsState);
+              },
+            );
+            await radioViewModel.getQuranRadioChannels(languageCode);
+
+            // assert
+            verify(mockAudioPlayer.playerStateStream).called(1);
+            verify(mockAudioPlayer.currentIndexStream).called(1);
+            expect(getChannelsStates.length, 2);
+            expect(getChannelsStates.first,
+                isA<LoadingState<List<RadioChannel>>>());
+            expect(
+                getChannelsStates.last, isA<ErrorState<List<RadioChannel>>>());
+            expect(
+                getChannelsStates.last, ErrorState(serverError: serverError));
+            expect(radioViewModel.mediaItems.length, 0);
+            expect(radioViewModel.audioSources.length, 0);
+            expect(radioViewModel.currentRadioChannel, isNull);
+          });
+          test(
+              "Testing getQuranRadioChannels() method, if it would get the Quran Radio Channels but a server error happens with the call",
+              () async {
+            // arrange
+            final CodeError<List<RadioChannel>> codeError =
+                CodeError(exception: Exception("something went wrong"));
+            List<BaseViewState<List<RadioChannel>>> getChannelsStates = [];
+            const String languageCode = "ar";
+            provideDummy<ApiResult<List<RadioChannel>>>(codeError);
+
+            // act
+            radioViewModel.addListener(
+              () {
+                getChannelsStates.add(radioViewModel.quranRadioChannelsState);
+              },
+            );
+            await radioViewModel.getQuranRadioChannels(languageCode);
+
+            // assert
+            verify(mockAudioPlayer.playerStateStream).called(1);
+            verify(mockAudioPlayer.currentIndexStream).called(1);
+            expect(getChannelsStates.length, 2);
+            expect(getChannelsStates.first,
+                isA<LoadingState<List<RadioChannel>>>());
+            expect(
+                getChannelsStates.last, isA<ErrorState<List<RadioChannel>>>());
+            expect(getChannelsStates.last, ErrorState(codeError: codeError));
+            expect(radioViewModel.mediaItems.length, 0);
+            expect(radioViewModel.audioSources.length, 0);
+            expect(radioViewModel.currentRadioChannel, isNull);
           });
         },
       );

@@ -39,4 +39,9 @@ class RadioChannel extends Equatable {
 
   @override
   List<Object?> get props => [id, name, url];
+
+  @override
+  String toString() {
+    return "{$id,$name,$url}";
+  }
 }
