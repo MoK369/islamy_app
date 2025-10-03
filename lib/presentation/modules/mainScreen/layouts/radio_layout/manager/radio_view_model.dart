@@ -6,13 +6,12 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:islamy_app/data/models/quran_radio_model.dart';
 import 'package:islamy_app/di.dart';
 import 'package:islamy_app/domain/api_result/api_result.dart';
-import 'package:islamy_app/domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart';
+import 'package:islamy_app/domain/use_cases/get_radio_channels_use_case.dart';
 import 'package:islamy_app/main.dart';
 import 'package:islamy_app/presentation/core/bases/base_view_state.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/utils/handlers/execute_handler.dart';
 import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart';
-import 'package:islamy_app/presentation/modules/mainScreen/layouts/radio_layout/manager/cairo_quran_radio.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/radio_audio_state.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -20,9 +19,14 @@ import 'package:just_audio_background/just_audio_background.dart';
 @singleton
 class RadioViewModel extends ChangeNotifier {
   final AudioPlayer audioPlayer;
-  final QuranRadioChannelsRepository quranRadioChannelsRepo;
-  @factoryMethod
-  RadioViewModel(this.quranRadioChannelsRepo, this.audioPlayer) {
+  final GetRadioChannelsUseCase _getRadioChannelsUseCase;
+
+  final InternetConnection _internetConnection;
+
+  final CustomToasts _customToasts;
+
+  RadioViewModel(this._getRadioChannelsUseCase, this.audioPlayer,
+      this._internetConnection, this._customToasts) {
     _initPlayerStateStream();
     _initIndexStream();
   }
@@ -39,18 +43,9 @@ class RadioViewModel extends ChangeNotifier {
   Future<void> getQuranRadioChannels(String languageCode) async {
     quranRadioChannelsState = LoadingState();
     notifyListeners();
-    var quranRadioApiResult =
-        await quranRadioChannelsRepo.getQuranRadioChannels(languageCode);
+    var quranRadioApiResult = await _getRadioChannelsUseCase.call(languageCode);
     switch (quranRadioApiResult) {
       case Success<List<RadioChannel>>():
-        if (quranRadioApiResult.data.isNotEmpty) {
-          quranRadioApiResult.data.insert(
-              0,
-              RadioChannel(
-                  id: CairoQuranRadio.id,
-                  name: CairoQuranRadio.title(languageCode),
-                  url: CairoQuranRadio.urlStr));
-        }
         quranRadioChannelsState = SuccessState(data: quranRadioApiResult.data);
         _radioChannels = quranRadioApiResult.data;
         if (_radioChannels.isNotEmpty) {
@@ -141,7 +136,7 @@ class RadioViewModel extends ChangeNotifier {
       await listenOnInternetChangeStream!.cancel();
     }
     listenOnInternetChangeStream =
-        InternetConnection().onStatusChange.listen((InternetStatus status) {
+        _internetConnection.onStatusChange.listen((InternetStatus status) {
       switch (status) {
         case InternetStatus.connected:
           debugPrint("The internet is now connected ****");
@@ -155,44 +150,43 @@ class RadioViewModel extends ChangeNotifier {
   }
 
   void retryCurrentStream() async {
-    try {
+    await executeHandler(() async {
       await audioPlayer.stop();
       await audioPlayer.play();
-    } catch (e) {
-      Toasts.showErrorToast(
-          getIt.get<AppLocalizations>().errorReplayingAudio + e.toString());
-    }
+    }, errorMessage: getIt.get<AppLocalizations>().errorReplayingAudio);
   }
 
   Future<void> play() async {
-    try {
-      if (!(await InternetConnection().hasInternetAccess)) {
-        Toasts.showErrorToast(
-            getIt.get<AppLocalizations>().noInternetConnection);
-      } else if (await audioSession.setActive(true)) {
-        if (audioPlayer.audioSources.isEmpty) {
-          allowChangeOfCurrentRadioChannel = false;
-          await audioPlayer.setAudioSources(
-            audioSources,
-            preload: false,
-            initialIndex: _currentRadioChannelIndex,
-            initialPosition: Duration.zero,
-          );
+    await executeHandler(
+      () async {
+        if (!(await _internetConnection.hasInternetAccess)) {
+          _customToasts.showErrorToast(
+              getIt.get<AppLocalizations>().noInternetConnection);
+        } else if (await audioSession?.setActive(true) ?? false) {
+          if (audioPlayer.audioSources.isEmpty) {
+            allowChangeOfCurrentRadioChannel = false;
+            await audioPlayer.setAudioSources(
+              audioSources,
+              preload: false,
+              initialIndex: _currentRadioChannelIndex,
+              initialPosition: Duration.zero,
+            );
+            allowChangeOfCurrentRadioChannel = true;
+          }
+          await audioPlayer.play();
+          audioPlayerWasPlaying = true;
+        } else {
+          _customToasts.showErrorToast(
+              getIt.get<AppLocalizations>().audioSessionNotActive);
+        }
+      },
+      errorMessage: getIt.get<AppLocalizations>().errorPlayingAudio,
+      onErrorExecute: (error) {
+        if (error is Exception) {
           allowChangeOfCurrentRadioChannel = true;
         }
-        await audioPlayer.play();
-        audioPlayerWasPlaying = true;
-      } else {
-        Toasts.showErrorToast(
-            getIt.get<AppLocalizations>().audioSessionNotActive);
-      }
-    } on Exception catch (e) {
-      allowChangeOfCurrentRadioChannel = true;
-      quranRadioChannelsState = ErrorState(codeError: CodeError(exception: e));
-      Toasts.showErrorToast(e.toString());
-    } catch (e) {
-      Toasts.showErrorToast(e.toString());
-    }
+      },
+    );
     notifyListeners();
   }
 
@@ -206,7 +200,7 @@ class RadioViewModel extends ChangeNotifier {
   }
 
   Future<void> skipToNext() async {
-    try {
+    await executeHandler<void>(() async {
       if (isLastAudioChannel) return;
       if (_currentRadioChannelIndex != audioSources.length - 1) {
         _currentRadioChannelIndex++;
@@ -218,15 +212,11 @@ class RadioViewModel extends ChangeNotifier {
       await audioPlayer.seekToNext();
       currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
       notifyListeners();
-    } catch (e) {
-      Toasts.showErrorToast(
-          getIt.get<AppLocalizations>().errorMovingToNextChannel +
-              e.toString());
-    }
+    }, errorMessage: getIt.get<AppLocalizations>().errorMovingToNextChannel);
   }
 
   Future<void> skipToPrevious() async {
-    try {
+    await executeHandler(() async {
       if (isFirstAudioChannel) return;
       if (_currentRadioChannelIndex != 0) {
         _currentRadioChannelIndex--;
@@ -238,14 +228,14 @@ class RadioViewModel extends ChangeNotifier {
       await audioPlayer.seekToPrevious();
       currentRadioChannel = _radioChannels[_currentRadioChannelIndex];
       notifyListeners();
-    } catch (e) {
-      Toasts.showErrorToast(
-          getIt.get<AppLocalizations>().errorMovingToPreviousChannel +
-              e.toString());
-    }
+    },
+        errorMessage:
+            getIt.get<AppLocalizations>().errorMovingToPreviousChannel);
   }
 
   bool get isLastAudioChannel =>
       _currentRadioChannelIndex == _radioChannels.length - 1;
   bool get isFirstAudioChannel => _currentRadioChannelIndex == 0;
+
+  int get currentRadioChannelIndex => _currentRadioChannelIndex;
 }

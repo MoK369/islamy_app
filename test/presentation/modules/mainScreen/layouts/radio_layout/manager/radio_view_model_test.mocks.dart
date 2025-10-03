@@ -6,10 +6,13 @@
 import 'dart:async' as _i3;
 
 import 'package:audio_session/audio_session.dart' as _i5;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart'
+    as _i9;
 import 'package:islamy_app/data/models/quran_radio_model.dart' as _i8;
 import 'package:islamy_app/domain/api_result/api_result.dart' as _i7;
-import 'package:islamy_app/domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart'
+import 'package:islamy_app/domain/use_cases/get_radio_channels_use_case.dart'
     as _i6;
+import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart' as _i10;
 import 'package:just_audio/just_audio.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i4;
@@ -955,24 +958,24 @@ class MockAudioPlayer extends _i1.Mock implements _i2.AudioPlayer {
       ) as _i3.Future<void>);
 }
 
-/// A class which mocks [QuranRadioChannelsRepository].
+/// A class which mocks [GetRadioChannelsUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockQuranRadioChannelsRepository extends _i1.Mock
-    implements _i6.QuranRadioChannelsRepository {
+class MockGetRadioChannelsUseCase extends _i1.Mock
+    implements _i6.GetRadioChannelsUseCase {
   @override
-  _i3.Future<_i7.ApiResult<List<_i8.RadioChannel>>> getQuranRadioChannels(
+  _i3.Future<_i7.ApiResult<List<_i8.RadioChannel>>> call(
           String? languageCode) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getQuranRadioChannels,
+          #call,
           [languageCode],
         ),
         returnValue: _i3.Future<_i7.ApiResult<List<_i8.RadioChannel>>>.value(
             _i4.dummyValue<_i7.ApiResult<List<_i8.RadioChannel>>>(
           this,
           Invocation.method(
-            #getQuranRadioChannels,
+            #call,
             [languageCode],
           ),
         )),
@@ -981,9 +984,81 @@ class MockQuranRadioChannelsRepository extends _i1.Mock
                 _i4.dummyValue<_i7.ApiResult<List<_i8.RadioChannel>>>(
           this,
           Invocation.method(
-            #getQuranRadioChannels,
+            #call,
             [languageCode],
           ),
         )),
       ) as _i3.Future<_i7.ApiResult<List<_i8.RadioChannel>>>);
+}
+
+/// A class which mocks [InternetConnection].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockInternetConnection extends _i1.Mock
+    implements _i9.InternetConnection {
+  @override
+  bool get enableStrictCheck => (super.noSuchMethod(
+        Invocation.getter(#enableStrictCheck),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  Duration get checkInterval => (super.noSuchMethod(
+        Invocation.getter(#checkInterval),
+        returnValue: _FakeDuration_2(
+          this,
+          Invocation.getter(#checkInterval),
+        ),
+        returnValueForMissingStub: _FakeDuration_2(
+          this,
+          Invocation.getter(#checkInterval),
+        ),
+      ) as Duration);
+
+  @override
+  _i3.Future<bool> get hasInternetAccess => (super.noSuchMethod(
+        Invocation.getter(#hasInternetAccess),
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
+
+  @override
+  _i3.Future<_i9.InternetStatus> get internetStatus => (super.noSuchMethod(
+        Invocation.getter(#internetStatus),
+        returnValue:
+            _i3.Future<_i9.InternetStatus>.value(_i9.InternetStatus.connected),
+        returnValueForMissingStub:
+            _i3.Future<_i9.InternetStatus>.value(_i9.InternetStatus.connected),
+      ) as _i3.Future<_i9.InternetStatus>);
+
+  @override
+  _i3.Stream<_i9.InternetStatus> get onStatusChange => (super.noSuchMethod(
+        Invocation.getter(#onStatusChange),
+        returnValue: _i3.Stream<_i9.InternetStatus>.empty(),
+        returnValueForMissingStub: _i3.Stream<_i9.InternetStatus>.empty(),
+      ) as _i3.Stream<_i9.InternetStatus>);
+
+  @override
+  void setIntervalAndResetTimer(Duration? duration) => super.noSuchMethod(
+        Invocation.method(
+          #setIntervalAndResetTimer,
+          [duration],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [CustomToasts].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCustomToasts extends _i1.Mock implements _i10.CustomToasts {
+  @override
+  void showErrorToast(String? message) => super.noSuchMethod(
+        Invocation.method(
+          #showErrorToast,
+          [message],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

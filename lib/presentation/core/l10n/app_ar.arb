@@ -47,5 +47,6 @@
   "errorSavingNewMarkedPDFPage": "خطأ في حفظ صفحة PDF المحددة الجديدة",
   "errorChangingAppBarVisibility": "خطأ في تغيير ظهور شريط التطبيق",
   "errorShowingAlertVersesMarkingDialog": "خطأ في عرض نافذة تنبيه تحديد الآيات",
-  "errorShowingAlertPDFPageMarkingDialog": "خطأ في عرض نافذة تنبيه تحديد صفحة PDF"
+  "errorShowingAlertPDFPageMarkingDialog": "خطأ في عرض نافذة تنبيه تحديد صفحة PDF",
+  "errorPlayingAudio": "خطأ في تشغيل الصوت"
 }

@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 import 'di.dart';
 import 'presentation/core/themes/app_themes.dart';
 
-late final AudioSession audioSession;
+AudioSession? audioSession;
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey();
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -73,7 +73,7 @@ Future<void> initBackgroundAudio() {
 
 Future<void> setupAudioSession() async {
   audioSession = await AudioSession.instance;
-  await audioSession.configure(const AudioSessionConfiguration.speech());
+  await audioSession!.configure(const AudioSessionConfiguration.speech());
 }
 
 class MyApp extends StatefulWidget {

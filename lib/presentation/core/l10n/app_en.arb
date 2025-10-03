@@ -47,6 +47,7 @@
   "errorSavingNewMarkedPDFPage": "error saving new marked PDF Page",
   "errorChangingAppBarVisibility": "error changing the AppBar Visibility",
   "errorShowingAlertVersesMarkingDialog": "error showing alert verses marking dialog",
-  "errorShowingAlertPDFPageMarkingDialog": "error showing alert PDF Page marking dialog"
+  "errorShowingAlertPDFPageMarkingDialog": "error showing alert PDF Page marking dialog",
+  "errorPlayingAudio": "Error Playing Audio"
 
 }

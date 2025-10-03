@@ -161,4 +161,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get errorShowingAlertPDFPageMarkingDialog =>
       'خطأ في عرض نافذة تنبيه تحديد صفحة PDF';
+
+  @override
+  String get errorPlayingAudio => 'خطأ في تشغيل الصوت';
 }

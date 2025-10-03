@@ -163,4 +163,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorShowingAlertPDFPageMarkingDialog =>
       'error showing alert PDF Page marking dialog';
+
+  @override
+  String get errorPlayingAudio => 'Error Playing Audio';
 }

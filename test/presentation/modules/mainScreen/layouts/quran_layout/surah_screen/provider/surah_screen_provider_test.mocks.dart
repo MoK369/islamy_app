@@ -15,6 +15,7 @@ import 'package:islamy_app/presentation/core/utils/dialog_service/dialog_service
     as _i11;
 import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart'
     as _i9;
+import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart' as _i12;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
 import 'package:shared_preferences/shared_preferences.dart' as _i2;
@@ -502,4 +503,18 @@ class MockDialogService extends _i1.Mock implements _i11.DialogService {
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),
       ) as _i4.Future<void>);
+}
+
+/// A class which mocks [CustomToasts].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCustomToasts extends _i1.Mock implements _i12.CustomToasts {
+  @override
+  void showErrorToast(String? message) => super.noSuchMethod(
+        Invocation.method(
+          #showErrorToast,
+          [message],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

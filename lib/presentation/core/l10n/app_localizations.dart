@@ -391,6 +391,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'خطأ في عرض نافذة تنبيه تحديد صفحة PDF'**
   String get errorShowingAlertPDFPageMarkingDialog;
+
+  /// No description provided for @errorPlayingAudio.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطأ في تشغيل الصوت'**
+  String get errorPlayingAudio;
 }
 
 class _AppLocalizationsDelegate

@@ -11,6 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart'
+    as _i161;
 import 'package:just_audio/just_audio.dart' as _i501;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:stash/stash_api.dart' as _i265;
@@ -27,6 +29,7 @@ import 'domain/repositories/app_version_check/app_version_check_repo.dart'
     as _i347;
 import 'domain/repositories/quran_radio_channels/quran_radio_channels_repository.dart'
     as _i602;
+import 'domain/use_cases/get_radio_channels_use_case.dart' as _i54;
 import 'presentation/core/ads/start_io_ad_provider.dart' as _i680;
 import 'presentation/core/app_version_checker/app_version_checker.dart'
     as _i680;
@@ -44,11 +47,14 @@ import 'presentation/core/utils/handlers/system_ui_handler/default_system_ui_mod
     as _i652;
 import 'presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart'
     as _i552;
+import 'presentation/core/utils/internet_connection_object_provider/internet_connection_object_provider.dart'
+    as _i34;
 import 'presentation/core/utils/saved_locale/get_saved_locale.dart' as _i472;
 import 'presentation/core/utils/shared_preferences/shared_preferences_provider.dart'
     as _i301;
 import 'presentation/core/utils/text_file_caching/text_file_caching.dart'
     as _i163;
+import 'presentation/core/utils/toasts/toasts.dart' as _i533;
 import 'presentation/modules/mainScreen/layouts/hadeeth_layout/view_models/hadeeth_layout_view_model.dart'
     as _i468;
 import 'presentation/modules/mainScreen/layouts/quran_layout/surah_screen/pages/text_page/view_model/surah_text_page_view_model.dart'
@@ -74,6 +80,8 @@ extension GetItInjectableX on _i174.GetIt {
     final textFileCaching = _$TextFileCaching();
     final sharedPreferencesProvider = _$SharedPreferencesProvider();
     final audioPlayerProvider = _$AudioPlayerProvider();
+    final internetConnectionObjectProvider =
+        _$InternetConnectionObjectProvider();
     final getSavedLocale = _$GetSavedLocale();
     final appLocalizationsProvider = _$AppLocalizationsProvider();
     await gh.factoryAsync<_i265.Cache<String>>(
@@ -85,8 +93,11 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.factory<_i680.StartIoAdProvider>(() => _i680.StartIoAdProvider());
+    gh.factory<_i533.CustomToasts>(() => _i533.CustomToasts());
     gh.factory<_i501.AudioPlayer>(() => audioPlayerProvider.provider());
     gh.singleton<_i265.ApiManager>(() => _i265.ApiManager());
+    gh.lazySingleton<_i161.InternetConnection>(
+        () => internetConnectionObjectProvider.provide());
     gh.factory<_i934.DialogService>(() => _i747.DefaultDialogService());
     gh.factory<_i552.SystemUiModeHandler>(
         () => _i652.DefaultSystemUiModeHandler());
@@ -128,9 +139,13 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i552.SystemUiModeHandler>(),
           gh<_i934.DialogService>(),
         ));
+    gh.factory<_i54.GetRadioChannelsUseCase>(() =>
+        _i54.GetRadioChannelsUseCase(gh<_i602.QuranRadioChannelsRepository>()));
     gh.singleton<_i647.RadioViewModel>(() => _i647.RadioViewModel(
-          gh<_i602.QuranRadioChannelsRepository>(),
+          gh<_i54.GetRadioChannelsUseCase>(),
           gh<_i501.AudioPlayer>(),
+          gh<_i161.InternetConnection>(),
+          gh<_i533.CustomToasts>(),
         ));
     return this;
   }
@@ -141,6 +156,9 @@ class _$TextFileCaching extends _i163.TextFileCaching {}
 class _$SharedPreferencesProvider extends _i301.SharedPreferencesProvider {}
 
 class _$AudioPlayerProvider extends _i266.AudioPlayerProvider {}
+
+class _$InternetConnectionObjectProvider
+    extends _i34.InternetConnectionObjectProvider {}
 
 class _$GetSavedLocale extends _i472.GetSavedLocale {}
 

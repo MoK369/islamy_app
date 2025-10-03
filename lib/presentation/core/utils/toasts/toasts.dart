@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:injectable/injectable.dart';
 import 'package:islamy_app/di.dart';
 import 'package:islamy_app/presentation/core/widgets/toast_widget.dart';
 
-abstract class Toasts {
-  static void showErrorToast(String message) {
+@injectable
+class CustomToasts {
+  void showErrorToast(String message) {
     getIt.get<FToast>().showToast(
         gravity: ToastGravity.BOTTOM,
         toastDuration: const Duration(seconds: 3),

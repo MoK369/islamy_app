@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:islamy_app/di.dart';
 import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart';
 
 FutureOr<T?>? executeHandler<T>(FutureOr<T> Function() fnToExecute,
-    {String? errorMessage}) async {
+    {String? errorMessage,
+    FutureOr<void> Function(Object error)? onErrorExecute}) async {
   try {
     return await fnToExecute();
   } catch (e) {
-    Toasts.showErrorToast(errorMessage ?? e.toString());
+    if (onErrorExecute != null) await onErrorExecute(e);
+    getIt.get<CustomToasts>().showErrorToast(errorMessage ?? e.toString());
   }
   return null;
 }

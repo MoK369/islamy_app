@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:islamy_app/di.dart';
 import 'package:islamy_app/presentation/core/l10n/app_localizations.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/utils/dialog_service/dialog_service.dart';
 import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart';
-import 'package:islamy_app/presentation/core/widgets/toast_widget.dart';
+import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart';
 import 'package:mockito/annotations.dart';
@@ -19,9 +18,9 @@ import 'surah_screen_provider_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<SharedPreferences>(),
   MockSpec<LocaleProvider>(),
-  MockSpec<FToast>(),
   MockSpec<SystemUiModeHandler>(),
-  MockSpec<DialogService>()
+  MockSpec<DialogService>(),
+  MockSpec<CustomToasts>()
 ])
 void main() {
   group(
@@ -31,19 +30,18 @@ void main() {
       late MockSharedPreferences sharedPreferences;
       late MockLocaleProvider localeProvider;
       late AppLocalizations appLocalizations;
-      late MockFToast mockFToast;
       late MockSystemUiModeHandler mockSystemUiModeHandler;
       late MockDialogService mockDialogService;
+      late MockCustomToasts customToasts;
       final Exception sharedPreferencesException =
           Exception("error getting or saving a value using sharedPreferences");
       setUpAll(
         () async {
           mockSystemUiModeHandler = MockSystemUiModeHandler();
           mockDialogService = MockDialogService();
-
-          mockFToast = MockFToast();
-          getIt.registerLazySingleton<FToast>(
-            () => mockFToast,
+          customToasts = MockCustomToasts();
+          getIt.registerFactory<CustomToasts>(
+            () => customToasts,
           );
 
           appLocalizations =
@@ -61,23 +59,6 @@ void main() {
               localeProvider, mockSystemUiModeHandler, mockDialogService);
         },
       );
-
-      VerificationResult verifyShowToastFunction(
-          String appLocalizationErrorMessage) {
-        return verify(mockFToast.showToast(
-            fadeDuration: anyNamed("fadeDuration"),
-            gravity: anyNamed("gravity"),
-            ignorePointer: anyNamed("ignorePointer"),
-            isDismissible: anyNamed("isDismissible"),
-            positionedToastBuilder: anyNamed("positionedToastBuilder"),
-            toastDuration: anyNamed("toastDuration"),
-            child: argThat(
-                predicate<ToastWidget>(
-                  (widget) => widget.text == appLocalizationErrorMessage,
-                ),
-                named: "child")));
-      }
-
       group(
         "Testing getSurahScreenData() method",
         () {
@@ -137,7 +118,8 @@ void main() {
               expect(surahScreenProvider.markedVerseIndex, "0 2");
               expect(surahScreenProvider.markedSurahPDFPageIndex, "");
 
-              verifyShowToastFunction(appLocalizations.errorLoadingSavedData)
+              verify(customToasts
+                      .showErrorToast(appLocalizations.errorLoadingSavedData))
                   .called(1);
             },
           );
@@ -202,7 +184,9 @@ void main() {
                           equals(SurahScreenProvider.fontSizeOfSurahVersesKey)),
                       argThat(equals(fontSize))))
                   .called(1);
-              verifyShowToastFunction(appLocalizations.errorSavingFontSize)
+
+              verify(customToasts
+                      .showErrorToast(appLocalizations.errorSavingFontSize))
                   .called(1);
             },
           );
@@ -263,8 +247,8 @@ void main() {
                       argThat(equals(SurahScreenProvider.markedVerseKey)),
                       argThat(equals(newVerseIndex))))
                   .called(1);
-              verifyShowToastFunction(
-                      appLocalizations.errorSavingNewMarkedVerse)
+              verify(customToasts.showErrorToast(
+                      appLocalizations.errorSavingNewMarkedVerse))
                   .called(1);
             },
           );
@@ -333,8 +317,9 @@ void main() {
                           equals(SurahScreenProvider.markedSurahPDFPageKey)),
                       argThat(equals(newPdfPageIndex))))
                   .called(1);
-              verifyShowToastFunction(
-                      appLocalizations.errorSavingNewMarkedPDFPage)
+
+              verify(customToasts.showErrorToast(
+                      appLocalizations.errorSavingNewMarkedPDFPage))
                   .called(1);
             },
           );
@@ -415,8 +400,8 @@ void main() {
               verify(mockSystemUiModeHandler.setEnabledSystemUIMode(
                       argThat(equals(SystemUiMode.immersive))))
                   .called(1);
-              verifyShowToastFunction(
-                      appLocalizations.errorChangingAppBarVisibility)
+              verify(customToasts.showErrorToast(
+                      appLocalizations.errorChangingAppBarVisibility))
                   .called(1);
             },
           );
@@ -541,10 +526,9 @@ void main() {
               await surahScreenProvider
                   .showAlertAboutVersesMarking(newVerseIndex);
               // assert
-              verifyShowToastFunction(
-                      appLocalizations.errorShowingAlertVersesMarkingDialog)
+              verify(customToasts.showErrorToast(
+                      appLocalizations.errorShowingAlertVersesMarkingDialog))
                   .called(1);
-
               expect(notifyCounts, 0);
             },
           );
@@ -671,10 +655,9 @@ void main() {
               await surahScreenProvider
                   .showAlertAboutMarkedSurahPDFPage(newPDFPageIndex);
               // assert
-              verifyShowToastFunction(
-                      appLocalizations.errorShowingAlertPDFPageMarkingDialog)
+              verify(customToasts.showErrorToast(
+                      appLocalizations.errorShowingAlertPDFPageMarkingDialog))
                   .called(1);
-
               expect(notifyCounts, 0);
             },
           );
