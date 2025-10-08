@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/app_locals/locales.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/constants/quran_layout_constants.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
 
 class SearchTextField extends StatelessWidget {
@@ -14,6 +15,7 @@ class SearchTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 5),
       child: TextField(
+        key: const Key(QuranLayoutConstants.searchTextFieldKey),
         cursorColor: theme.progressIndicatorTheme.color,
         controller: mainScreenProvider.searchFieldController,
         style: theme.textTheme.bodyMedium,

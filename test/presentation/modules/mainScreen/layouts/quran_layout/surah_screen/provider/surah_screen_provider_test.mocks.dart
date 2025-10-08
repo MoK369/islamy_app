@@ -3,21 +3,19 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
-import 'dart:ui' as _i7;
+import 'dart:async' as _i3;
+import 'dart:ui' as _i6;
 
-import 'package:flutter/material.dart' as _i8;
-import 'package:flutter/services.dart' as _i10;
-import 'package:fluttertoast/fluttertoast.dart' as _i3;
+import 'package:flutter/services.dart' as _i8;
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart'
-    as _i5;
+    as _i4;
 import 'package:islamy_app/presentation/core/utils/dialog_service/dialog_service.dart'
-    as _i11;
-import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart'
     as _i9;
-import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart' as _i12;
+import 'package:islamy_app/presentation/core/utils/handlers/system_ui_handler/system_ui_mode_handler.dart'
+    as _i7;
+import 'package:islamy_app/presentation/core/utils/toasts/toasts.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:mockito/src/dummies.dart' as _i5;
 import 'package:shared_preferences/shared_preferences.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -37,16 +35,6 @@ import 'package:shared_preferences/shared_preferences.dart' as _i2;
 class _FakeSharedPreferences_0 extends _i1.SmartFake
     implements _i2.SharedPreferences {
   _FakeSharedPreferences_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeFToast_1 extends _i1.SmartFake implements _i3.FToast {
-  _FakeFToast_1(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -134,7 +122,7 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
       ) as List<String>?);
 
   @override
-  _i4.Future<bool> setBool(
+  _i3.Future<bool> setBool(
     String? key,
     bool? value,
   ) =>
@@ -146,12 +134,12 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<bool> setInt(
+  _i3.Future<bool> setInt(
     String? key,
     int? value,
   ) =>
@@ -163,12 +151,12 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<bool> setDouble(
+  _i3.Future<bool> setDouble(
     String? key,
     double? value,
   ) =>
@@ -180,12 +168,12 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<bool> setString(
+  _i3.Future<bool> setString(
     String? key,
     String? value,
   ) =>
@@ -197,12 +185,12 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<bool> setStringList(
+  _i3.Future<bool> setStringList(
     String? key,
     List<String>? value,
   ) =>
@@ -214,63 +202,63 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<bool> remove(String? key) => (super.noSuchMethod(
+  _i3.Future<bool> remove(String? key) => (super.noSuchMethod(
         Invocation.method(
           #remove,
           [key],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<bool> commit() => (super.noSuchMethod(
+  _i3.Future<bool> commit() => (super.noSuchMethod(
         Invocation.method(
           #commit,
           [],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<bool> clear() => (super.noSuchMethod(
+  _i3.Future<bool> clear() => (super.noSuchMethod(
         Invocation.method(
           #clear,
           [],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 
   @override
-  _i4.Future<void> reload() => (super.noSuchMethod(
+  _i3.Future<void> reload() => (super.noSuchMethod(
         Invocation.method(
           #reload,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }
 
 /// A class which mocks [LocaleProvider].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocaleProvider extends _i1.Mock implements _i5.LocaleProvider {
+class MockLocaleProvider extends _i1.Mock implements _i4.LocaleProvider {
   @override
   String get currentLocale => (super.noSuchMethod(
         Invocation.getter(#currentLocale),
-        returnValue: _i6.dummyValue<String>(
+        returnValue: _i5.dummyValue<String>(
           this,
           Invocation.getter(#currentLocale),
         ),
-        returnValueForMissingStub: _i6.dummyValue<String>(
+        returnValueForMissingStub: _i5.dummyValue<String>(
           this,
           Invocation.getter(#currentLocale),
         ),
@@ -279,11 +267,11 @@ class MockLocaleProvider extends _i1.Mock implements _i5.LocaleProvider {
   @override
   String get oldLocale => (super.noSuchMethod(
         Invocation.getter(#oldLocale),
-        returnValue: _i6.dummyValue<String>(
+        returnValue: _i5.dummyValue<String>(
           this,
           Invocation.getter(#oldLocale),
         ),
-        returnValueForMissingStub: _i6.dummyValue<String>(
+        returnValueForMissingStub: _i5.dummyValue<String>(
           this,
           Invocation.getter(#oldLocale),
         ),
@@ -366,7 +354,7 @@ class MockLocaleProvider extends _i1.Mock implements _i5.LocaleProvider {
       ) as bool);
 
   @override
-  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i6.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -375,7 +363,7 @@ class MockLocaleProvider extends _i1.Mock implements _i5.LocaleProvider {
       );
 
   @override
-  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i6.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -402,92 +390,29 @@ class MockLocaleProvider extends _i1.Mock implements _i5.LocaleProvider {
       );
 }
 
-/// A class which mocks [FToast].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockFToast extends _i1.Mock implements _i3.FToast {
-  @override
-  set context(_i8.BuildContext? _context) => super.noSuchMethod(
-        Invocation.setter(
-          #context,
-          _context,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  _i3.FToast init(_i8.BuildContext? context) => (super.noSuchMethod(
-        Invocation.method(
-          #init,
-          [context],
-        ),
-        returnValue: _FakeFToast_1(
-          this,
-          Invocation.method(
-            #init,
-            [context],
-          ),
-        ),
-        returnValueForMissingStub: _FakeFToast_1(
-          this,
-          Invocation.method(
-            #init,
-            [context],
-          ),
-        ),
-      ) as _i3.FToast);
-
-  @override
-  void showToast({
-    required _i8.Widget? child,
-    _i3.PositionedToastBuilder? positionedToastBuilder,
-    Duration? toastDuration = const Duration(seconds: 2),
-    _i3.ToastGravity? gravity,
-    Duration? fadeDuration = const Duration(milliseconds: 350),
-    bool? ignorePointer = false,
-    bool? isDismissible = false,
-  }) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #showToast,
-          [],
-          {
-            #child: child,
-            #positionedToastBuilder: positionedToastBuilder,
-            #toastDuration: toastDuration,
-            #gravity: gravity,
-            #fadeDuration: fadeDuration,
-            #ignorePointer: ignorePointer,
-            #isDismissible: isDismissible,
-          },
-        ),
-        returnValueForMissingStub: null,
-      );
-}
-
 /// A class which mocks [SystemUiModeHandler].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSystemUiModeHandler extends _i1.Mock
-    implements _i9.SystemUiModeHandler {
+    implements _i7.SystemUiModeHandler {
   @override
-  _i4.Future<void> setEnabledSystemUIMode(_i10.SystemUiMode? mode) =>
+  _i3.Future<void> setEnabledSystemUIMode(_i8.SystemUiMode? mode) =>
       (super.noSuchMethod(
         Invocation.method(
           #setEnabledSystemUIMode,
           [mode],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }
 
 /// A class which mocks [DialogService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDialogService extends _i1.Mock implements _i11.DialogService {
+class MockDialogService extends _i1.Mock implements _i9.DialogService {
   @override
-  _i4.Future<void> showBookMarkAlertDialog({
+  _i3.Future<void> showBookMarkAlertDialog({
     required String? message,
     required void Function()? okButtonFunction,
   }) =>
@@ -500,15 +425,15 @@ class MockDialogService extends _i1.Mock implements _i11.DialogService {
             #okButtonFunction: okButtonFunction,
           },
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }
 
 /// A class which mocks [CustomToasts].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCustomToasts extends _i1.Mock implements _i12.CustomToasts {
+class MockCustomToasts extends _i1.Mock implements _i10.CustomToasts {
   @override
   void showErrorToast(String? message) => super.noSuchMethod(
         Invocation.method(

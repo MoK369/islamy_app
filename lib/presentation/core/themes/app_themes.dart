@@ -22,7 +22,7 @@ class Themes {
         valueIndicatorColor: lightPrimaryColor.withAlpha(125),
         valueIndicatorTextStyle:
             const TextStyle(color: Colors.white, fontSize: 20),
-      tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 0.8),
+        tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 0.8),
         activeTickMarkColor: Colors.black,
         inactiveTickMarkColor: lightPrimaryColor.withAlpha(140),
       ),
@@ -32,18 +32,23 @@ class Themes {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       cardTheme: CardThemeData(
-        clipBehavior: Clip.hardEdge,
+          clipBehavior: Clip.hardEdge,
           color: Colors.white,
           surfaceTintColor: null,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       dialogTheme: DialogThemeData(
-        backgroundColor: Colors.white,
+          backgroundColor: Colors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       textTheme: TextTheme(
         titleMedium: const TextStyle(
             fontSize: 25,
+            color: lightSecondaryColor,
+            fontFamily: DefinedFontFamilies.elMessiri,
+            fontWeight: FontWeight.w700),
+        titleSmall: const TextStyle(
+            fontSize: 15,
             color: lightSecondaryColor,
             fontFamily: DefinedFontFamilies.elMessiri,
             fontWeight: FontWeight.w700),
@@ -59,7 +64,7 @@ class Themes {
       appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(color: lightPrimaryColor),
         backgroundColor: Colors.transparent,
-      elevation: 0,
+        elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
             fontSize: 25,

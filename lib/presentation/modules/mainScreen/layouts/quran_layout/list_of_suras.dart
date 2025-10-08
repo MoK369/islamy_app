@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/constants/quran_layout_constants.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/quran_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -39,6 +40,7 @@ class ListOfSuras extends StatelessWidget {
                   height: 45,
                 )
               : InkWell(
+                  key: const Key(QuranLayoutConstants.suraItemKey),
                   splashColor: Colors.transparent,
                   onLongPress: () {
                     mainScreenProvider.markedSurahIndex == ''
@@ -62,8 +64,7 @@ class ListOfSuras extends StatelessWidget {
                       children: [
                         if (indexOfFoundUserList != 114) ...[
                           Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                              child: Stack(
                             children: [
                               Visibility(
                                 visible: mainScreenProvider.markedSurahIndex ==
@@ -74,15 +75,13 @@ class ListOfSuras extends StatelessWidget {
                                   size: 30,
                                 ),
                               ),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    numberOfAyas,
-                                    style: theme.textTheme.bodyMedium!.copyWith(
-                                        fontSize:
-                                            MediaQuery.of(context).size.width *
-                                                0.045),
-                                  ),
+                              Center(
+                                child: Text(
+                                  numberOfAyas,
+                                  style: theme.textTheme.bodyMedium!.copyWith(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.045),
                                 ),
                               ),
                             ],
@@ -101,18 +100,22 @@ class ListOfSuras extends StatelessWidget {
                           )
                         ],
                         Expanded(
-                            child: Center(
-                                child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: FittedBox(
-                            child: Text(
-                              foundUser[indexOfFoundUserList],
-                              style: theme.textTheme.bodyMedium!.copyWith(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.045),
+                          child: Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: FittedBox(
+                                child: Text(
+                                  foundUser[indexOfFoundUserList],
+                                  style: theme.textTheme.bodyMedium!.copyWith(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.045),
+                                ),
+                              ),
                             ),
                           ),
-                        ))),
+                        ),
                       ],
                     ),
                   ),

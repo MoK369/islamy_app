@@ -4,6 +4,7 @@ import 'package:islamy_app/presentation/core/app_locals/locales.dart';
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart';
 import 'package:islamy_app/presentation/core/routes/defined_routes.dart';
 import 'package:islamy_app/presentation/core/utils/constants/assets_paths.dart';
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/constants/quran_layout_constants.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/list_of_suras.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/search_text_field.dart';
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart';
@@ -59,6 +60,7 @@ class _QuranLayoutState extends State<QuranLayout> {
           clipBehavior: Clip.none,
           children: [
             Image.asset(
+              key: const Key(QuranLayoutConstants.quranHeaderIconKey),
               AssetsPaths.quranHeaderIcon,
               height: size.height * 0.19,
             ),
@@ -69,6 +71,8 @@ class _QuranLayoutState extends State<QuranLayout> {
                 child: Transform.flip(
                   flipX: localeProvider.isArabicChosen(),
                   child: IconButton(
+                      key: const Key(
+                          QuranLayoutConstants.goToBookmarkedSurahButtonKey),
                       onPressed: () async {
                         await itemScrollController.scrollTo(
                             index:
@@ -87,87 +91,80 @@ class _QuranLayoutState extends State<QuranLayout> {
           },
         ),
         Expanded(
-          child: Stack(
-            alignment: Alignment.center,
+          child: Column(
             children: [
-              const Column(
+              const Divider(
+                key: Key(QuranLayoutConstants.upperDividerKey),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 10,
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(
+                            key: const Key(
+                                QuranLayoutConstants.numberOfVersesTextKey),
+                            Locales.getTranslations(context).numberOfVerses,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: theme.textTheme.titleMedium!.copyWith(
+                                fontSize: 20, fontWeight: FontWeight.w300)),
+                      ),
+                    ),
                   ),
-                  //Expanded(child: VerticalDivider()),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Expanded(
+                    child: Center(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(
+                        key:
+                            const Key(QuranLayoutConstants.numberOfSuraTextKey),
+                        Locales.getTranslations(context).nameOfSura,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    )),
+                  ),
                 ],
               ),
-              Column(
-                children: [
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          child: Center(
-                              child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: SizedBox(
-                          height: size.height * 0.05,
-                          child: FittedBox(
-                            child: Text(
-                                Locales.getTranslations(context).numberOfVerses,
-                                style: theme.textTheme.titleMedium!
-                                    .copyWith(fontWeight: FontWeight.w300)),
-                          ),
-                        ),
-                      ))),
-                      Transform.scale(
-                          scaleY: 1.4, child: const VerticalDivider()),
-                      Expanded(
-                          child: Center(
-                              child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: SizedBox(
-                          height: size.height * 0.05,
-                          child: FittedBox(
-                            child: Text(
-                              Locales.getTranslations(context).nameOfSura,
-                              style: theme.textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ))),
-                    ],
-                  ),
-                  const Divider(
-                    height: 0,
-                  ),
-                  ListOfSuras(
-                    itemScrollController: itemScrollController,
-                    itemPositionsListener: itemPositionsListener,
-                    foundUser: foundUser!,
-                    onClick: (index) async {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      var startIoAdProvider = Provider.of<StartIoAdProvider>(
-                          context,
-                          listen: false);
-                      if (!context.mounted) return;
-                      Navigator.of(context).pushNamed(DefinedRoutes.surahScreen,
-                          arguments: SendSurahInfo(
-                              surahIndex: mainScreenProvider
-                                  .getSurasListEnglishOrArabic()
-                                  .indexOf(foundUser![index]),
-                              surahName: foundUser![index]));
-                      startIoAdProvider.hideBannerAd();
-                      Future.delayed(
-                        const Duration(seconds: 1),
-                        () {
-                          clearSearchResults();
-                        },
-                      );
+              const Divider(
+                key: Key(QuranLayoutConstants.lowerDividerKey),
+                height: 0,
+              ),
+              ListOfSuras(
+                key: const Key(QuranLayoutConstants.surasListKey),
+                itemScrollController: itemScrollController,
+                itemPositionsListener: itemPositionsListener,
+                foundUser: foundUser!,
+                onClick: (index) async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  var startIoAdProvider =
+                      Provider.of<StartIoAdProvider>(context, listen: false);
+                  if (!context.mounted) return;
+                  Navigator.of(context).pushNamed(DefinedRoutes.surahScreen,
+                      arguments: SendSurahInfo(
+                          surahIndex: mainScreenProvider
+                              .getSurasListEnglishOrArabic()
+                              .indexOf(foundUser![index]),
+                          surahName: foundUser![index]));
+                  startIoAdProvider.hideBannerAd();
+                  Future.delayed(
+                    const Duration(seconds: 1),
+                    () {
+                      clearSearchResults();
                     },
-                  ),
-                ],
+                  );
+                },
               ),
             ],
           ),
