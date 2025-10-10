@@ -15,19 +15,20 @@ abstract class RouteMethods {
         case DefinedRoutes.mainScreen:
           return MaterialPageRoute(
             builder: (context) => const MainScreen(),
+            settings: const RouteSettings(name: DefinedRoutes.mainScreen),
           );
         case DefinedRoutes.surahScreen:
           return MaterialPageRoute(
-            builder: (context) => SurahScreen(
-              surahInfo: args as SendSurahInfo,
-            ),
-          );
+              builder: (context) => SurahScreen(
+                    surahInfo: args as SendSurahInfo,
+                  ),
+              settings: const RouteSettings(name: DefinedRoutes.surahScreen));
         case DefinedRoutes.hadeethScreen:
           return MaterialPageRoute(
-            builder: (context) => HadeethScreen(
-              hadethData: args as HadethData,
-            ),
-          );
+              builder: (context) => HadeethScreen(
+                    hadethData: args as HadethData,
+                  ),
+              settings: const RouteSettings(name: DefinedRoutes.hadeethScreen));
         default:
           return _errorRoute();
       }

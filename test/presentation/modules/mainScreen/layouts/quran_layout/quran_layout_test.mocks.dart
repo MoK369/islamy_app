@@ -3,16 +3,30 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:ui' as _i7;
+import 'dart:async' as _i4;
+import 'dart:ui' as _i8;
 
 import 'package:flutter/material.dart' as _i3;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart'
+    as _i10;
+import 'package:islamy_app/presentation/core/ads/start_io_ad_provider.dart'
+    as _i9;
+import 'package:islamy_app/presentation/core/bases/base_view_state.dart'
+    as _i15;
 import 'package:islamy_app/presentation/core/providers/locale_provider.dart'
-    as _i6;
+    as _i7;
+import 'package:islamy_app/presentation/core/providers/theme_provider.dart'
+    as _i13;
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/pages/text_page/view_model/surah_text_page_view_model.dart'
+    as _i14;
+import 'package:islamy_app/presentation/modules/mainScreen/layouts/quran_layout/surah_screen/provider/surah_screen_provider.dart'
+    as _i12;
 import 'package:islamy_app/presentation/modules/mainScreen/provider/main_screen_provider.dart'
-    as _i4;
+    as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i5;
+import 'package:mockito/src/dummies.dart' as _i6;
 import 'package:shared_preferences/shared_preferences.dart' as _i2;
+import 'package:startapp_sdk/startapp.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -42,6 +56,17 @@ class _FakeSharedPreferences_0 extends _i1.SmartFake
 class _FakeTextEditingController_1 extends _i1.SmartFake
     implements _i3.TextEditingController {
   _FakeTextEditingController_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeStreamSubscription_2<T> extends _i1.SmartFake
+    implements _i4.StreamSubscription<T> {
+  _FakeStreamSubscription_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -165,7 +190,7 @@ class MockNavigatorObserver extends _i1.Mock implements _i3.NavigatorObserver {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockMainScreenProvider extends _i1.Mock
-    implements _i4.MainScreenProvider {
+    implements _i5.MainScreenProvider {
   @override
   _i2.SharedPreferences get sharedPreferences => (super.noSuchMethod(
         Invocation.getter(#sharedPreferences),
@@ -196,11 +221,11 @@ class MockMainScreenProvider extends _i1.Mock
   @override
   String get markedHadeethIndex => (super.noSuchMethod(
         Invocation.getter(#markedHadeethIndex),
-        returnValue: _i5.dummyValue<String>(
+        returnValue: _i6.dummyValue<String>(
           this,
           Invocation.getter(#markedHadeethIndex),
         ),
-        returnValueForMissingStub: _i5.dummyValue<String>(
+        returnValueForMissingStub: _i6.dummyValue<String>(
           this,
           Invocation.getter(#markedHadeethIndex),
         ),
@@ -222,11 +247,11 @@ class MockMainScreenProvider extends _i1.Mock
   @override
   String get markedSurahIndex => (super.noSuchMethod(
         Invocation.getter(#markedSurahIndex),
-        returnValue: _i5.dummyValue<String>(
+        returnValue: _i6.dummyValue<String>(
           this,
           Invocation.getter(#markedSurahIndex),
         ),
-        returnValueForMissingStub: _i5.dummyValue<String>(
+        returnValueForMissingStub: _i6.dummyValue<String>(
           this,
           Invocation.getter(#markedSurahIndex),
         ),
@@ -276,7 +301,7 @@ class MockMainScreenProvider extends _i1.Mock
       ) as bool);
 
   @override
-  void getLocaleProvider(_i6.LocaleProvider? localeProvider) =>
+  void getLocaleProvider(_i7.LocaleProvider? localeProvider) =>
       super.noSuchMethod(
         Invocation.method(
           #getLocaleProvider,
@@ -370,7 +395,7 @@ class MockMainScreenProvider extends _i1.Mock
       );
 
   @override
-  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -379,7 +404,7 @@ class MockMainScreenProvider extends _i1.Mock
       );
 
   @override
-  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -409,15 +434,15 @@ class MockMainScreenProvider extends _i1.Mock
 /// A class which mocks [LocaleProvider].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocaleProvider extends _i1.Mock implements _i6.LocaleProvider {
+class MockLocaleProvider extends _i1.Mock implements _i7.LocaleProvider {
   @override
   String get currentLocale => (super.noSuchMethod(
         Invocation.getter(#currentLocale),
-        returnValue: _i5.dummyValue<String>(
+        returnValue: _i6.dummyValue<String>(
           this,
           Invocation.getter(#currentLocale),
         ),
-        returnValueForMissingStub: _i5.dummyValue<String>(
+        returnValueForMissingStub: _i6.dummyValue<String>(
           this,
           Invocation.getter(#currentLocale),
         ),
@@ -426,11 +451,11 @@ class MockLocaleProvider extends _i1.Mock implements _i6.LocaleProvider {
   @override
   String get oldLocale => (super.noSuchMethod(
         Invocation.getter(#oldLocale),
-        returnValue: _i5.dummyValue<String>(
+        returnValue: _i6.dummyValue<String>(
           this,
           Invocation.getter(#oldLocale),
         ),
-        returnValueForMissingStub: _i5.dummyValue<String>(
+        returnValueForMissingStub: _i6.dummyValue<String>(
           this,
           Invocation.getter(#oldLocale),
         ),
@@ -513,7 +538,7 @@ class MockLocaleProvider extends _i1.Mock implements _i6.LocaleProvider {
       ) as bool);
 
   @override
-  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -522,7 +547,672 @@ class MockLocaleProvider extends _i1.Mock implements _i6.LocaleProvider {
       );
 
   @override
-  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [StartIoAdProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockStartIoAdProvider extends _i1.Mock implements _i9.StartIoAdProvider {
+  @override
+  _i4.StreamSubscription<_i10.InternetStatus> get showBannerListener =>
+      (super.noSuchMethod(
+        Invocation.getter(#showBannerListener),
+        returnValue: _FakeStreamSubscription_2<_i10.InternetStatus>(
+          this,
+          Invocation.getter(#showBannerListener),
+        ),
+        returnValueForMissingStub:
+            _FakeStreamSubscription_2<_i10.InternetStatus>(
+          this,
+          Invocation.getter(#showBannerListener),
+        ),
+      ) as _i4.StreamSubscription<_i10.InternetStatus>);
+
+  @override
+  _i4.StreamSubscription<_i10.InternetStatus> get showInterstitialListener =>
+      (super.noSuchMethod(
+        Invocation.getter(#showInterstitialListener),
+        returnValue: _FakeStreamSubscription_2<_i10.InternetStatus>(
+          this,
+          Invocation.getter(#showInterstitialListener),
+        ),
+        returnValueForMissingStub:
+            _FakeStreamSubscription_2<_i10.InternetStatus>(
+          this,
+          Invocation.getter(#showInterstitialListener),
+        ),
+      ) as _i4.StreamSubscription<_i10.InternetStatus>);
+
+  @override
+  bool get tryShowingInterstitialAdAgainOnErrorOnce => (super.noSuchMethod(
+        Invocation.getter(#tryShowingInterstitialAdAgainOnErrorOnce),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  int get tryingCounts => (super.noSuchMethod(
+        Invocation.getter(#tryingCounts),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
+  set showBannerListener(
+          _i4.StreamSubscription<_i10.InternetStatus>? _showBannerListener) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #showBannerListener,
+          _showBannerListener,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set showInterstitialListener(
+          _i4.StreamSubscription<_i10.InternetStatus>?
+              _showInterstitialListener) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #showInterstitialListener,
+          _showInterstitialListener,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set startAppBannerAd(_i11.StartAppBannerAd? _startAppBannerAd) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #startAppBannerAd,
+          _startAppBannerAd,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set startAppInterstitialAd(
+          _i11.StartAppInterstitialAd? _startAppInterstitialAd) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #startAppInterstitialAd,
+          _startAppInterstitialAd,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set tryShowingInterstitialAdAgainOnErrorOnce(
+          bool? _tryShowingInterstitialAdAgainOnErrorOnce) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #tryShowingInterstitialAdAgainOnErrorOnce,
+          _tryShowingInterstitialAdAgainOnErrorOnce,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set tryingCounts(int? _tryingCounts) => super.noSuchMethod(
+        Invocation.setter(
+          #tryingCounts,
+          _tryingCounts,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i4.Future<void> showBannerAdAndListenForConnection() => (super.noSuchMethod(
+        Invocation.method(
+          #showBannerAdAndListenForConnection,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> showBannerAdOnly() => (super.noSuchMethod(
+        Invocation.method(
+          #showBannerAdOnly,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> hideBannerAd() => (super.noSuchMethod(
+        Invocation.method(
+          #hideBannerAd,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> showInterstitialAd() => (super.noSuchMethod(
+        Invocation.method(
+          #showInterstitialAd,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [SurahScreenProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSurahScreenProvider extends _i1.Mock
+    implements _i12.SurahScreenProvider {
+  @override
+  _i2.SharedPreferences get sharedPreferences => (super.noSuchMethod(
+        Invocation.getter(#sharedPreferences),
+        returnValue: _FakeSharedPreferences_0(
+          this,
+          Invocation.getter(#sharedPreferences),
+        ),
+        returnValueForMissingStub: _FakeSharedPreferences_0(
+          this,
+          Invocation.getter(#sharedPreferences),
+        ),
+      ) as _i2.SharedPreferences);
+
+  @override
+  double get fontSizeOfSurahVerses => (super.noSuchMethod(
+        Invocation.getter(#fontSizeOfSurahVerses),
+        returnValue: 0.0,
+        returnValueForMissingStub: 0.0,
+      ) as double);
+
+  @override
+  String get markedVerseIndex => (super.noSuchMethod(
+        Invocation.getter(#markedVerseIndex),
+        returnValue: _i6.dummyValue<String>(
+          this,
+          Invocation.getter(#markedVerseIndex),
+        ),
+        returnValueForMissingStub: _i6.dummyValue<String>(
+          this,
+          Invocation.getter(#markedVerseIndex),
+        ),
+      ) as String);
+
+  @override
+  String get markedSurahPDFPageIndex => (super.noSuchMethod(
+        Invocation.getter(#markedSurahPDFPageIndex),
+        returnValue: _i6.dummyValue<String>(
+          this,
+          Invocation.getter(#markedSurahPDFPageIndex),
+        ),
+        returnValueForMissingStub: _i6.dummyValue<String>(
+          this,
+          Invocation.getter(#markedSurahPDFPageIndex),
+        ),
+      ) as String);
+
+  @override
+  bool get isSurahOrHadeethScreenAppBarVisible => (super.noSuchMethod(
+        Invocation.getter(#isSurahOrHadeethScreenAppBarVisible),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  set sharedPreferences(_i2.SharedPreferences? _sharedPreferences) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #sharedPreferences,
+          _sharedPreferences,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set fontSizeOfSurahVerses(double? _fontSizeOfSurahVerses) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #fontSizeOfSurahVerses,
+          _fontSizeOfSurahVerses,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set markedVerseIndex(String? _markedVerseIndex) => super.noSuchMethod(
+        Invocation.setter(
+          #markedVerseIndex,
+          _markedVerseIndex,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set markedSurahPDFPageIndex(String? _markedSurahPDFPageIndex) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #markedSurahPDFPageIndex,
+          _markedSurahPDFPageIndex,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set isSurahOrHadeethScreenAppBarVisible(
+          bool? _isSurahOrHadeethScreenAppBarVisible) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #isSurahOrHadeethScreenAppBarVisible,
+          _isSurahOrHadeethScreenAppBarVisible,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i4.Future<void> getSurahScreenData() => (super.noSuchMethod(
+        Invocation.method(
+          #getSurahScreenData,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> changeFontSizeOfSurahVerses(double? newSize) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #changeFontSizeOfSurahVerses,
+          [newSize],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> changeMarkedVerse(String? index) => (super.noSuchMethod(
+        Invocation.method(
+          #changeMarkedVerse,
+          [index],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> changeMarkedSurahPDFPage(String? index) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #changeMarkedSurahPDFPage,
+          [index],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> changeSurahOrHadeethScreenAppBarStatus(bool? newValue) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #changeSurahOrHadeethScreenAppBarStatus,
+          [newValue],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> showAlertAboutVersesMarking(String? verseToMarkIndex) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #showAlertAboutVersesMarking,
+          [verseToMarkIndex],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> showAlertAboutMarkedSurahPDFPage(String? pageToMarkIndex) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #showAlertAboutMarkedSurahPDFPage,
+          [pageToMarkIndex],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [ThemeProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockThemeProvider extends _i1.Mock implements _i13.ThemeProvider {
+  @override
+  _i3.ThemeMode get currentTheme => (super.noSuchMethod(
+        Invocation.getter(#currentTheme),
+        returnValue: _i3.ThemeMode.system,
+        returnValueForMissingStub: _i3.ThemeMode.system,
+      ) as _i3.ThemeMode);
+
+  @override
+  _i2.SharedPreferences get sharedPreferences => (super.noSuchMethod(
+        Invocation.getter(#sharedPreferences),
+        returnValue: _FakeSharedPreferences_0(
+          this,
+          Invocation.getter(#sharedPreferences),
+        ),
+        returnValueForMissingStub: _FakeSharedPreferences_0(
+          this,
+          Invocation.getter(#sharedPreferences),
+        ),
+      ) as _i2.SharedPreferences);
+
+  @override
+  set currentTheme(_i3.ThemeMode? _currentTheme) => super.noSuchMethod(
+        Invocation.setter(
+          #currentTheme,
+          _currentTheme,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  void getThemeData() => super.noSuchMethod(
+        Invocation.method(
+          #getThemeData,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void saveTheme(_i3.ThemeMode? theme) => super.noSuchMethod(
+        Invocation.method(
+          #saveTheme,
+          [theme],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void changeTheme(_i3.ThemeMode? newTheme) => super.noSuchMethod(
+        Invocation.method(
+          #changeTheme,
+          [newTheme],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool isDarkEnabled() => (super.noSuchMethod(
+        Invocation.method(
+          #isDarkEnabled,
+          [],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [SurahTextPageViewModel].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSurahTextPageViewModel extends _i1.Mock
+    implements _i14.SurahTextPageViewModel {
+  @override
+  _i15.BaseViewState<List<List<String>>> get surahVersesState =>
+      (super.noSuchMethod(
+        Invocation.getter(#surahVersesState),
+        returnValue: _i6.dummyValue<_i15.BaseViewState<List<List<String>>>>(
+          this,
+          Invocation.getter(#surahVersesState),
+        ),
+        returnValueForMissingStub:
+            _i6.dummyValue<_i15.BaseViewState<List<List<String>>>>(
+          this,
+          Invocation.getter(#surahVersesState),
+        ),
+      ) as _i15.BaseViewState<List<List<String>>>);
+
+  @override
+  _i15.BaseViewState<List<List<String>>> get doaState => (super.noSuchMethod(
+        Invocation.getter(#doaState),
+        returnValue: _i6.dummyValue<_i15.BaseViewState<List<List<String>>>>(
+          this,
+          Invocation.getter(#doaState),
+        ),
+        returnValueForMissingStub:
+            _i6.dummyValue<_i15.BaseViewState<List<List<String>>>>(
+          this,
+          Invocation.getter(#doaState),
+        ),
+      ) as _i15.BaseViewState<List<List<String>>>);
+
+  @override
+  set surahVersesState(
+          _i15.BaseViewState<List<List<String>>>? _surahVersesState) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #surahVersesState,
+          _surahVersesState,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set doaState(_i15.BaseViewState<List<List<String>>>? _doaState) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #doaState,
+          _doaState,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i4.Future<void> readSurah({
+    required int? surahIndex,
+    bool? loadEnSurahToo = false,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #readSurah,
+          [],
+          {
+            #surahIndex: surahIndex,
+            #loadEnSurahToo: loadEnSurahToo,
+          },
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> readDoa({bool? loadEnDoaToo = false}) => (super.noSuchMethod(
+        Invocation.method(
+          #readDoa,
+          [],
+          {#loadEnDoaToo: loadEnDoaToo},
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

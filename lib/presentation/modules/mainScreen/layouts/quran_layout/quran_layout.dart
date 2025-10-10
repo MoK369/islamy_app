@@ -158,12 +158,12 @@ class _QuranLayoutState extends State<QuranLayout> {
                               .indexOf(foundUser![index]),
                           surahName: foundUser![index]));
                   startIoAdProvider.hideBannerAd();
-                  Future.delayed(
-                    const Duration(seconds: 1),
-                    () {
-                      clearSearchResults();
-                    },
-                  );
+                  // Future.delayed(
+                  //   const Duration(seconds: 1),
+                  //   () {
+                  //     clearSearchResults();
+                  //   },
+                  // );
                 },
               ),
             ],
