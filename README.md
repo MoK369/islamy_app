@@ -26,6 +26,9 @@ Islamic Application is an application that help muslims in their daily life by p
 ## Record of Islamy App:
 https://drive.google.com/drive/folders/1FEWzhyEb89gpOZOuBPjN6eGZI_wLnlmp?usp=sharing
 
+## APK:
+https://apkpure.com/islamy/com.main369.islamy
+
 ## Pictures:
 <img width="512" height="512" alt="play_store_512" src="https://github.com/user-attachments/assets/2e9dd0be-317c-4c2f-bda9-ac99a2ffa6a5" />
 
